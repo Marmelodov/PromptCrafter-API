@@ -1,0 +1,98 @@
+{
+  "users": [
+    {
+      "_id": "user1",
+      "email": "alice@example.com",
+      "passwordHash": "hash1",
+      "name": "Alice Smith",
+      "createdAt": "2024-01-01T12:00:00Z"
+    },
+    {
+      "_id": "user2",
+      "email": "bob@example.com",
+      "passwordHash": "hash2",
+      "name": "Bob Jones",
+      "createdAt": "2024-01-02T12:00:00Z"
+    },
+    {
+      "_id": "user3",
+      "email": "carol@example.com",
+      "passwordHash": "hash3",
+      "name": "Carol White",
+      "createdAt": "2024-01-03T12:00:00Z"
+    }
+  ],
+  "prompts": [
+    {
+      "_id": "prompt1",
+      "ownerId": "user1",
+      "title": "Social media caption generator",
+      "content": "Write a witty Instagram caption for a coffee photo.",
+      "model": "ChatGPT",
+      "tags": [
+        "social",
+        "coffee",
+        "caption"
+      ],
+      "createdAt": "2024-02-01T08:00:00Z",
+      "updatedAt": "2024-02-01T08:00:00Z"
+    },
+    {
+      "_id": "prompt2",
+      "ownerId": "user2",
+      "title": "AI image prompt",
+      "content": "Create a prompt for a surreal mountain landscape painting.",
+      "model": "DALL\u00b7E",
+      "tags": [
+        "art",
+        "surreal",
+        "landscape"
+      ],
+      "createdAt": "2024-02-02T09:00:00Z",
+      "updatedAt": "2024-02-02T09:00:00Z"
+    },
+    {
+      "_id": "prompt3",
+      "ownerId": "user3",
+      "title": "Newsletter subject lines",
+      "content": "Generate subject lines for a tech product launch email.",
+      "model": "Claude",
+      "tags": [
+        "email",
+        "marketing",
+        "tech"
+      ],
+      "createdAt": "2024-02-03T10:00:00Z",
+      "updatedAt": "2024-02-03T10:00:00Z"
+    }
+  ],
+  "logs": [
+    {
+      "_id": "log1",
+      "promptId": "prompt1",
+      "output": "Start your day strong \u2615 #CaffeineMode",
+      "notes": "Works well for casual audiences.",
+      "modelUsed": "ChatGPT",
+      "score": 8,
+      "createdAt": "2024-03-01T11:00:00Z"
+    },
+    {
+      "_id": "log2",
+      "promptId": "prompt2",
+      "output": "A dreamlike mountain range under a violet sky.",
+      "notes": "Great visual balance and creativity.",
+      "modelUsed": "DALL\u00b7E",
+      "score": 9,
+      "createdAt": "2024-03-02T12:00:00Z"
+    },
+    {
+      "_id": "log3",
+      "promptId": "prompt3",
+      "output": "Ready to Upgrade? Discover the Future of Tech.",
+      "notes": "Engaging and clear subject line.",
+      "modelUsed": "Claude",
+      "score": 7,
+      "createdAt": "2024-03-03T13:00:00Z"
+    }
+  ]
+}
