@@ -1,1 +1,74 @@
-<!-- TODO: Draft content for this topic -->
+---
+layout: page
+---
+
+# Sign up
+
+Creates a new user account and returns a JWT authentication token. All fields are required.
+
+## URL
+
+```text
+{server_url}/auth/signup
+```
+
+## Method
+
+`POST`
+
+## Parameters
+
+None
+
+## Request headers
+
+| Header name     | Required | Description                       |
+|-----------------|----------|-----------------------------------|
+| `Content-Type`  | Yes      | Must be set to `application/json` |
+
+## Request body
+
+A JSON object containing user details. All fields are required.
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+## Request example
+
+```shell
+curl -X POST {server_url}/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+## Response body
+
+A JSON object containing an authentication token.
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+## Return status
+
+| Status code  | Status       | Description                                    |
+|--------------|--------------|------------------------------------------------|
+| 201          | Created      | Account created successfully                   |
+| 400          | Bad request  | Required fields are missing or invalid         |
+| 409          | Conflict     | Email already in use                           |
+| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+
+## Related
+
+[Log in](post-auth-login.md): `POST /auth/login`
