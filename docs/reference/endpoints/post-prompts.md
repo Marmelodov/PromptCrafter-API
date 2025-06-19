@@ -9,7 +9,7 @@ Creates a new [`prompt`](../resources/prompt.md) owned by the user.
 ## URL
 
 ```text
-{server_url}/prompts
+https://promptcrafter-production.up.railway.app/prompts
 ```
 
 ## Method
@@ -43,7 +43,7 @@ A JSON object representing the new prompt. All fields except `tags` are required
 ## Request example
 
 ```shell
-curl -X POST {server_url}/prompts \
+curl -X POST https://promptcrafter-production.up.railway.app/prompts \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{

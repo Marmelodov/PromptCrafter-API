@@ -9,7 +9,7 @@ Authenticates a user and returns a JWT token. All fields are required.
 ## URL
 
 ```text
-{server_url}/auth/login
+https://promptcrafter-production.up.railway.app/auth/login
 ```
 
 ## Method
@@ -40,7 +40,7 @@ A JSON object with the user's email and password.
 ## Request example
 
 ```shell
-curl -X POST {server_url}/auth/login \
+curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",

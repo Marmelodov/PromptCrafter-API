@@ -9,7 +9,7 @@ Creates a new [`log`](../resources/log.md) to record the output of a tested prom
 ## URL
 
 ```text
-{server_url}/logs
+https://promptcrafter-production.up.railway.app/logs
 ```
 
 ## Method
@@ -44,7 +44,7 @@ A JSON object representing the new log. All fields are required except `notes` a
 ## Request example
 
 ```shell
-curl -X POST {server_url}/logs \
+curl -X POST https://promptcrafter-production.up.railway.app/logs \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{

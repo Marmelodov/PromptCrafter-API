@@ -9,7 +9,7 @@ Returns an array of [`prompt`](../resources/prompt.md) objects belonging to the 
 ## URL
 
 ```bash
-{server_url}/prompts
+https://promptcrafter-production.up.railway.app/prompts
 ```
 
 ## Method
@@ -33,7 +33,7 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" {server_url}/prompts
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts
 ```
 
 ## Response body

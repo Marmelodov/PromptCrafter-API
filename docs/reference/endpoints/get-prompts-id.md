@@ -9,7 +9,7 @@ Returns a [`prompt`](../resources/prompt.md) by its unique ID. Users can only ac
 ## URL
 
 ```text
-{server_url}/prompts/:id
+https://promptcrafter-production.up.railway.app/prompts/:id
 ```
 
 ## Method
@@ -35,7 +35,7 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" {server_url}/prompts/prompt2
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/prompt2
 ```
 
 ## Response body

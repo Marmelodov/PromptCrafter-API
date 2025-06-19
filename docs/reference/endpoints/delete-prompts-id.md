@@ -9,7 +9,7 @@ Deletes a [`prompt`](../resources/prompt.md) by its unique ID. Users can only de
 ## URL
 
 ```text
-{server_url}/prompts/:id
+https://promptcrafter-production.up.railway.app/prompts/:id
 ```
 
 ## Method
@@ -35,7 +35,7 @@ None
 ## Request example
 
 ```shell
-curl -X DELETE {server_url}/prompts/prompt2 \
+curl -X DELETE https://promptcrafter-production.up.railway.app/prompts/prompt2 \
   -H "Authorization: Bearer {your_token}"
 ```
 
