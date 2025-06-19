@@ -9,7 +9,7 @@ Returns an array of [`log`](../resources/log.md) objects belonging to the user.
 ## URL
 
 ```text
-{server_url}/logs
+https://promptcrafter-production.up.railway.app/logs
 ```
 
 ## Method
@@ -33,7 +33,7 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" {server_url}/logs
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/logs
 ```
 
 ## Response body

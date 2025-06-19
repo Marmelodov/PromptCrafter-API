@@ -9,7 +9,7 @@ Returns an array of [`prompt`](../resources/prompt.md) objects matching a full-t
 ## URL
 
 ```text
-{server_url}/search?q=your+query+terms
+https://promptcrafter-production.up.railway.app/search?q=your+query+terms
 ```
 
 ## Method
@@ -35,7 +35,7 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" {server_url}/search?q=marketing+email
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/search?q=marketing+email
 ```
 
 ## Response body

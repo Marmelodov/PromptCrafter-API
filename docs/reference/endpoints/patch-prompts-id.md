@@ -9,7 +9,7 @@ Updates a [`prompt`](../resources/prompt.md) by its unique ID. Users can only up
 ## URL
 
 ```text
-{server_url}/prompts/:id
+https://promptcrafter-production.up.railway.app/prompts/:id
 ```
 
 ## Method
@@ -45,7 +45,7 @@ A JSON object with one or more fields to update. All fields are optional.
 ## Request example
 
 ```shell
-curl -X PATCH {server_url}/prompts/prompt2 \
+curl -X PATCH https://promptcrafter-production.up.railway.app/prompts/prompt2 \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{

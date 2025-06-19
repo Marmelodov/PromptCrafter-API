@@ -9,7 +9,7 @@ Creates a new user account and returns a JWT authentication token. All fields ar
 ## URL
 
 ```text
-{server_url}/auth/signup
+https://promptcrafter-production.up.railway.app/auth/signup
 ```
 
 ## Method
@@ -41,7 +41,7 @@ A JSON object containing user details. All fields are required.
 ## Request example
 
 ```shell
-curl -X POST {server_url}/auth/signup \
+curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",

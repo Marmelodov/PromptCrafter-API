@@ -38,7 +38,7 @@ Replace `{your_token}` with your actual bearer token.
 1. Open Postman  
 2. Set method to `GET`  
 3. Set URL to:  
-   `{server_url}/logs`  
+   `https://promptcrafter-production.up.railway.app/logs`  
 4. In the **Authorization** tab:  
    - Type: Bearer Token  
    - Token: `{your_token}`  

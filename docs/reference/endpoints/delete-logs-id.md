@@ -9,7 +9,7 @@ Deletes a [`log`](../resources/log.md) by its unique ID. Users can only delete l
 ## URL
 
 ```text
-{server_url}/logs/:id
+https://promptcrafter-production.up.railway.app/logs/:id
 ```
 
 ## Method
@@ -35,7 +35,7 @@ None
 ## Request example
 
 ```shell
-curl -X DELETE {server_url}/logs/log3 \
+curl -X DELETE https://promptcrafter-production.up.railway.app/logs/log3 \
   -H "Authorization: Bearer {your_token}"
 ```
 
