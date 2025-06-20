@@ -41,18 +41,24 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 ```json
 [
   {
-    "_id": "prompt2",
-    "ownerId": "user2",
-    "title": "AI image prompt",
-    "content": "Create a prompt for a surreal mountain landscape painting.",
-    "model": "DALL·E",
-    "tags": [
-      "art",
-      "surreal",
-      "landscape"
-    ],
-    "createdAt": "2024-02-02T09:00:00Z",
-    "updatedAt": "2024-02-02T09:00:00Z"
+    "_id": "prompt101",
+    "ownerId": "user4",
+    "title": "Executive Summary Generator",
+    "content": "Read the following business report and generate a clear, well-organized executive summary highlighting the main findings, recommendations, and any critical risks or action items for decision-makers. Limit your summary to three concise paragraphs.",
+    "model": "GPT-4o",
+    "tags": ["business", "summary", "report"],
+    "createdAt": "2024-06-20T13:00:00Z",
+    "updatedAt": "2024-06-20T13:00:00Z"
+  },
+  {
+    "_id": "prompt102",
+    "ownerId": "user5",
+    "title": "Positive Product Review Writer",
+    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+    "model": "Grok-3 Beta",
+    "tags": ["review", "product", "writing"],
+    "createdAt": "2024-06-20T13:01:00Z",
+    "updatedAt": "2024-06-20T13:01:00Z"
   }
 ]
 ```

@@ -7,7 +7,7 @@ layout: page
 **Resource endpoint**:
 
 ```text
-{base_url}/prompts
+https://promptcrafter-production.up.railway.app/prompts
 ```
 
 The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on this resource require user authentication with a bearer token.  
@@ -18,19 +18,15 @@ Sample `prompt` resource:
 
 ```json
  {
-    "_id": "prompt2",
-    "ownerId": "user2",
-    "title": "AI image prompt",
-    "content": "Create a prompt for a surreal mountain landscape painting.",
-    "model": "DALL·E",
-    "tags": [
-      "art",
-      "surreal",
-      "landscape"
-    ],
-    "createdAt": "2024-02-02T09:00:00Z",
-    "updatedAt": "2024-02-02T09:00:00Z"
-  }
+  "_id": "prompt104",
+  "ownerId": "user7",
+  "title": "Historical Explanation for Students",
+  "content": "Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.",
+  "model": "Claude 3 Sonnet",
+  "tags": ["history", "education", "explanation"],
+  "createdAt": "2025-06-20T13:03:00Z",
+  "updatedAt": "2025-06-20T13:03:00Z"
+ }
 ```
 
 | Name        | Type   | Required | Description                                                   |
@@ -49,7 +45,7 @@ Sample `prompt` resource:
 | Method | Endpoint       | Description                                      |
 | ------ | -------------- | ------------------------------------------------ |
 | GET    | `/prompts`     | [Retrieve all prompts](../endpoints/get-prompts.md) |
-| POST   | `/prompts`     | [Save a new prompt](../endpoints/post-prompts.md)                             |
+| POST   | `/prompts`     | [Save a prompt](../endpoints/post-prompts.md)                             |
 | GET    | `/prompts/:id` | [Retrieve a prompt by ID](../endpoints/get-prompts-id.md)                  |
-| PATCH  | `/prompts/:id` | [Update a prompt by ID](../endpoints/patch-prompts-id.md)                           |
-| DELETE | `/prompts/:id` | [Delete a prompt by ID](../endpoints/delete-prompts-id.md)                           |
+| PATCH  | `/prompts/:id` | [Update a prompt](../endpoints/patch-prompts-id.md)                           |
+| DELETE | `/prompts/:id` | [Delete a prompt](../endpoints/delete-prompts-id.md)                           |
