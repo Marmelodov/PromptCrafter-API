@@ -5,7 +5,7 @@ title: Create a Prompt
 
 # Tutorial: Save a prompt
 
-This tutorial walks through how to save a prompt to the PromptCrafter API with a POST request. Prompts are the core resource of the API: they store reusable instructions for generative AI models used in applications like ChatGPT, Gemini, and Claude. After your prompt is saved, you can test it, log its outputs, and update it as needed. The tutorial takes about 10-15 minutes to complete.
+This tutorial walks through how to save a prompt to PromptCrafter API with a POST request. Prompts are the core resource of the API: they store reusable instructions for generative AI models used in applications like ChatGPT, Gemini, and Claude. After your prompt is saved, you can test it, log its outputs, and update it as needed. The tutorial takes about 10-15 minutes to complete.
 
 ## Before you start
 
@@ -121,6 +121,6 @@ Now that you can save prompts, learn how to [search prompts](search-prompts.md) 
 
 ## Related
 
-- [Prompt](../resources/prompt.md)
-- [Save a prompt](../references/post-prompts.md): `POST /prompts`
-- [Retrieve prompts](../references/get-prompts.md): `GET /prompts/:id`
+[Prompt](../resources/prompt.md)
+[Save a prompt](../references/post-prompts.md): `POST /prompts`
+[Retrieve prompts](../references/get-prompts.md): `GET /prompts/:id`

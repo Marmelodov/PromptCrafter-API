@@ -133,7 +133,7 @@ Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md
 
 ## Related
 
-- [Log](../reference/resources/log.md)
-- [Prompt](../reference/resources/prompt.md)
-- [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
-- [Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
+[Log](../reference/resources/log.md)
+[Prompt](../reference/resources/prompt.md)
+[Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
+[Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  

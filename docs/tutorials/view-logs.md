@@ -5,7 +5,7 @@ title: View Logs
 
 # Tutorial: View logs
 
-This tutorial shows how to view your saved logs using the PromptCrafter API. A log records the result of testing a prompt. Each log stores the generated output, the AI model used, and any notes or score you've added. Reviewing logs allows you to analyze and compare results of different tests. The tutorial takes 5-10 minutes to complete.
+This tutorial shows how to view your saved logs using PromptCrafter API. A log records the result of testing a prompt. Each log stores the generated output, the AI model used, and any notes or score you've added. Reviewing logs allows you to analyze and compare results of different tests. The tutorial takes 5-10 minutes to complete.
 
 ## Before you start
 
@@ -90,7 +90,7 @@ Now that you can view logs, learn how to [test a prompt](test-prompt.md) or [del
 
 ## Related
 
-- [Log](../reference/resources/log.md)
-- [Retrieve all logs](../reference/endpoints/get-logs-id.md): `GET /logs`  
-- [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
-- [Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  
+[Log](../reference/resources/log.md)
+[Retrieve all logs](../reference/endpoints/get-logs-id.md): `GET /logs`  
+[Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
+[Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  
