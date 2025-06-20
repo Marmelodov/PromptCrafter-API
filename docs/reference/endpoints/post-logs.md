@@ -74,13 +74,13 @@ The newly created `log` object.
 
 ## Return status
 
-| Status code  | Status       | Description                                        |
-|--------------|--------------|----------------------------------------------------|
-| 201          | Created      | Log created successfully                           |
-| 400          | Bad request  | Required fields are missing or invalid             |
-| 401          | Unauthorized | Authentication token missing or invalid            |
-| 404          | Not found    | Prompt ID does not exist or is not accessible      |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                           |
+|-------------|------------------------|-------------------------------------------------------|
+| 201         | Created                | Log created successfully.                             |
+| 400         | Bad Request            | Required fields are missing or invalid.               |
+| 401         | Unauthorized           | Authentication token is missing, expired, or invalid. |
+| 404         | Not Found              | Prompt ID does not exist or is not accessible.        |
+| 500         | Internal Server Error  | An unexpected server error occurred.                  |
 
 ## Related
 

@@ -55,13 +55,14 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Return status
 
-| Status code  | Status       | Description                                        |
-|--------------|--------------|----------------------------------------------------|
-| 200          | Success      | Prompt returned successfully                       |
-| 401          | Unauthorized | Authentication token missing or invalid            |
-| 403          | Forbidden    | Prompt does not belong to the authenticated user   |
-| 404          | Not found    | Prompt with the specified ID was not found         |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                           |
+|-------------|------------------------|-------------------------------------------------------|
+| 200         | Success                | Prompt returned successfully.                         |
+| 400         | Bad Request            | The request is malformed or the prompt ID format is invalid. |
+| 401         | Unauthorized           | Authentication token is missing, expired, or invalid. |
+| 403         | Forbidden              | Prompt does not belong to the authenticated user.     |
+| 404         | Not Found              | No prompt found with the specified ID.                |
+| 500         | Internal Server Error  | An unexpected server error occurred.                  |
 
 ## Related
 
