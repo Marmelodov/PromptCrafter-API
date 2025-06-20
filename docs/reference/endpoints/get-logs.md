@@ -41,13 +41,22 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 ```json
 [
   {
-    "_id": "log3",
-    "promptId": "prompt3",
-    "output": "Ready to Upgrade? Discover the Future of Tech.",
-    "notes": "Engaging and clear subject line.",
-    "modelUsed": "Claude",
-    "score": 7,
-    "createdAt": "2024-03-03T13:00:00Z"
+    "_id": "log101",
+    "promptId": "prompt101",
+    "output": "The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.",
+    "notes": "Summary is clear and actionable. Matches requirements.",
+    "modelUsed": "GPT-4o",
+    "score": 9,
+    "createdAt": "2024-06-20T13:10:00Z"
+  },
+  {
+    "_id": "log103",
+    "promptId": "prompt103",
+    "output": "Dear Ms. Lee, I sincerely apologize for the delay in your order. We take full responsibility for the inconvenience this caused. To make things right, we have expedited your shipment and included a discount on your next purchase. Thank you for your patience.",
+    "notes": "Professional and empathetic. Offers compensation as requested.",
+    "modelUsed": "GPT-4 Turbo",
+    "score": 9,
+    "createdAt": "2024-06-20T13:12:00Z"
   }
 ]
 ```

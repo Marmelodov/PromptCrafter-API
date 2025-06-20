@@ -47,10 +47,10 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
     "ownerId": "user3",
     "title": "Newsletter subject lines",
     "content": "Generate subject lines for a tech product launch email.",
-    "model": "Claude",
+    "model": "Claude 4.0 Sonnet",
     "tags": ["email", "marketing", "tech"],
-    "createdAt": "2024-02-03T10:00:00Z",
-    "updatedAt": "2024-02-03T10:00:00Z"
+    "createdAt": "2025-02-03T10:00:00Z",
+    "updatedAt": "2025-02-03T10:00:00Z"
   }
 ]
 ```

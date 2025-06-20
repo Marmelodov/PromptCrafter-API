@@ -31,28 +31,24 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 ## Request body
 
-A JSON object with one or more fields to update. All fields are optional.
+A JSON object containing updated versions of one or more of the prompt's fields. All fields are optional.
 
 ```json
-{
-  "title": "Updated title",
-  "content": "Updated prompt content.",
-  "model": "ChatGPT",
-  "tags": ["updated", "tags"]
+{    
+  "model": "GPT-4 Turbo",
+  "tags": ["email", "apology", "customer"]
 }
 ```
 
 ## Request example
 
 ```shell
-curl -X PATCH https://promptcrafter-production.up.railway.app/prompts/prompt2 \
+curl -X PATCH https://promptcrafter-production.up.railway.app/prompts/prompt103 \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
-  -d '{
-    "title": "Updated title",
-    "content": "Updated prompt content.",
-    "model": "ChatGPT",
-    "tags": ["updated", "tags"]
+  -d '{    
+    "model": "GPT-4 Turbo",
+    "tags": ["email", "apology", "customer"]
   }'
 ```
 
@@ -62,14 +58,14 @@ The updated `prompt` object.
 
 ```json
 {
-  "_id": "prompt2",
-  "ownerId": "user2",
-  "title": "Updated title",
-  "content": "Updated prompt content.",
-  "model": "ChatGPT",
-  "tags": ["updated", "tags"],
-  "createdAt": "2024-02-02T09:00:00Z",
-  "updatedAt": "2024-02-10T15:30:00Z"
+  "_id": "prompt103",
+  "ownerId": "user6",
+  "title": "Email Apology Draft",
+  "content": "Draft a professional but empathetic apology email to a client whose order was delayed. Clearly acknowledge the issue, accept responsibility, and offer a practical solution or compensation to rebuild trust and customer satisfaction.",
+  "model": "GPT-4 Turbo",
+  "tags": ["email", "apology", "customer"],
+  "createdAt": "2024-06-20T13:02:00Z",
+  "updatedAt": "2025-06-20T11:07:00Z"
 }
 ```
 
