@@ -62,12 +62,12 @@ A JSON object containing an authentication token.
 
 ## Return status
 
-| Status code  | Status       | Description                                    |
-|--------------|--------------|------------------------------------------------|
-| 201          | Created      | Account created successfully                   |
-| 400          | Bad request  | Required fields are missing or invalid         |
-| 409          | Conflict     | Email already in use                           |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                           |
+|-------------|------------------------|-------------------------------------------------------|
+| 201         | Created                | Account created successfully.                         |
+| 400         | Bad Request            | Required fields are missing or invalid.               |
+| 409         | Conflict               | Email already in use.                                 |
+| 500         | Internal Server Error  | An unexpected server error occurred.                  |
 
 ## Related
 

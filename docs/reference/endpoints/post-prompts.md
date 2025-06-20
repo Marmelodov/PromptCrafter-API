@@ -73,12 +73,12 @@ The newly created `prompt` object.
 
 ## Return status
 
-| Status code  | Status       | Description                                        |
-|--------------|--------------|----------------------------------------------------|
-| 201          | Created      | Prompt created successfully                        |
-| 400          | Bad request  | Required fields are missing or invalid             |
-| 401          | Unauthorized | Authentication token missing or invalid            |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                           |
+|-------------|------------------------|-------------------------------------------------------|
+| 201         | Created                | Prompt created successfully.                          |
+| 400         | Bad Request            | Required fields are missing or invalid.               |
+| 401         | Unauthorized           | Authentication token is missing, expired, or invalid. |
+| 500         | Internal Server Error  | An unexpected server error occurred.                  |
 
 ## Related
 

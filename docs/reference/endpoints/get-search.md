@@ -57,12 +57,12 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Return status
 
-| Status code  | Status       | Description                                        |
-|--------------|--------------|----------------------------------------------------|
-| 200          | Success      | Prompts matching the search query returned         |
-| 400          | Bad request  | Missing or malformed query string                 |
-| 401          | Unauthorized | Authentication token missing or invalid           |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                              |
+|-------------|------------------------|----------------------------------------------------------|
+| 200         | Success                | Prompts matching the search query returned.              |
+| 400         | Bad Request            | Missing or malformed query string.                       |
+| 401         | Unauthorized           | Authentication token is missing, expired, or invalid.    |
+| 500         | Internal Server Error  | An unexpected server error occurred.                     |
 
 ## Related
 

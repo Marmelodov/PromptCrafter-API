@@ -60,12 +60,12 @@ A JSON object containing a JWT authentication token.
 
 ## Return status
 
-| Status code  | Status       | Description                                        |
-|--------------|--------------|----------------------------------------------------|
-| 200          | OK           | Authentication successful                          |
-| 400          | Bad request  | Required fields are missing or invalid             |
-| 401          | Unauthorized | Incorrect email or password                        |
-| ECONNREFUSED | N/A          | Server is offline. Start the service and try again |
+| Status code | Status                 | Description                                           |
+|-------------|------------------------|-------------------------------------------------------|
+| 200         | OK                     | Authentication successful.                            |
+| 400         | Bad Request            | Required fields are missing or invalid.               |
+| 401         | Unauthorized           | Incorrect email or password.                          |
+| 500         | Internal Server Error  | An unexpected server error occurred.                  |
 
 ## Related
 
