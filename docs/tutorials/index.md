@@ -1,6 +1,6 @@
 # Tutorials
 
-Upcoming tutorials for the PromptCrafter API.
+Upcoming tutorials for PromptCrafter API.
 
 - [Create a user](create-user.md)
 - [Save a prompt](create-prompt.md)
