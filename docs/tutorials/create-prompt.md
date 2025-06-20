@@ -121,6 +121,6 @@ Now that you can save prompts, learn how to [search prompts](search-prompts.md) 
 
 ## Related
 
-[Prompt](../resources/prompt.md)
-[Save a prompt](../references/post-prompts.md): `POST /prompts`
+[Prompt](../resources/prompt.md)  
+[Save a prompt](../references/post-prompts.md): `POST /prompts`  
 [Retrieve prompts](../references/get-prompts.md): `GET /prompts/:id`

@@ -90,7 +90,7 @@ Now that you can view logs, learn how to [test a prompt](test-prompt.md) or [del
 
 ## Related
 
-[Log](../reference/resources/log.md)
+[Log](../reference/resources/log.md)  
 [Retrieve all logs](../reference/endpoints/get-logs-id.md): `GET /logs`  
 [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
 [Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  
