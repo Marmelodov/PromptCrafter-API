@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# Create a log
+# Log a generated output
 
 Creates a new [`log`](../resources/log.md) to record the output of a tested prompt. The log is owned by the user and linked to a [`prompt`](../resources/prompt.md).
 
@@ -84,6 +84,6 @@ The newly created `log` object.
 
 ## Related
 
-[Get all logs](get-logs.md): `GET /logs`  
+[Retrieve all logs](get-logs.md): `GET /logs`  
 [Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`  
 [Delete a log](delete-logs-id.md): `DELETE /logs/:id`

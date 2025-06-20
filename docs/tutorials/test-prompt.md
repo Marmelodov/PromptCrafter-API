@@ -3,7 +3,7 @@ layout: page
 title: Test a Prompt
 ---
 
-# Test a prompt
+# Tutorial: Log a generated output
 
 This tutorial shows how to test a saved prompt by logging its output. The tutorial takes about 5-10 minutes.
 
@@ -133,7 +133,7 @@ Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md
 
 ## Related
 
-- [Test a prompt](../reference/endpoints/post-logs.md)  
-- [Retrieve logs](../reference/endpoints/get-logs.md)  
-- [Log resource](../reference/resources/log.md)  
-- [Prompt resource](../reference/resources/prompt.md)
+- [Log](../reference/resources/log.md)
+- [Prompt](../reference/resources/prompt.md)
+- [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
+- [Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  

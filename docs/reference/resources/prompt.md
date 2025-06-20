@@ -49,7 +49,7 @@ Sample `prompt` resource:
 | Method | Endpoint       | Description                                      |
 | ------ | -------------- | ------------------------------------------------ |
 | GET    | `/prompts`     | [Retrieve all prompts](../endpoints/get-prompts.md) |
-| POST   | `/prompts`     | [Create a new prompt](../endpoints/post-prompts.md)                             |
+| POST   | `/prompts`     | [Save a new prompt](../endpoints/post-prompts.md)                             |
 | GET    | `/prompts/:id` | [Retrieve a prompt by ID](../endpoints/get-prompts-id.md)                  |
 | PATCH  | `/prompts/:id` | [Update a prompt by ID](../endpoints/patch-prompts-id.md)                           |
 | DELETE | `/prompts/:id` | [Delete a prompt by ID](../endpoints/delete-prompts-id.md)                           |

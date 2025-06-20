@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# GET all logs
+# Retrieve all logs
 
 Returns an array of [`log`](../resources/log.md) objects belonging to the user.  
 
@@ -62,6 +62,6 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Create a log](post-logs.md): `POST /logs`  
+[Log a generated ouput](post-logs.md): `POST /logs`  
 [Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`  
 [Delete a log](delete-logs-id.md): `DELETE /logs/:id`

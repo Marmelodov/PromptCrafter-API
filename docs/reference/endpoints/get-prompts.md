@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# GET all prompts
+# Retrieve all prompts
 
 Returns an array of [`prompt`](../resources/prompt.md) objects belonging to the user.
 
@@ -67,7 +67,7 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Create a prompt](post-prompts.md): `POST /prompts`  
+[Save a prompt](post-prompts.md): `POST /prompts`  
 [Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
 [Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
 [Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
