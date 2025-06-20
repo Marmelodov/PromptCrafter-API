@@ -105,10 +105,10 @@ curl -X POST https://promptcrafter-production.up.railway.app/prompts \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "AI image prompt",
-    "content": "Create a prompt for a surreal mountain landscape painting.",
-    "model": "DALL·E",
-    "tags": ["art", "surreal", "landscape"]
+    "title": "Positive Product Review Writer",
+    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+    "model": "Grok-3 Beta",
+    "tags": ["review", "product", "writing"]
   }'
 ```
 
@@ -123,10 +123,10 @@ curl -X POST https://promptcrafter-production.up.railway.app/prompts \
 
 ```json
 {
-  "title": "AI image prompt",
-  "content": "Create a prompt for a surreal mountain landscape painting.",
-  "model": "DALL·E",
-  "tags": ["art", "surreal", "landscape"]
+  "title": "Positive Product Review Writer",
+  "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+  "model": "Grok-3 Beta",
+  "tags": ["review", "product", "writing"]
 }
 ```
 
@@ -160,4 +160,3 @@ curl -X GET https://promptcrafter-production.up.railway.app/prompts/prompt2 \
 - [Update a prompt](reference/endpoints/patch-prompts-id.md)  
 - [Search prompts](reference/endpoints/get-search.md)  
 - [Explore all API operations](reference/index.md)
-

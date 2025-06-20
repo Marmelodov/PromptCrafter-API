@@ -35,25 +35,21 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/prompt2
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/prompt/104
 ```
 
 ## Response body
 
 ```json
 {
-  "_id": "prompt2",
-  "ownerId": "user2",
-  "title": "AI image prompt",
-  "content": "Create a prompt for a surreal mountain landscape painting.",
-  "model": "DALL·E",
-  "tags": [
-    "art",
-    "surreal",
-    "landscape"
-  ],
-  "createdAt": "2024-02-02T09:00:00Z",
-  "updatedAt": "2024-02-02T09:00:00Z"
+  "_id": "prompt104",
+  "ownerId": "user7",
+  "title": "Historical Explanation for Students",
+  "content": "Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.",
+  "model": "Claude 3 Sonnet",
+  "tags": ["history", "education", "explanation"],
+  "createdAt": "2024-06-20T13:03:00Z",
+  "updatedAt": "2024-06-20T13:03:00Z"
 }
 ```
 

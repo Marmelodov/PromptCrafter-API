@@ -42,11 +42,11 @@ Example:
 
 ```json
 {
-  "promptId": "prompt2",
-  "output": "A dreamlike mountain range under a violet sky.",
-  "notes": "Great visual balance and creativity.",
-  "modelUsed": "DALL·E",
-  "score": 9
+  "promptId": "prompt104",
+  "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+  "notes": "Clear, accessible explanation for students.",
+  "modelUsed": "Claude 3 Sonnet",
+  "score": 8
 }
 ```
 
@@ -67,11 +67,11 @@ curl -X POST https://promptcrafter-production.up.railway.app/logs \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
-    "promptId": "prompt2",
-    "output": "A dreamlike mountain range under a violet sky.",
-    "notes": "Great visual balance and creativity.",
-    "modelUsed": "DALL·E",
-    "score": 9
+    "promptId": "prompt104",
+    "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+    "notes": "Clear, accessible explanation for students.",
+    "modelUsed": "Claude 3 Sonnet",
+    "score": 8
   }'
 ```
 
@@ -98,13 +98,13 @@ If request is successful, the server returns a `201 Created` response like this:
 
 ```json
 {
-  "_id": "log4",
-  "promptId": "prompt2",
-  "output": "A dreamlike mountain range under a violet sky.",
-  "notes": "Great visual balance and creativity.",
-  "modelUsed": "DALL·E",
-  "score": 9,
-  "createdAt": "2024-03-02T12:00:00Z"
+  "_id": "log104",
+  "promptId": "prompt104",
+  "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+  "notes": "Clear, accessible explanation for students.",
+  "modelUsed": "Claude 3 Sonnet",
+  "score": 8,
+  "createdAt": "2024-06-20T13:13:00Z"
 }
 ```
 
