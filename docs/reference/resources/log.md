@@ -43,6 +43,6 @@ Sample `log` resource:
 | Method | Endpoint             | Description                                 |
 | ------ | -------------------- | ------------------------------------------- |
 | GET    | `/logs`              | [Retrieve all logs](../endpoints/get-logs.md) |
-| POST   | `/logs`              | [Create a log](../endpoints/post-logs.md) |
+| POST   | `/logs`              | [Log a generated output](../endpoints/post-logs.md) |
 | GET    | `/logs?promptId=...` | [Retrieve logs for a specific prompt](../endpoints/get-logs-by-prompt.md) |
 | DELETE | `/logs/:id`          | [Delete a log by ID](../endpoints/delete-logs-id.md)          |

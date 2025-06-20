@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# Delete a log by ID
+# Delete a log
 
 Deletes a [`log`](../resources/log.md) by its unique ID. Users can only delete logs they own.
 
@@ -55,6 +55,6 @@ None
 
 ## Related
 
-[Get all logs](get-logs.md): `GET /logs`  
-[Create a log](post-logs.md): `POST /logs`  
+[Retrieve all logs](get-logs.md): `GET /logs`  
+[Log a generated output](post-logs.md): `POST /logs`  
 [Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`

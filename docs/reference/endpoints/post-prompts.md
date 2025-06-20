@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# Create a prompt
+# Save a prompt
 
 Creates a new [`prompt`](../resources/prompt.md) owned by the user.
 
@@ -82,7 +82,7 @@ The newly created `prompt` object.
 
 ## Related
 
-[Get all prompts](get-prompts.md): `GET /prompts`  
+[Retrieve all prompts](get-prompts.md): `GET /prompts`  
 [Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
 [Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
 [Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`

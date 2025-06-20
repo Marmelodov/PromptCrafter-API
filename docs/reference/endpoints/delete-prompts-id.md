@@ -55,7 +55,7 @@ None
 
 ## Related
 
-[Get all prompts](get-prompts.md): `GET /prompts`  
-[Create a prompt](post-prompts.md): `POST /prompts`  
+[Retrieve all prompts](get-prompts.md): `GET /prompts`  
+[Save a prompt](post-prompts.md): `POST /prompts`  
 [Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
 [Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`

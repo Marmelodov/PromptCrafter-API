@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# Update a prompt by ID
+# Update a prompt
 
 Updates a [`prompt`](../resources/prompt.md) by its unique ID. Users can only update prompts they own. Only the fields included in the request body will be modified.
 
@@ -86,7 +86,7 @@ The updated `prompt` object.
 
 ## Related
 
-[Get all prompts](get-prompts.md): `GET /prompts`  
-[Create a prompt](post-prompts.md): `POST /prompts`  
+[Save a prompt](post-prompts.md): `POST /prompts` 
+[Retrieve all prompts](get-prompts.md): `GET /prompts`  
 [Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
 [Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`

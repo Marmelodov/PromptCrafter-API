@@ -2,7 +2,7 @@
 layout: page
 ---
 
-# GET prompt by ID
+# Retrieve a prompt by ID
 
 Returns a [`prompt`](../resources/prompt.md) by its unique ID. Users can only access prompts they own.
 
@@ -69,7 +69,7 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Get all prompts](get-prompts.md): `GET /prompts`  
-[Create a prompt](post-prompts.md): `POST /prompts`  
+[Retrieve all prompts](get-prompts.md): `GET /prompts`  
+[Save a prompt](post-prompts.md): `POST /prompts`  
 [Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
 [Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
