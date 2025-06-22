@@ -1,23 +1,37 @@
 ---
 layout: page
-title: Create a Prompt
+title: Save a prompt
 ---
 
 # Tutorial: Save a prompt
 
-This tutorial walks through how to save a prompt to PromptCrafter API with a POST request. Prompts are the core resource of the API: they store reusable instructions for generative AI models used in applications like ChatGPT, Gemini, and Claude. After your prompt is saved, you can test it, log its outputs, and update it as needed. The tutorial takes about 10-15 minutes to complete.
+This tutorial walks through how to save a prompt to PromptCrafter API with a POST request. Prompts are the core resource of the API: they store reusable instructions for generative AI models used in applications like ChatGPT, Gemini, and Claude. After saving your prompt, you can test it, log its outputs, and update it as needed. The tutorial takes about 5-15 minutes to complete.
 
 ## Before you start
 
-Before sending the API request, make sure you have:
+Make sure you have:
 
-- A PromptCrafter user account  
-- A bearer token from logging in  
-- Either cURL or Postman installed on your machine  
+- A PromptCrafter user account and the bearer token you received when you logged in. For help signing up or logging in, see the [Quickstart](../quickstart.md).
+- cURL or Postman.  
 
-If you need help creating an account or logging in, see the [Quickstart](../quickstart.md) or the [Create a user](create-user.md) tutorial.
+## Build the request
 
-## Write the request body
+To save a new prompt, send a POST request to the following endpoint:
+
+```text
+https://promptcrafter-production.up.railway.app/prompts
+```
+
+The request must include two headers and a JSON-formatted request body.
+
+### Headers
+
+Add the following headers to your request:
+
+- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.  
+- `Content-Type: application/json` tells the server to expect a JSON object in the request body.
+
+### Request body
 
 The request body holds the information that defines your prompt. It includes four fields:
 
@@ -26,7 +40,7 @@ The request body holds the information that defines your prompt. It includes fou
 - `model`: The name of the AI model to use (for example, `gpt-4` or `dall-e-3`)  
 - `tags`: Optional keywords for grouping the prompt by topic, task, or project. Tags can also help organize prompts into libraries
 
-Here's an example request body:
+Example:
 
 ```json
 {
@@ -37,11 +51,24 @@ Here's an example request body:
 }
 ```
 
-## Make the request
+## Send the request
 
-Use the endpoint `https://promptcrafter-production.up.railway.app/prompts` and include the following headers in your request:
-- `Authorization: Bearer {your_token}`
-- `Content-Type: application/json`
+### Using Postman
+
+1. Navigate to **Send a new API request** and click **New Request**.
+2. Set method to `POST`
+3. Set URL to:  
+   `https://promptcrafter-production.up.railway.app/prompts`
+4. Click the **Authorization** tab:
+   - In the **Type** dropdown, select `Bearer Token`.
+   - In the **Token** field, enter your bearer token (the one you received after logging in).
+5. Click the **Headers** tab.  Add a new header with:
+   - Key: `Content-Type`
+   - Value: `application/json`
+6. In the **Body** tab:
+   - Choose `raw` and `JSON`
+   - Enter the request body
+7. Click **Send** to submit the request.
 
 ### Using cURL
 
@@ -59,26 +86,9 @@ curl -X POST https://promptcrafter-production.up.railway.app/prompts \
 
 Replace `{your_token}` with your actual bearer token.
 
-### Using Postman
+## Response
 
-1. Open Postman
-2. Set method to `POST`
-3. Set URL to:  
-   `https://promptcrafter-production.up.railway.app/prompts`
-4. In the **Authorization** tab:
-   - Type: Bearer Token
-   - Token: `{your_token}`
-5. In the **Headers** tab:
-   - Key: `Content-Type`
-   - Value: `application/json`
-6. In the **Body** tab:
-   - Choose `raw` and `JSON`
-   - Paste the JSON from step 1
-7. Click **Send**
-
-## Check the response
-
-If your request is successful, the server returns a status code `201 Created` and a response body like this:
+If your request is successful, the server returns a status code `201 Created` and a response body that looks like this:
 
 ```json
 {
@@ -93,9 +103,9 @@ If your request is successful, the server returns a status code `201 Created` an
 }
 ```
 
-> Note: the `_id`, `createdAt`, and `updatedAt` fields are added by the server. Do not include them in the request body.
+Note: The server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
 
-To confirm that the prompt saved correctly, use the `_id` from the `201 Created` response to retrieve the prompt with a GET request:
+Congratulations, you've successfully saved your prompt. If you want to verify that you saved it, send a GET request using the prompt `_id` from the response body:
 
 ```bash
 curl -H "Authorization: Bearer {your_token}" \
@@ -104,7 +114,7 @@ curl -H "Authorization: Bearer {your_token}" \
 
 ## What to do if the request doesn't work
 
-The table below lists common errors and how to resolve them.
+The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
 
 | Status Code                | What it means                  | What to check                                             |
 |---------------------------|--------------------------------|-----------------------------------------------------------|
