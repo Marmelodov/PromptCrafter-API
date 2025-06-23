@@ -1,32 +1,48 @@
 ---
 layout: page
-title: Create a Prompt
+title: Save a prompt
 ---
 
 # Tutorial: Save a prompt
 
-This tutorial walks through how to save a prompt to PromptCrafter API with a POST request. Prompts are the core resource of the API: they store reusable instructions for generative AI models used in applications like ChatGPT, Gemini, and Claude. After your prompt is saved, you can test it, log its outputs, and update it as needed. The tutorial takes about 10-15 minutes to complete.
+Save a prompt by sending a `POST /prompts` request. A prompt is the API’s core resource: reusable instructions for generative-AI models such as GPT-4o, Gemini, or Claude. After you save one, you can test it, log its outputs, and update it. The steps take about 10 minutes.
 
 ## Before you start
 
-Before sending the API request, make sure you have:
+Make sure you have:
 
-- A PromptCrafter user account  
-- A bearer token from logging in  
-- Either cURL or Postman installed on your machine  
+- A PromptCrafter user account and the bearer token you received when you logged in. For help signing up or logging in, see the [Quickstart](../quickstart.md).
+- cURL or Postman.  
 
-If you need help creating an account or logging in, see the [Quickstart](../quickstart.md) or the [Create a user](create-user.md) tutorial.
+## Build the request
 
-## Write the request body
+To save a new prompt, send a POST request to the following endpoint:
 
-The request body holds the information that defines your prompt. It includes four fields:
+```text
+https://promptcrafter-production.up.railway.app/prompts
+```
 
-- `title`: A short name to help identify or organize the prompt  
-- `content`: The prompt text sent to the AI model to generate a response  
-- `model`: The name of the AI model to use (for example, `gpt-4` or `dall-e-3`)  
-- `tags`: Optional keywords for grouping the prompt by topic, task, or project. Tags can also help organize prompts into libraries
+The request must include two headers and a JSON-formatted request body.
 
-Here's an example request body:
+### Headers
+
+Add the following headers to your request:
+
+- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.  
+- `Content-Type: application/json` tells the server to expect a JSON object in the request body.
+
+### Request body
+
+The request body contains the information that defines your prompt.
+
+| Field    | Type             | Required | Description                                                            |
+|----------|------------------|----------|------------------------------------------------------------------------|
+| `title`  | string           | Yes      | Short label that helps you identify or sort the prompt.                |
+| `content`| string           | Yes      | The text sent to the AI model.                                         |
+| `model`  | string           | Yes      | Name of the intended model (for example `gpt-4o`, `Claude 3 Sonnet`).     |
+| `tags`   | array\<string\>  | No       | Optional keywords for grouping by topic, task, project, or library.    |
+
+Example:
 
 ```json
 {
@@ -37,11 +53,24 @@ Here's an example request body:
 }
 ```
 
-## Make the request
+## Send the request
 
-Use the endpoint `https://promptcrafter-production.up.railway.app/prompts` and include the following headers in your request:
-- `Authorization: Bearer {your_token}`
-- `Content-Type: application/json`
+### Using Postman
+
+1. Navigate to **Send a new API request** and click **New Request**.
+2. Set method to `POST`
+3. Set URL to:  
+   `https://promptcrafter-production.up.railway.app/prompts`
+4. Click the **Authorization** tab:
+   - In the **Type** dropdown, select `Bearer Token`.
+   - In the **Token** field, enter the bearer token you received after logging in.
+5. Click the **Headers** tab. Add a new header with:
+   - Key: `Content-Type`
+   - Value: `application/json`
+6. In the **Body** tab:
+   - Choose `raw` and `JSON`
+   - Enter the request body
+7. Click **Send** to submit the request.
 
 ### Using cURL
 
@@ -59,26 +88,9 @@ curl -X POST https://promptcrafter-production.up.railway.app/prompts \
 
 Replace `{your_token}` with your actual bearer token.
 
-### Using Postman
+## Response
 
-1. Open Postman
-2. Set method to `POST`
-3. Set URL to:  
-   `https://promptcrafter-production.up.railway.app/prompts`
-4. In the **Authorization** tab:
-   - Type: Bearer Token
-   - Token: `{your_token}`
-5. In the **Headers** tab:
-   - Key: `Content-Type`
-   - Value: `application/json`
-6. In the **Body** tab:
-   - Choose `raw` and `JSON`
-   - Paste the JSON from step 1
-7. Click **Send**
-
-## Check the response
-
-If your request is successful, the server returns a status code `201 Created` and a response body like this:
+If your request is successful, the server returns a status code `201 Created` and a response body that looks like this:
 
 ```json
 {
@@ -93,9 +105,11 @@ If your request is successful, the server returns a status code `201 Created` an
 }
 ```
 
-> Note: the `_id`, `createdAt`, and `updatedAt` fields are added by the server. Do not include them in the request body.
+Note: the server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
 
-To confirm that the prompt saved correctly, use the `_id` from the `201 Created` response to retrieve the prompt with a GET request:
+## Verify the prompt
+
+If you want to verify that you saved your prompt successfully, send a GET request using the prompt `_id` from the response body:
 
 ```bash
 curl -H "Authorization: Bearer {your_token}" \
@@ -104,23 +118,22 @@ curl -H "Authorization: Bearer {your_token}" \
 
 ## What to do if the request doesn't work
 
-The table below lists common errors and how to resolve them.
+The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
 
-| Status Code                | What it means                  | What to check                                             |
-|---------------------------|--------------------------------|-----------------------------------------------------------|
-| 400 Bad Request           | The request wasn't valid      | Make sure you included `title`, `content`, and `model` in the request body |
-| 401 Unauthorized          | You're not logged in           | Check that your bearer token is valid and spelled correctly |
-| 403 Forbidden             | Not allowed                    | This action isn't allowed for your account      |
-| 404 Not Found             | The URL doesn't exist | Check the URL for typos                              |
-| 415 Unsupported Media Type | The request format is wrong   | Make sure you set `Content-Type: application/json`        |
-| 500 Internal Server Error | Something went wrong on the server | Try again later or contact support                        |
+| Status | Example response body | Meaning | How to fix |
+|--------|----------------------|---------|------------|
+| **400 Bad Request** | `{ "message": "title, content, and model are required" }` | The request body is missing one or more required fields or contains malformed JSON. | Ensure `title`, `content`, and `model` are present and the JSON is valid. |
+| **401 Unauthorized** | `{ "message": "Invalid or missing bearer token" }` | Authentication failed. | Pass `Authorization: Bearer {your_token}` and confirm the token has not expired. |
+| **415 Unsupported Media Type** | `{ "message": "Content-Type must be application/json" }` | The server could not parse the body because the header is wrong or absent. | Add `Content-Type: application/json` to the request headers. |
+| **404 Not Found** | `{ "message": "Route not found" }` | The path is incorrect. | Verify the endpoint (`/prompts`) and avoid trailing slashes or typos. |
+| **500 Internal Server Error** | `{ "message": "Unexpected server error" }` | The server encountered an error while processing the request. | Retry later; if the error persists, contact support. |
 
 ## Next steps
 
-Now that you can save prompts, learn how to [search prompts](search-prompts.md) or [test prompts](test-prompt.md).
+Now that you can save prompts, learn how to [search prompts](search-prompts.md) or [log generated outputs](test-prompt.md).
 
 ## Related
 
-[Prompt](../resources/prompt.md)
-[Save a prompt](../references/post-prompts.md): `POST /prompts`
+[Prompt](../resources/prompt.md)  
+[Save a prompt](../references/post-prompts.md): `POST /prompts`  
 [Retrieve prompts](../references/get-prompts.md): `GET /prompts/:id`

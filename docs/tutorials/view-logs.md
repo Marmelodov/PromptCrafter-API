@@ -5,24 +5,37 @@ title: View Logs
 
 # Tutorial: View logs
 
-This tutorial shows how to view your saved logs using PromptCrafter API. A log records the result of testing a prompt. Each log stores the generated output, the AI model used, and any notes or score you've added. Reviewing logs allows you to analyze and compare results of different tests. The tutorial takes 5-10 minutes to complete.
+Retrieve prompt test logs with a `GET /logs request`. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. The steps take about 5 minutes.
 
 ## Before you start
 
-Before sending the API request, make sure you have:
+Make sure you have:
 
-- A PromptCrafter user account  
-- A bearer token from logging in  
-- At least one log saved using the `POST /logs` endpoint  
-- Either cURL or Postman installed on your machine  
-
-If you need help creating an account or logging in, see the [Quickstart](../quickstart.md) or the [Create a user](create-user.md) tutorial.
+- A PromptCrafter user account and the bearer token you received when you logged in. For help signing up or logging in, see the [Quickstart](../quickstart.md).
+- cURL or Postman.  
 
 ## Make the request
 
-Use the endpoint `https://promptcrafter-production.up.railway.app/logs` and include the following request header:
+Send a GET request to the following endpoint:
+
+```text
+https://promptcrafter-production.up.railway.app/logs`
+```
+
+Include the following request header:
 
 - `Authorization: Bearer {your_token}`
+
+### Using Postman
+
+1. Navigate to **Send a new API request** and click **New Request**.
+2. Set method to `GET`
+3. Set URL to:  
+   `https://promptcrafter-production.up.railway.app/logs`
+4. Click the **Authorization** tab:
+   - In the **Type** dropdown, select `Bearer Token`.
+   - In the **Token** field, enter the bearer token you received after logging in.
+5. Click **Send** to submit the request.
 
 ### Using cURL
 
@@ -32,17 +45,6 @@ curl -H "Authorization: Bearer {your_token}" \
 ```
 
 Replace `{your_token}` with your actual bearer token.
-
-### Using Postman
-
-1. Open Postman  
-2. Set method to `GET`  
-3. Set URL to:  
-   `https://promptcrafter-production.up.railway.app/logs`  
-4. In the **Authorization** tab:  
-   - Type: Bearer Token  
-   - Token: `{your_token}`  
-5. Click **Send**
 
 ## Check the response
 
@@ -58,7 +60,7 @@ If your request is successful, the server returns a status code `200 OK` and a r
     "modelUsed": "Claude",
     "score": 7,
     "createdAt": "2024-03-03T13:00:00Z"
-  }
+  },
   {
     "_id": "log87",
     "promptId": "prompt34",
@@ -75,14 +77,15 @@ Each object in the array is a log entry. The `promptId` field shows which prompt
 
 ## What to do if the request doesn't work
 
-The table below lists common errors and how to resolve them.
+The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
 
-| Status Code                | What it means                     | What to check                                                 |
-|---------------------------|-----------------------------------|---------------------------------------------------------------|
-| 401 Unauthorized          | You're not logged in              | Make sure your bearer token is included and correct           |
-| 403 Forbidden             | You don't have access             | You may be trying to view logs that belong to another user    |
-| 404 Not Found             | The URL doesn't exist             | Check the URL for typos |
-| 500 Internal Server Error | Something went wrong on the server | Try again later or contact support                            |
+| Status | Example response body | Meaning | How to fix |
+|--------|----------------------|---------|------------|
+| **400 Bad Request** | `{ "message": "Invalid query parameter" }` | The query string is malformed or contains unsupported parameters. | Use `/logs` to fetch all logs, or `/logs?promptId=<id>` with a valid prompt ID. |
+| **401 Unauthorized** | `{ "message": "Invalid or missing bearer token" }` | Authentication failed. | Add `Authorization: Bearer {your_token}` and confirm the token hasn’t expired. |
+| **403 Forbidden** | `{ "message": "You do not own this prompt" }` | You authenticated, but the prompt specified by `promptId` belongs to another account. | Request logs only for prompts you own, or switch to an account that owns the prompt. |
+| **404 Not Found** | `{ "message": "Prompt not found" }` | The server can’t find any prompt with the supplied `promptId`. | Verify the `promptId` value is correct and still exists. |
+| **500 Internal Server Error** | `{ "message": "Unexpected server error" }` | The server encountered an error while processing the request. | Retry later; if the error persists, contact support. |
 
 ## Next steps
 
@@ -90,7 +93,7 @@ Now that you can view logs, learn how to [test a prompt](test-prompt.md) or [del
 
 ## Related
 
-[Log](../reference/resources/log.md)
+[Log](../reference/resources/log.md)  
 [Retrieve all logs](../reference/endpoints/get-logs-id.md): `GET /logs`  
 [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
 [Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  

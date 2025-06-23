@@ -1,42 +1,58 @@
 ---
 layout: page
-title: Test a Prompt
+title: Log a generated output
 ---
 
 # Tutorial: Log a generated output
 
-This tutorial shows how to test a saved prompt by logging its output. The tutorial takes about 5-10 minutes.
+Record the output of a prompt test with a POST /logs request. A log captures the model’s response, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it, compare results, or delete entries. The steps take about 10 minutes.
 
 ## Before you start
 
-Before sending the API request, make sure you have:
+Make sure you have:
 
-- A PromptCrafter user account  
-- A bearer token from logging in  
-- Either cURL or Postman installed  
-
-If you need help creating a user or prompt, see [Create a user](create-user.md) or [Create a prompt](create-a-prompt.md).
+- A PromptCrafter user account and the bearer token you received when you logged in. For help signing up or logging in, see the [Quickstart](../quickstart.md).
+- cURL or Postman.  
 
 ## Choose a prompt to test
 
-To get your saved prompts, send a `GET /prompts` request:
+To retrieve your saved prompts, send a `GET /prompts` request:
 
 ```bash
 curl -H "Authorization: Bearer {your_token}" \
-  https://promptcrafter-production.up.railway.app/prompts
+  https://promptcrafter-production.up.railway.app/logs
 ```
 
 Find the `_id` of the prompt you want to test.
 
-## Prepare the log data
+## Build the request
 
-The request body for a log includes the prompt ID and the output you want to save. You can also add optional notes and a score (1-10).
+To save a new prompt, send a POST request to the following endpoint:
 
-- `promptId`: the `_id` of the prompt being tested  
-- `output`: the generated text or image description  
-- `modelUsed`: the model that created the output  
-- `notes`: (optional) your comments on the result  
-- `score`: (optional) your rating of the output  
+```text
+https://promptcrafter-production.up.railway.app/prompts
+```
+
+The request must include two headers and a JSON-formatted request body.
+
+### Headers
+
+Add the following headers to your request:
+
+- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.  
+- `Content-Type: application/json` tells the server to expect a JSON object in the request body.
+
+### Request body
+
+The request body contains the data for the output you are logging.
+
+| Field       | Type            | Required | Description                                                                                 |
+|-------------|-----------------|----------|---------------------------------------------------------------------------------------------|
+| `promptId`  | string          | Yes      | ID of the prompt that generated this output.                                                |
+| `output`    | string          | Yes      | Text returned by the AI model.                                                              |
+| `modelUsed`     | string          | Yes      | Name of the model that generated the output (for example `gpt-4o`, `Claude 3 Sonnet`).      |
+| `notes`     | string          | No       | Optional analyst comments or context for later review.                                      |
+| `score`     | integer         | No       | Optional quality rating (for example 0–10)
 
 Example:
 
@@ -52,13 +68,22 @@ Example:
 
 ## Send the request
 
-Use this endpoint:  
-`https://promptcrafter-production.up.railway.app/logs`
+### Using Postman
 
-Include these headers:
-
-- `Authorization: Bearer {your_token}`
-- `Content-Type: application/json`
+1. Navigate to **Send a new API request** and click **New Request**.
+2. Set method to `POST`
+3. Set URL to:  
+   `https://promptcrafter-production.up.railway.app/logs`
+4. Click the **Authorization** tab:
+   - In the **Type** dropdown, select `Bearer Token`.
+   - In the **Token** field, enter the bearer token you received after logging in.
+5. Click the **Headers** tab. Add a new header with:
+   - Key: `Content-Type`
+   - Value: `application/json`
+6. In the **Body** tab:
+   - Choose `raw` and `JSON`
+   - Enter the request body
+7. Click **Send** to submit the request.
 
 ### Using cURL
 
@@ -75,24 +100,7 @@ curl -X POST https://promptcrafter-production.up.railway.app/logs \
   }'
 ```
 
-### Using Postman
-
-1. Open Postman  
-2. Set method to `POST`  
-3. Set URL to:  
-   `https://promptcrafter-production.up.railway.app/logs`
-4. In the **Authorization** tab:  
-   - Type: Bearer Token  
-   - Token: `{your_token}`  
-5. In the **Headers** tab:  
-   - Key: `Content-Type`  
-   - Value: `application/json`  
-6. In the **Body** tab:  
-   - Choose `raw` and `JSON`  
-   - Paste the JSON from the example above  
-7. Click **Send**
-
-## Check the response
+## Response
 
 If request is successful, the server returns a `201 Created` response like this:
 
@@ -108,24 +116,20 @@ If request is successful, the server returns a `201 Created` response like this:
 }
 ```
 
-To confirm that the log saved correctly, retrieve all logs:
-
-```bash
-curl -H "Authorization: Bearer {your_token}" \
-  https://promptcrafter-production.up.railway.app/logs
-```
+Note: the server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
 
 ## What to do if the request doesn't work
 
-Use this table to check what went wrong:
+The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
 
-| Status Code                | What it means                  | What to check                                               |
-|---------------------------|--------------------------------|-------------------------------------------------------------|
-| 400 Bad Request           | The request wasn't valid        | Make sure you included `promptId`, `output`, and `modelUsed` |
-| 401 Unauthorized          | You're not logged in            | Check your bearer token for typos or expiration             |
-| 403 Forbidden             | Not allowed                     | You may not own the prompt you're testing                   |
-| 404 Not Found             | Prompt doesn't exist            | Check that the prompt ID is correct                         |
-| 500 Internal Server Error | Server problem                  | Try again later or contact support                          |
+| Status | Example response body | Meaning | How to fix |
+|--------|----------------------|---------|------------|
+| **400 Bad Request** | `{ "message": "promptId, output, and model are required" }` | One or more required fields are missing or the JSON is malformed. | Include `promptId`, `output`, and `model`, and make sure the body is valid JSON. |
+| **401 Unauthorized** | `{ "message": "Invalid or missing bearer token" }` | Authentication failed. | Add `Authorization: Bearer {your_token}` and confirm the token hasn’t expired. |
+| **403 Forbidden** | `{ "message": "You do not own this prompt" }` | You authenticated, but you lack permission to log against this prompt. | Verify that the prompt belongs to your account. |
+| **404 Not Found** | `{ "message": "Prompt not found" }` | The server can’t find the prompt referenced by `promptId`. | Check that the `promptId` is correct and still exists. |
+| **415 Unsupported Media Type** | `{ "message": "Content-Type must be application/json" }` | The server couldn’t parse the body because the header is wrong or absent. | Add `Content-Type: application/json` to the request headers. |
+| **500 Internal Server Error** | `{ "message": "Unexpected server error" }` | The server encountered an error while processing the request. | Retry later; if the error persists, contact support. |
 
 ## Next steps
 
@@ -133,7 +137,7 @@ Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md
 
 ## Related
 
-[Log](../reference/resources/log.md)
-[Prompt](../reference/resources/prompt.md)
+[Log](../reference/resources/log.md)  
+[Prompt](../reference/resources/prompt.md)  
 [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
 [Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
