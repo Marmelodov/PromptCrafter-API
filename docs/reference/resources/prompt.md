@@ -10,7 +10,7 @@ layout: page
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on this resource require user authentication with a bearer token.  
+The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on the prompt resource require user authentication with a bearer token.  
 
 ## Resource properties
 
