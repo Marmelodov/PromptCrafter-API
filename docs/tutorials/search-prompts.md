@@ -5,7 +5,7 @@ title: Search prompts
 
 # Tutorial: Search prompts
 
-Search prompts with a GET /search?q= request. This endpoint performs a full-text, case-insensitive scan of every prompt’s title, content, model, and tags, and returns matching prompts ordered by relevance.
+Search prompts with a GET /search?q= request. This endpoint performs a full-text, case-insensitive scan of every prompt’s title, content, model, and tags and returns matching prompts ordered by relevance. This tutorial takes about 10 minutes to complete.
 
 ## Before you start
 
@@ -16,7 +16,7 @@ Make sure you have:
 
 ## Build the request
 
-To search among your prompts, send a `GET` request to `/search` and include your search terms in the `q` query parameter.
+To search your prompts, send a `GET` request to `/search` and include your search terms in the `q` query parameter.
 
 ### Endpoint format
 
@@ -44,7 +44,6 @@ GET https://promptcrafter-production.up.railway.app/search?q={search_terms}
 ### Required header
 
 - `Authorization: Bearer {your_token}`
-
 
 ## Send the request
 
@@ -95,11 +94,11 @@ Prompts appear in order of relevance: the first item matches the most words in `
 
 ## What to do if the request doesn't work
 
-The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
+Here are error codes you might encounter, what each means, and what you can do to fix them.
 
 | Status | Example response body | Meaning | How to fix |
 |--------|----------------------|---------|------------|
-| **400 Bad Request** | `{ "message": "q parameter is required" }` | The query string is missing or empty. | Add `?q=<search terms>` to the URL. |
+| **400 Bad Request** | `{ "message": "q parameter is required" }` | The query string is missing or empty. | Add `?q={search_terms}` to the URL. |
 | **401 Unauthorized** | `{ "message": "Invalid or missing bearer token" }` | Authentication failed. | Add `Authorization: Bearer {your_token}` and confirm the token hasn’t expired. |
 | **500 Internal Server Error** | `{ "message": "Unexpected server error" }` | The server encountered an error while processing the request. | Retry later; if the error persists, contact support. |
 

@@ -4,7 +4,7 @@ layout: page
 
 # Quickstart
 
-This quickstart shows how to create an account, log in, save a prompt, and retrieve it using PromptCrafter API. Each step includes both cURL and Postman examples.
+Create a PromptCrafter account, log in, save a prompt, and retrieve it with a `GET` request. Each step includes examples in both cURL and Postman.
 
 ## 1. Sign up
 

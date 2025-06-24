@@ -1,24 +1,32 @@
+---
+title: PromptCrafter API
+---
+
 # PromptCrafter API
 
-PromptCrafter is an API backend for managing prompt libraries. It enables developers, prompt engineers, and content creators to store, refine, and evaluate generative AI prompts with features for change tracking, categorization, and result logging.
+> **A simple backend for storing, organizing, and evaluating AI prompts.**
 
-## What you can do with PromptCrafter
+## Key Features
 
-### Track and compare prompt outputs
+- **📚 Manage Prompt Libraries**  
+  Save, edit, and tag prompts for different projects, models, or workflows.
 
-Log outputs from different models, add notes and scores, and track how prompt revisions affect performance.
+- **🔍 Full-Text Search**  
+  Instantly search across your entire prompt collection by keyword.
 
-### Organize a prompt library
+- **📊 Track Outputs**  
+  Log results from any model, compare performance, and add notes or scores.
 
-Tag prompts by use case or model and retrieve them quickly using search and filter endpoints. Ideal for managing large collections of reusable prompts.
+## Getting Started
 
-### Use as a backend for LLM tools
+- [**Quickstart**](quickstart.md): Get the API running and try a basic workflow.
+- [**Tutorials**](tutorials/index.md): Follow step-by-step guides for common tasks.
+- [**API Reference**](reference/index.md): Full descriptions of resources and endpoints.
+- [**Contact**](contact.md): Report issues or request new features.
 
-Store and retrieve prompt templates dynamically from apps such as chatbot builders, internal AI tools, or writing assistants.
+## About
 
-## Get started
+PromptCrafter is designed for developers, prompt engineers, and content creators who need a reliable way to store, test, and improve generative AI prompts.
 
-[Quickstart](./quickstart.md): get the API running and try a basic workflow  
-[Tutorials](./tutorials/index.md): step-by-step guides for common tasks  
-[API Reference](./reference/index.md): full list of available endpoints  
-[Contact](#): report issues or request features
+**Ready to begin?**  
+[Quickstart →](quickstart.md)

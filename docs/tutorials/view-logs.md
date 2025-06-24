@@ -5,7 +5,7 @@ title: View Logs
 
 # Tutorial: View logs
 
-Retrieve prompt test logs with a `GET /logs request`. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. The steps take about 5 minutes.
+Retrieve prompt test logs with a `GET /logs request`. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. This tutorial takes about 5 minutes to complete.
 
 ## Before you start
 
@@ -77,7 +77,7 @@ Each object in the array is a log entry. The `promptId` field shows which prompt
 
 ## What to do if the request doesn't work
 
-The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
+Here are error codes you might encounter, what each means, and what you can do to fix them.
 
 | Status | Example response body | Meaning | How to fix |
 |--------|----------------------|---------|------------|
@@ -89,7 +89,7 @@ The table below shows the error codes you might encounter, what each means, and 
 
 ## Next steps
 
-Now that you can view logs, learn how to [test a prompt](test-prompt.md) or [delete a log](../reference/endpoints/delete-log.md).
+Learn how to [log a generated output](test-prompt.md) or [save a prompt](create-prompt.md).
 
 ## Related
 
