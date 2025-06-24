@@ -5,35 +5,11 @@ color_scheme: light
 search_enabled: true
 
 just_the_docs:
-  nav_sort: case_insensitive
   show_sidebar: true
 
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Tutorials:
-      - Overview: tutorials/index.md
-      - Save a prompt: tutorials/create-prompt.md
-      - Test a prompt: tutorials/test-prompt.md
-      - View logs: tutorials/view-logs.md
-      - Search prompts: tutorials/search-prompts.md
-  - API Reference:
-      - Overview: reference/index.md
-      - Prompt:
-          - Prompt resource: reference/resources/prompt.md
-          - Retrieve all prompts: reference/endpoints/get-prompts.md
-          - Retrieve a prompt by ID: reference/endpoints/get-prompts-id.md
-          - Save a prompt: reference/endpoints/post-prompts.md
-          - Update a prompt: reference/endpoints/patch-prompts-id.md
-          - Delete a prompt: reference/endpoints/delete-prompts-id.md
-          - Search prompts: reference/endpoints/get-search.md
-      - Log:
-          - Log resource: reference/resources/log.md
-          - Log a generated output: reference/endpoints/post-logs.md
-          - View logs: reference/endpoints/get-logs.md
-          - View logs by prompt: reference/endpoints/get-logs-by-prompt.md
-          - Delete a log: reference/endpoints/delete-logs-id.md
-      - Authentication:
-          - Sign up: reference/endpoints/post-auth-signup.md
-          - Log in: reference/endpoints/post-auth-login.md
+  - Tutorials: tutorials/index.md
+  - API Reference: reference/index.md
   - Contact: contact.md
