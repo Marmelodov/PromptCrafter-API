@@ -1,17 +1,23 @@
 title: PromptCrafter API
 description: API backend for managing prompt libraries and tracking AI output
-remote_theme: pages-themes/just-the-docs@v0.2.0
-color_scheme: light
-search_enabled: true
+remote_theme: mmistakes/minimal-mistakes
+minimal_mistakes_skin: default
+search: true
 
-just_the_docs:
-  show_sidebar: true
+# Enable sidebar nav
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: single
+      sidebar:
+        nav: "main"
 
-nav:
-  - Home: index.md
-  - Quickstart: quickstart.md
-  - Tutorials:
-      - Overview: tutorials/index.md
-  - API Reference:
-      - Overview: reference/index.md
-  - Contact: contact.md
+# Build sidebar nav structure
+collections:
+  tutorials:
+    output: true
+  reference:
+    output: true
+
+# Sidebar navigation (stored in _data/navigation.yml)

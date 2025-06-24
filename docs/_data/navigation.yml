@@ -1,0 +1,11 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "Quickstart"
+    url: /quickstart/
+  - title: "Tutorials"
+    url: /tutorials/
+  - title: "API Reference"
+    url: /reference/
+  - title: "Contact"
+    url: /contact/
