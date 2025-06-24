@@ -5,7 +5,7 @@ title: Save a prompt
 
 # Tutorial: Save a prompt
 
-Save a prompt by sending a `POST /prompts` request. A prompt is the API’s core resource: reusable instructions for generative-AI models such as GPT-4o, Gemini, or Claude. After you save one, you can test it, log its outputs, and update it. The steps take about 10 minutes.
+Save a prompt by sending a `POST /prompts` request. Prompts are the API’s core resource: reusable instructions for generative-AI models such as GPT-4o, Gemini, and Claude. After saving a prompt, you can update it, test it, and log its outputs. This tutorial takes about 10 minutes to complete.
 
 ## Before you start
 
@@ -22,7 +22,7 @@ To save a new prompt, send a POST request to the following endpoint:
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-The request must include two headers and a JSON-formatted request body.
+The request includes two headers and a JSON-formatted request body.
 
 ### Headers
 
@@ -42,7 +42,7 @@ The request body contains the information that defines your prompt.
 | `model`  | string           | Yes      | Name of the intended model (for example `gpt-4o`, `Claude 3 Sonnet`).     |
 | `tags`   | array\<string\>  | No       | Optional keywords for grouping by topic, task, project, or library.    |
 
-Example:
+Example request body:
 
 ```json
 {
@@ -109,7 +109,7 @@ Note: the server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't incl
 
 ## Verify the prompt
 
-If you want to verify that you saved your prompt successfully, send a GET request using the prompt `_id` from the response body:
+If you want to verify that your prompt saved successfully, send a GET request using the prompt `_id` from the response body:
 
 ```bash
 curl -H "Authorization: Bearer {your_token}" \
@@ -118,7 +118,7 @@ curl -H "Authorization: Bearer {your_token}" \
 
 ## What to do if the request doesn't work
 
-The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
+Here are error codes you might encounter, what each means, and what you can do to fix them.
 
 | Status | Example response body | Meaning | How to fix |
 |--------|----------------------|---------|------------|

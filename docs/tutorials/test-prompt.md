@@ -5,7 +5,7 @@ title: Log a generated output
 
 # Tutorial: Log a generated output
 
-Record the output of a prompt test with a POST /logs request. A log captures the model’s response, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it, compare results, or delete entries. The steps take about 10 minutes.
+Record the output of a prompt test with a `POST /logs` request. A log contains the model’s output, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it and compare the results of different tests. This tutorials take about 10 minutes to complete.
 
 ## Before you start
 
@@ -33,7 +33,7 @@ To save a new prompt, send a POST request to the following endpoint:
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-The request must include two headers and a JSON-formatted request body.
+The request includes two headers and a JSON-formatted request body.
 
 ### Headers
 
@@ -54,7 +54,7 @@ The request body contains the data for the output you are logging.
 | `notes`     | string          | No       | Optional analyst comments or context for later review.                                      |
 | `score`     | integer         | No       | Optional quality rating (for example 0–10)
 
-Example:
+Example request body:
 
 ```json
 {
@@ -120,7 +120,7 @@ Note: the server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't incl
 
 ## What to do if the request doesn't work
 
-The table below shows the error codes you might encounter, what each means, and what you can do to fix them.
+Here are error codes you might encounter, what each means, and what you can do to fix them.
 
 | Status | Example response body | Meaning | How to fix |
 |--------|----------------------|---------|------------|
@@ -133,7 +133,7 @@ The table below shows the error codes you might encounter, what each means, and 
 
 ## Next steps
 
-Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md) to build on your testing process.
+Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md).
 
 ## Related
 
