@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Search prompts
 ---
 
 # Search prompts

@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Retrieve all prompts
 ---
 
 # Retrieve all prompts

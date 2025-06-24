@@ -1,10 +1,10 @@
 ---
-layout: page
+title: Log in
 ---
 
 # Log in
 
-Authenticates a user and returns a JWT token. All fields are required.
+Authenticates a user and returns a JWT authentication token. All fields are required.
 
 ## URL
 

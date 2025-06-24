@@ -1,3 +1,7 @@
+---
+title: PromptCrafter API
+---
+
 # PromptCrafter API
 
 PromptCrafter is an API backend for managing prompt libraries. It enables developers, prompt engineers, and content creators to store, refine, and evaluate generative AI prompts with features for change tracking, categorization, and result logging.
@@ -21,4 +25,4 @@ Store and retrieve prompt templates dynamically from apps such as chatbot builde
 [Quickstart](./quickstart.md): get the API running and try a basic workflow  
 [Tutorials](./tutorials/index.md): step-by-step guides for common tasks  
 [API Reference](./reference/index.md): full list of available endpoints  
-[Contact](#): report issues or request features
+[Contact](./contact.md): report issues or request features

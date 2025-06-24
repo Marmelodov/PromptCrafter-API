@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Retrieve logs for a specific prompt
 ---
 
 # Retrieve logs for a specific prompt

@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Delete a log
 ---
 
 # Delete a log

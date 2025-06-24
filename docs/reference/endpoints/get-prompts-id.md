@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Retrieve a prompt by ID
 ---
 
 # Retrieve a prompt by ID

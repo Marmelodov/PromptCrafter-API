@@ -1,8 +1,8 @@
 ---
-layout: page
+title: Delete a prompt
 ---
 
-# Delete a prompt by ID
+# Delete a prompt
 
 Deletes a [`prompt`](../resources/prompt.md) by its unique ID. Users can only delete prompts they own.
 

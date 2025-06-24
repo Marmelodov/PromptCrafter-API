@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Update a prompt
 ---
 
 # Update a prompt

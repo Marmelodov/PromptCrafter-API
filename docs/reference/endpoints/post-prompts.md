@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Save a prompt
 ---
 
 # Save a prompt

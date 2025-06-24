@@ -1,5 +1,5 @@
 ---
-layout: page
+title: Log a generated output
 ---
 
 # Log a generated output
