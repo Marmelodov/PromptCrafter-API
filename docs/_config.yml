@@ -10,6 +10,8 @@ just_the_docs:
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Tutorials: tutorials/index.md
-  - API Reference: reference/index.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+  - API Reference:
+      - Overview: reference/index.md
   - Contact: contact.md
