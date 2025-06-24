@@ -24,5 +24,5 @@ Store and retrieve prompt templates dynamically from apps such as chatbot builde
 
 [Quickstart](./quickstart.md): get the API running and try a basic workflow  
 [Tutorials](./tutorials/index.md): step-by-step guides for common tasks  
-[API Reference](./reference/index.md): full list of available endpoints  
+[API Reference](./reference/index.md): full list of available resources and endpoints  
 [Contact](./contact.md): report issues or request features
