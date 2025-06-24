@@ -1,6 +1,6 @@
 title: PromptCrafter API
 description: API backend for managing prompt libraries and tracking AI output
-remote_theme: just-the-docs/just-the-docs
+remote_theme: pages-themes/just-the-docs@v0.2.0
 color_scheme: light
 search_enabled: true
 
