@@ -1,5 +1,4 @@
 ---
-title: Retrieve logs for a specific prompt
 exclude_from_nav: true
 ---
 

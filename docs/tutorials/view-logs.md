@@ -1,5 +1,4 @@
 ---
-title: View Logs
 exclude_from_nav: true
 ---
 

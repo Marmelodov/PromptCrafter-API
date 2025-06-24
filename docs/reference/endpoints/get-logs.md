@@ -1,5 +1,4 @@
 ---
-title: Retrieve all logs
 exclude_from_nav: true
 ---
 

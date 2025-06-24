@@ -1,5 +1,4 @@
 ---
-title: Log a generated output
 exclude_from_nav: true
 ---
 

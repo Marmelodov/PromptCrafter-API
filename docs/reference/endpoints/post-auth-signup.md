@@ -1,5 +1,4 @@
 ---
-title: Sign up
 exclude_from_nav: true
 ---
 

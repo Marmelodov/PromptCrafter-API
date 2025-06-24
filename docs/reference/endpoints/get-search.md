@@ -1,5 +1,4 @@
 ---
-title: Search prompts
 exclude_from_nav: true
 ---
 

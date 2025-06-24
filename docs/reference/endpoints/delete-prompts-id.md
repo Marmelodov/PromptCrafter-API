@@ -1,5 +1,4 @@
 ---
-title: Delete a prompt
 exclude_from_nav: true
 ---
 

@@ -1,5 +1,4 @@
 ---
-title: Prompt
 exclude_from_nav: true
 ---
 
