@@ -1,5 +1,6 @@
 ---
 title: View Logs
+exclude_from_nav: true
 ---
 
 # Tutorial: View logs

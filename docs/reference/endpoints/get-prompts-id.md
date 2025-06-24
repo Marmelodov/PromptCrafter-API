@@ -1,5 +1,6 @@
 ---
 title: Retrieve a prompt by ID
+exclude_from_nav: true
 ---
 
 # Retrieve a prompt by ID

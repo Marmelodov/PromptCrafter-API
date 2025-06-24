@@ -1,5 +1,6 @@
 ---
 title: Log a generated output
+exclude_from_nav: true
 ---
 
 # Tutorial: Log a generated output

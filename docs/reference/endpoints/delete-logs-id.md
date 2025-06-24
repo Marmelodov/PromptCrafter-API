@@ -1,5 +1,6 @@
 ---
 title: Delete a log
+exclude_from_nav: true
 ---
 
 # Delete a log

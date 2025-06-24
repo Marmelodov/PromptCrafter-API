@@ -1,5 +1,6 @@
 ---
 title: Log
+exclude_from_nav: true
 ---
 
 # `log` resource

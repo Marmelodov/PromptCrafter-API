@@ -1,5 +1,6 @@
 ---
 title: Save a prompt
+exclude_from_nav: true
 ---
 
 # Save a prompt

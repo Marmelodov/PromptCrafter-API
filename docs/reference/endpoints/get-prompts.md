@@ -1,5 +1,6 @@
 ---
 title: Retrieve all prompts
+exclude_from_nav: true
 ---
 
 # Retrieve all prompts

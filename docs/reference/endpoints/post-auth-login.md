@@ -1,5 +1,6 @@
 ---
 title: Log in
+exclude_from_nav: true
 ---
 
 # Log in

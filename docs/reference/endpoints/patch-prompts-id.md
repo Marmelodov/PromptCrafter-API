@@ -1,5 +1,6 @@
 ---
 title: Update a prompt
+exclude_from_nav: true
 ---
 
 # Update a prompt
