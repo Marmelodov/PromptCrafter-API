@@ -1,6 +1,6 @@
 # API reference
 
-The pages in this section describe all resources and operations in the PromptCrafter API. Each topic gives the endpoint path, required headers, request format, example responses, and error codes. All requests use the `https://promptcrafter-production.up.railway.app` base URL and require your bearer token in the `Authorization: Bearer` header. See the [Quickstart](../quickstart.md) for help obtaining your bearer token.
+The reference pages below describe the resources and operations in PromptCrafter API. All API requests use the `https://promptcrafter-production.up.railway.app` base URL and require your bearer token in the `Authorization: Bearer` header. See the [Quickstart](../quickstart.md) for help obtaining your bearer token.
 
 ## Resource definitions
 
