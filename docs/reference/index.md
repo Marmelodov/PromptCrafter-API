@@ -4,8 +4,8 @@ The pages in this section describe all resources and operations in the PromptCra
 
 ## Resource definitions
 
-[Prompt](resources/prompt.md)  
-[Log](resources/log.md)
+- [Prompt](resources/prompt.md)  
+- [Log](resources/log.md)
 
 ## Prompt operations
 
