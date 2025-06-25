@@ -4,29 +4,24 @@ title: PromptCrafter API
 
 # PromptCrafter API
 
-> **A simple backend for storing, organizing, and evaluating AI prompts.**
+A backend service for storing, organizing, and evaluating generative AI prompts. PromptCrafter is intended for developers, prompt engineers, and others working with generative AI who need to:
 
-## Key Features
+- Maintain a structured prompt library
+- Track changes and performance over time
+- Use prompt data in external tools or applications
 
-- **📚 Manage Prompt Libraries**  
-  Save, edit, and tag prompts for different projects, models, or workflows.
+## What the API does
 
-- **🔍 Full-Text Search**  
-  Instantly search across your entire prompt collection by keyword.
+- **Prompt Management**  
+  Save, update, and delete prompts. Group them by project, model, or use case using tags.
+- **Search**  
+  Perform full-text search across all prompts using keywords from the title, content, or tags.
+- **Output Logging**  
+  Record model completions for each prompt, including output text, model used, scores, and notes.
 
-- **📊 Track Outputs**  
-  Log results from any model, compare performance, and add notes or scores.
+## Getting started
 
-## Getting Started
-
-- [**Quickstart**](quickstart.md): Get the API running and try a basic workflow.
-- [**Tutorials**](tutorials/index.md): Follow step-by-step guides for common tasks.
-- [**API Reference**](reference/index.md): Full descriptions of resources and endpoints.
-- [**Contact**](contact.md): Report issues or request new features.
-
-## About
-
-PromptCrafter is designed for developers, prompt engineers, and content creators who need a reliable way to store, test, and improve generative AI prompts.
-
-**Ready to begin?**  
-[Quickstart →](quickstart.md)
+- [**Quickstart**](quickstart.md): Set up the API and try a basic workflow.
+- [**Tutorials**](tutorials/index.md): Follow step-by-step guides for common operations.
+- [**API Reference**](reference/index.md): See details for all endpoints, request formats, and response objects.
+- [**Contact**](contact.md): Report a bug or request a new feature.
