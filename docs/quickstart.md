@@ -156,7 +156,7 @@ curl -X GET https://promptcrafter-production.up.railway.app/prompts/prompt2 \
 ## 5. Next steps
 
 [Log a generated output](tutorials/test-prompt.md)  
-[Retrieve logs for a specific prompt](tutorials/view-logs.md)  
+[View logs](tutorials/view-logs.md)  
+[Search prompts](tutorials/search-prompts.md)  
 [Update a prompt](reference/endpoints/patch-prompts-id.md)  
-[Search prompts](reference/endpoints/get-search.md)  
-[Explore all API operations](reference/index.md)
+[API reference](reference/index.md)  

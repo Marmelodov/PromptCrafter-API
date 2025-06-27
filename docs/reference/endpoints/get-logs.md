@@ -72,6 +72,6 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Log a generated ouput](post-logs.md): `POST /logs`  
+[Log a generated output](post-logs.md): `POST /logs`  
 [Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`  
 [Delete a log](delete-logs-id.md): `DELETE /logs/:id`

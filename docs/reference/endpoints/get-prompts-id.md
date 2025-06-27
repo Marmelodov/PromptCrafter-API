@@ -35,7 +35,7 @@ None
 ## Request example
 
 ```shell
-curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/prompt/104
+curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/104
 ```
 
 ## Response body
