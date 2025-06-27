@@ -94,6 +94,7 @@ Learn how to [log a generated output](test-prompt.md) or [save a prompt](create-
 ## Related
 
 [Log](../reference/resources/log.md)  
-[Retrieve all logs](../reference/endpoints/get-logs-id.md): `GET /logs`  
+[Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
+[Retrieve logs for a specific prompt](../reference/endpoints/get-logs-by-prompt.md)
 [Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
 [Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  

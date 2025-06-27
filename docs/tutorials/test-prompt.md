@@ -20,7 +20,7 @@ To retrieve your saved prompts, send a `GET /prompts` request:
 
 ```bash
 curl -H "Authorization: Bearer {your_token}" \
-  https://promptcrafter-production.up.railway.app/logs
+  https://promptcrafter-production.up.railway.app/prompts
 ```
 
 Find the `_id` of the prompt you want to test.
