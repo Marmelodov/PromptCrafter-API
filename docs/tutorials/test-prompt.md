@@ -5,7 +5,7 @@ title: Log a generated output
 
 # Tutorial: Log a generated output
 
-Record the output of a prompt test with a `POST /logs` request. A log contains the model’s output, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it and compare the results of different tests. This tutorials take about 10 minutes to complete.
+Record the output of a prompt test with a `POST /logs` request. A log contains the model’s output, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it and compare the results of different tests. This tutorial takes about 10 minutes to complete.
 
 ## Before you start
 
@@ -27,10 +27,10 @@ Find the `_id` of the prompt you want to test.
 
 ## Build the request
 
-To save a new prompt, send a POST request to the following endpoint:
+To log a generated result, send a POST request to the following endpoint:
 
 ```text
-https://promptcrafter-production.up.railway.app/prompts
+https://promptcrafter-production.up.railway.app/logs
 ```
 
 The request includes two headers and a JSON-formatted request body.
@@ -52,7 +52,7 @@ The request body contains the data for the output you are logging.
 | `output`    | string          | Yes      | Text returned by the AI model.                                                              |
 | `modelUsed`     | string          | Yes      | Name of the model that generated the output (for example `gpt-4o`, `Claude 3 Sonnet`).      |
 | `notes`     | string          | No       | Optional analyst comments or context for later review.                                      |
-| `score`     | integer         | No       | Optional quality rating (for example 0–10)
+| `score`     | integer         | No       | Optional quality rating (for example 0–10) |
 
 Example request body:
 

@@ -5,7 +5,7 @@ title: View Logs
 
 # Tutorial: View logs
 
-Retrieve prompt test logs with a `GET /logs request`. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. This tutorial takes about 5 minutes to complete.
+Retrieve prompt test logs with a `GET /logs` request. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. This tutorial takes about 5 minutes to complete.
 
 ## Before you start
 
@@ -19,7 +19,7 @@ Make sure you have:
 Send a GET request to the following endpoint:
 
 ```text
-https://promptcrafter-production.up.railway.app/logs`
+https://promptcrafter-production.up.railway.app/logs
 ```
 
 Include the following request header:
