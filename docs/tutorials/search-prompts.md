@@ -110,5 +110,5 @@ Learn how to [save a prompt](create-prompt.md) or [log a generated result](test-
 
 [Prompt](../reference/resources/prompt.md)  
 [Save a prompt](../reference/endpoints/post-prompts.md): `POST /prompts`  
-[Retrieve prompts](../reference/endpoints/get-prompts.md): `GET /prompts/`
-[Retrieve prompts by id](../reference/endpoints/get-prompts-id.md): `GET /prompts/:id`
+[Retrieve prompts](../reference/endpoints/get-prompts.md): `GET /prompts/`  
+[Retrieve prompts by id](../reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
