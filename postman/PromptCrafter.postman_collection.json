@@ -1,0 +1,375 @@
+{
+  "info": {
+    "name": "PromptCrafter API",
+    "_postman_id": "b2e15189-d20e-4fa4-bf56-0e3b078d5e29",
+    "description": "This collection provides complete reference for the PromptCrafter API. All requests and examples match the official documentation exactly. Each request's description lists all parameters and headers, example requests/responses, authentication requirements, and enumerates all possible status codes and error conditions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://promptcrafter-production.up.railway.app"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "promptId",
+      "value": ""
+    },
+    {
+      "key": "logId",
+      "value": ""
+    },
+    {
+      "key": "searchQuery",
+      "value": ""
+    }
+  ],
+  "auth": {},
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign up",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "description": "Creates a new user account and returns a JWT authentication token.\n\n**Authentication:** None required.\n\n**Request Body:**\n```json\n{\n  \"name\": \"John Doe\",     (string, required)\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n```\n\n**Response:**\n```json\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n```\n\n**Status Codes:**\n- 201 Created: Account created successfully.\n- 400 Bad Request: Required fields are missing or invalid.\n- 409 Conflict: Email already in use.\n- 500 Internal Server Error: An unexpected server error occurred.\n\n**Example request:**\ncurl -X POST {{baseUrl}}/auth/signup -H \"Content-Type: application/json\" -d '{\"name\": \"John Doe\", \"email\": \"john@example.com\", \"password\": \"password123\"}'\n"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Store returned token as {{token}} for later requests",
+                  "if (pm.response.code === 201) {",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set(\"token\", json.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Log in",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "description": "Authenticates a user and returns a JWT token.\n\n**Authentication:** None required.\n\n**Request Body:**\n```json\n{\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n```\n\n**Response:**\n```json\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n```\n\n**Status Codes:**\n- 200 OK: Authentication successful.\n- 400 Bad Request: Required fields are missing or invalid.\n- 401 Unauthorized: Incorrect email or password.\n- 500 Internal Server Error: An unexpected server error occurred.\n\n**Example request:**\ncurl -X POST {{baseUrl}}/auth/login -H \"Content-Type: application/json\" -d '{\"email\": \"john@example.com\", \"password\": \"password123\"}'\n"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Store returned token as {{token}} for later requests",
+                  "if (pm.response.code === 200) {",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set(\"token\", json.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Prompts",
+      "item": [
+        {
+          "name": "Create prompt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/prompts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "prompts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"]\n}"
+            },
+            "description": "Creates a new prompt owned by the user.\n\n**Authentication:** Bearer token required.\nHeader: `Authorization: Bearer {{token}}`\n\n**Request Body:**\n```json\n{\n  \"title\": \"Positive Product Review Writer\", (string, required)\n  \"content\": \"Imagine you are a satisfied customer...\", (string, required)\n  \"model\": \"Grok-3 Beta\", (string, required)\n  \"tags\": [\"review\", \"product\", \"writing\"] (array<string>, optional)\n}\n```\n\n**Response example:**\n```json\n{\n  \"_id\": \"prompt102\",\n  \"ownerId\": \"user5\",\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"],\n  \"createdAt\": \"2024-06-20T13:01:00Z\",\n  \"updatedAt\": \"2024-06-20T13:01:00Z\"\n}\n```\n\n**Status Codes:**\n- 201 Created: Prompt created successfully.\n- 400 Bad Request: Required fields are missing or invalid.\n- 401 Unauthorized: Authentication token is missing, expired, or invalid.\n- 500 Internal Server Error: An unexpected server error occurred.\n"
+          }
+        },
+        {
+          "name": "Get prompt by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/prompts/{{promptId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "prompts",
+                "{{promptId}}"
+              ]
+            },
+            "description": "Returns a prompt by its unique ID. Only prompts owned by the user may be accessed.\n\n**Path parameter:**\n- `promptId` (string, required): Unique identifier of the prompt\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n```json\n{\n  \"_id\": \"prompt104\",\n  \"ownerId\": \"user7\",\n  \"title\": \"Historical Explanation for Students\",\n  \"content\": \"Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.\",\n  \"model\": \"Claude 3 Sonnet\",\n  \"tags\": [\"history\", \"education\", \"explanation\"],\n  \"createdAt\": \"2024-06-20T13:03:00Z\",\n  \"updatedAt\": \"2024-06-20T13:03:00Z\"\n}\n```\n\n**Status Codes:**\n- 200 Success: Prompt returned successfully.\n- 400 Bad Request: Malformed request or prompt ID format.\n- 401 Unauthorized: Token missing, expired, or invalid.\n- 403 Forbidden: Prompt does not belong to the authenticated user.\n- 404 Not Found: No prompt found with the specified ID.\n- 500 Internal Server Error: An unexpected server error occurred.\n"
+          }
+        },
+        {
+          "name": "Update prompt",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/prompts/{{promptId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "prompts",
+                "{{promptId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}"
+            },
+            "description": "Updates the specified prompt by its unique ID. Only the fields provided in the request body are modified.\n\n**Path parameter:**\n- `promptId` (string, required): Unique identifier of the prompt\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Request body:** (all fields optional)\n```json\n{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}\n```\n\n**Response example:**\n```json\n{\n  \"_id\": \"prompt103\",\n  \"ownerId\": \"user6\",\n  \"title\": \"Email Apology Draft\",\n  \"content\": \"Draft a professional but empathetic apology email to a client whose order was delayed. Clearly acknowledge the issue, accept responsibility, and offer a practical solution or compensation to rebuild trust and customer satisfaction.\",\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"],\n  \"createdAt\": \"2024-06-20T13:02:00Z\",\n  \"updatedAt\": \"2025-06-20T11:07:00Z\"\n}\n```\n\n**Status Codes:**\n- 200 Success: Prompt updated successfully.\n- 400 Bad Request: Invalid data or prompt ID format.\n- 401 Unauthorized: Token missing, expired, or invalid.\n- 403 Forbidden: Prompt does not belong to user.\n- 404 Not Found: No prompt with given ID.\n- 500 Internal Server Error: Unexpected server error.\n"
+          }
+        },
+        {
+          "name": "Delete prompt",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/prompts/{{promptId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "prompts",
+                "{{promptId}}"
+              ]
+            },
+            "description": "Deletes a prompt by its unique ID. Only prompts owned by the authenticated user may be deleted.\n\n**Path parameter:**\n- `promptId` (string, required): Unique identifier of the prompt\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response:** No body. Success status code 204.\n\n**Status Codes:**\n- 204 No Content: Prompt deleted successfully.\n- 400 Bad Request: Malformed request or prompt ID format.\n- 401 Unauthorized: Token missing, expired, or invalid.\n- 403 Forbidden: Prompt does not belong to the user.\n- 404 Not Found: No prompt with given ID.\n- 500 Internal Server Error: Unexpected server error.\n"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Logs",
+      "item": [
+        {
+          "name": "Create log",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "logs"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}"
+            },
+            "description": "Creates a new log to record output of a prompt test. All fields except `notes` and `score` are required.\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Request body:**\n```json\n{\n  \"promptId\": \"prompt101\",        (string, required)\n  \"output\": \"The business report...\", (string, required)\n  \"notes\": \"Summary is clear...\",     (string, optional)\n  \"modelUsed\": \"GPT-4o\",             (string, required)\n  \"score\": 9                         (integer, optional)\n}\n```\n\n**Response example:**\n```json\n{\n  \"_id\": \"log101\",\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales...\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9,\n  \"createdAt\": \"2024-06-20T13:10:00Z\"\n}\n```\n\n**Status Codes:**\n- 201 Created: Log created successfully.\n- 400 Bad Request: Missing or invalid field.\n- 401 Unauthorized: Token missing or invalid.\n- 404 Not Found: Prompt ID does not exist or not accessible.\n- 500 Internal Server Error: Server error.\n"
+          }
+        },
+        {
+          "name": "Get logs (all)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "logs"
+              ]
+            },
+            "description": "Retrieves all logs (prompt test output records) owned by the authenticated user.\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n```json\n[\n  {\n    \"_id\": \"log3\",\n    \"promptId\": \"prompt3\",\n    \"output\": \"Ready to Upgrade? Discover the Future of Tech.\",\n    \"notes\": \"Engaging and clear subject line.\",\n    \"modelUsed\": \"Claude\",\n    \"score\": 7,\n    \"createdAt\": \"2024-03-03T13:00:00Z\"\n  }\n]\n```\n\n**Status Codes:**\n- 200 OK: Logs returned successfully.\n- 400 Bad Request: Invalid query parameter.\n- 401 Unauthorized: Token missing or invalid.\n- 403 Forbidden: You do not own this prompt (if using promptId).\n"
+          }
+        },
+        {
+          "name": "Get logs for prompt",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "promptId",
+                  "value": "{{promptId}}"
+                }
+              ]
+            },
+            "description": "Returns an array of logs recording the outputs of a specified prompt.\n\n**Query parameter:**\n- `promptId` (string, required): The unique ID of the prompt.\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n```json\n[\n  {\n    \"_id\": \"log106\",\n    \"promptId\": \"prompt101\",\n    \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales...\",\n    \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n    \"modelUsed\": \"GPT-4o\",\n    \"score\": 9,\n    \"createdAt\": \"2024-06-20T13:10:00Z\"\n  }\n]\n```\n\n**Status Codes:**\n- 200 Success: Logs returned successfully.\n- 400 Bad Request: promptId missing or malformed.\n- 401 Unauthorized: Token missing or invalid.\n- 403 Forbidden: Not authorized for this prompt.\n- 404 Not Found: No logs for given promptId.\n- 500 Server error.\n"
+          }
+        },
+        {
+          "name": "Delete log",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/logs/{{logId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "logs",
+                "{{logId}}"
+              ]
+            },
+            "description": "Deletes a log by its unique ID. Only logs owned by the authenticated user may be deleted.\n\n**Path parameter:**\n- `logId` (string, required): Unique identifier of the log\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response:** No body. Success status code 204.\n\n**Status Codes:**\n- 204 No Content: Log deleted successfully.\n- 400 Bad Request: Malformed request or log ID format.\n- 401 Unauthorized: Token missing, expired, or invalid.\n- 403 Forbidden: Log does not belong to the user.\n- 404 Not Found: No log with given ID.\n- 500 Internal Server Error: Unexpected error.\n"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Search prompts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/search?q={{searchQuery}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "{{searchQuery}}"
+                }
+              ]
+            },
+            "description": "Performs a full-text search of all your prompts and returns matching results.\n\n**Query parameter:**\n- `q` (string, required): Words or phrases to search for. Matches against prompt title, content, and tags (case-insensitive).\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n```json\n[\n  {\n    \"_id\": \"prompt3\",\n    \"ownerId\": \"user3\",\n    \"title\": \"Newsletter subject lines\",\n    \"content\": \"Generate subject lines for a tech product launch email.\",\n    \"model\": \"Claude 4.0 Sonnet\",\n    \"tags\": [\"email\", \"marketing\", \"tech\"],\n    \"createdAt\": \"2025-02-03T10:00:00Z\",\n    \"updatedAt\": \"2025-02-03T10:00:00Z\"\n  }\n]\n```\n\n**Status Codes:**\n- 200 Success: Search returned results.\n- 400 Bad Request: Missing or malformed query string.\n- 401 Unauthorized: Token missing, expired, or invalid.\n- 500 Internal Server Error: Unexpected error.\n"
+          }
+        }
+      ]
+    }
+  ]
+}
