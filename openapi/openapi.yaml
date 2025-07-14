@@ -1,11 +1,19 @@
 openapi: 3.0.3
 info:
   title: PromptCrafter API
-  version: "1.0.0"
+  version: 1.0.0
   description: |
-    PromptCrafter is a backend API for managing prompt libraries, designed for developers and prompt engineers to store, search, and evaluate generative AI prompts.
-    - All endpoints except /auth/signup and /auth/login require Bearer token authentication.
-    - API base URL: https://promptcrafter-production.up.railway.app
+    PromptCrafter is a REST API for storing, organizing, and evaluating generative AI prompts.
+    It enables developers and prompt engineers to maintain a structured prompt library, track prompt performance, and integrate prompt management with their own tools.
+    The API provides endpoints for user authentication, prompt CRUD operations, and prompt usage logging.
+    Authentication is required for most endpoints using a Bearer token (JWT) provided at login.
+
+    ## Resources
+    - [GitHub repo](https://github.com/Marmelodov/PromptCrafter-API)
+    - [Published documentation](https://marmelodov.github.io/PromptCrafter-API/)
+    - [Postman Collection](https://github.com/Marmelodov/PromptCrafter-API/tree/main/postman)
+    - [SDKs](https://github.com/Marmelodov/PromptCrafter-API/tree/main/sdk)
+
 servers:
   - url: https://promptcrafter-production.up.railway.app
 
@@ -25,6 +33,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: >
+        Use a Bearer token for authentication. Obtain a token by calling the POST /auth/login endpoint with your credentials.
+        Pass the token in the Authorization header as 'Bearer <token>'.
+
   schemas:
     Prompt:
       type: object
@@ -40,6 +52,8 @@ components:
           example: user7
         title:
           type: string
+          minLength: 3
+          maxLength: 100
           description: Short title for the prompt.
           example: Historical Explanation for Students
         content:
@@ -84,7 +98,9 @@ components:
           example: The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible.
         modelUsed:
           type: string
-          description: AI model used to generate the output.
+          description: > 
+            AI model used to generate the output. This may differ from the `model` field in the parent prompt object,
+            such as when a prompt is tested with multiple models.
           example: Claude-3
         notes:
           type: string
@@ -92,6 +108,8 @@ components:
           example: Too generic.
         score:
           type: integer
+          minimum: 0
+          maximum: 10
           description: Optional user-assigned score of the output’s quality (e.g., 1–10).
           example: 3
         createdAt:
@@ -133,14 +151,20 @@ components:
       required: true
       schema:
         type: string
-      description: Full-text search query. Matches title, content, and tags.
+      description: >
+        Full-text search query. The search is case-insensitive and matches against the
+        `title`, `content`, and `tags` fields. For example, a query of 'photo' would
+        match a prompt with 'photosynthesis' in its content.
+
     PromptIdQuery:
       name: promptId
       in: query
       required: true
       schema:
         type: string
-      description: The unique ID of the prompt whose logs are to be retrieved.
+      description: >
+        The unique ID of the prompt whose logs are to be retrieved. This is useful for
+        tracking the performance and outputs of a single prompt over time.
 
 security:
   - BearerAuth: []
@@ -170,6 +194,8 @@ paths:
                 password:
                   type: string
                   format: password
+                  minLength: 10
+                  maxLength: 30
                   example: password123
       responses:
         '200':
@@ -179,19 +205,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthToken'
         '400':
-          description: Missing fields or duplicate email
+          description: |-
+            The server cannot process the signup request because the provided data is malformed. This error occurs if:
+            1.  One or more required fields (`name`, `email`, `password`) are missing from the request body.
+            2.  A field fails validation, such as a password that does not meet the minimum length requirement.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Missing required fields." }
+              examples:
+                missingFields:
+                  summary: Required fields are missing
+                  description: The server returns this error when the client omits required fields like `name` or `email` from the signup request.
+                  value:
+                    error: "Required fields are missing or invalid."
+                invalidPassword:
+                  summary: The password is invalid
+                  description: The server returns this error when the provided password is too short or otherwise fails validation.
+                  value:
+                    error: "The password does not meet the security requirements."
+        '409':
+          description: |-
+            The server rejects the request because the provided email address is already registered to an existing user.
+            Each user must have a unique email address.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                emailInUse:
+                  summary: The email address is already in use
+                  description: The server returns this error when a new user attempts to sign up with an email that is already present in the database.
+                  value:
+                    error: "Email already in use."
         '500':
-          description: Server error
+          description: |-
+            The server encountered an unexpected condition that prevented it from creating the new user account.
+            This error suggests a problem on the server itself.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Internal server error." }
+              example:
+                error: "An unexpected server error occurred."
+
 
   /auth/login:
     post:
@@ -222,32 +279,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthToken'
         '400':
-          description: Missing required fields
+          description: |-
+            The server cannot process the request because the request body is incomplete.
+            This error occurs when the client omits either the `email` or `password` field from the request.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Missing required fields." }
+              examples:
+                missingFields:
+                  summary: Required fields are missing
+                  description: The server returns this error when the request is missing the email or password.
+                  value:
+                    error: "Required fields are missing or invalid."
         '401':
-          description: Invalid email or password
+          description: |-
+            The server cannot grant access because the provided credentials are not valid.
+            This error indicates that the email and password combination does not match any user in the system.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Invalid email or password." }
+              examples:
+                invalidCredentials:
+                  summary: Incorrect email or password
+                  description: The server returns this error when the login attempt fails due to an incorrect email or password.
+                  value:
+                    error: "Incorrect email or password."
         '500':
-          description: Server error
+          description: |-
+            The server encountered an unexpected condition that prevented it from processing the login request.
+            This error suggests a problem on the server itself.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Internal server error." }
+              example:
+                error: "An unexpected server error occurred."
+
 
   /prompts:
     get:
       tags: [Prompts]
       summary: Retrieve all prompts
-      description: Returns an array of prompt objects belonging to the user.
+      description: > 
+        Returns an array of prompt objects belonging to the user.
+        
+        Note: This endpoint returns a complete, unpaginated list of all prompts.
+        For applications with a large number of prompts, the response size may be substantial,
+        possibly affecting client-side performance and load times. Consider
+        this behavior when designing integrations.
       security:
         - BearerAuth: []
       responses:
@@ -259,13 +340,75 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prompt'
-        '401':
-          description: Unauthorized
+              example:
+                - _id: prompt482
+                  ownerId: user67
+                  title: Workshop Agenda Creator
+                  content: Create a detailed agenda for a one-day online workshop on time management skills. ...
+                  model: GPT-4o
+                  tags: [agenda, workshop, productivity]
+                  createdAt: 2025-06-20T13:20:12.000Z
+                  updatedAt: 2025-06-20T13:20:12.000Z
+                - _id: prompt112
+                  ownerId: user525
+                  title: Explain Scientific Concept Simply
+                  content: Explain the process of photosynthesis in simple terms suitable for a ten-year-old. ...
+                  model: Claude 3 Opus
+                  tags: [science, education, explanation]
+                  createdAt: 2025-06-20T13:21:12.000Z
+                  updatedAt: 2025-06-20T13:21:12.000Z
+                - _id: prompt314
+                  ownerId: user980
+                  title: Python Function Generator
+                  content: Write a Python function that takes a list of dictionaries representing users (each with 'id', 'name', and 'email' keys) ...
+                  model: GPT-4.1
+                  tags: [python, code-generation, developer, automation]
+                  createdAt: 2025-06-20T13:22:12.000Z
+                  updatedAt: 2025-06-20T13:22:12.000Z
+        '400':
+          description: |-
+            Bad Request. This error occurs if the request body is malformed.
+            The most common cause is missing one or more of the required fields: `title`, `content`, or `model`.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                missingFields:
+                  summary: Required fields are missing
+                  description: This error is returned when the request payload is missing one or more required properties for creating a prompt.
+                  value:
+                    error: "Missing required fields."
+        '401':
+          description: |-
+            Unauthorized. This error occurs when a valid authentication token is not provided or is invalid.
+            To access this endpoint, a valid JWT must be included in the `Authorization` header using the Bearer scheme.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                tokenMissing:
+                  summary: Authentication token not provided
+                  description: This error is returned when the `Authorization` header is missing from the request.
+                  value:
+                    error: "Authentication required."
+                tokenInvalid:
+                  summary: Invalid or expired token
+                  description: This error is returned when the provided Bearer token is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is invalid or has expired."
+        '500':
+          description: |-
+            Internal Server Error. This indicates an unexpected problem on the server side that prevented the prompt from being created.
+            If this error persists, it should be reported.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An internal server error occurred."
+          
     post:
       tags: [Prompts]
       summary: Create a new prompt
@@ -294,6 +437,39 @@ paths:
                   items:
                     type: string
                   example: ["education", "history"]
+            examples:
+              productivityPrompt:
+                summary: Simple prompt example for a productivity task
+                value: 
+                  title: Workshop Agenda Creator
+                  content: > 
+                    Create a detailed agenda for a one-day online workshop on time management  
+                    skills. Include session titles, durations, and short descriptions for each segment. 
+                    Ensure the agenda is appropriate for working professionals who want practical, 
+                    actionable strategies.
+                  model: GPT-4o
+                  tags: [agenda, workshop, productivity]
+              educationPrompt:
+                summary: Simple prompt for an education task
+                value: 
+                  title: Explain Scientific Concept Simply
+                  content: > 
+                    Explain the process of photosynthesis in simple terms suitable for a 
+                    ten-year-old. Use short sentences, real-world examples, and avoid technical jargon. 
+                    Make sure your explanation would be clear to an elementary school student.
+                  model: Claude 3 Opus
+                  tags: [science, education, explanation]
+              technicalPrompt:
+                summary: Prompt to generate Python code from a user story
+                value:
+                  title: Python Function Generator
+                  content: > 
+                    Write a Python function that takes a list of dictionaries representing 
+                    users (each with 'id', 'name', and 'email' keys) and returns a list of emails 
+                    for all users whose name starts with 'A'. Include appropriate docstrings and handle 
+                    edge cases.
+                  model: GPT-4.1
+                  tags: [python, code-generation, developer, automation]
       responses:
         '201':
           description: Prompt created
@@ -301,27 +477,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Prompt'
+              examples:
+                productivityPrompt:
+                  summary: Response for productivity prompt
+                  value:
+                   _id: prompt482
+                   ownerId: user67
+                   title: Workshop Agenda Creator
+                   content: > 
+                     Create a detailed agenda for a one-day online workshop on time management 
+                     skills. Include session titles, durations, and short descriptions for each 
+                     segment. Ensure the agenda is appropriate for working professionals who 
+                     want practical, actionable strategies.
+                   model: GPT-4o
+                   tags: [agenda, workshop, productivity]
+                   createdAt: 2024-06-20T13:20:12.000Z
+                   updatedAt: 2024-06-20T13:20:12.000Z
+                educationPrompt:
+                  summary: Response for education prompt
+                  value:
+                    _id: prompt112
+                    ownerId: user525
+                    title: Explain Scientific Concept Simply
+                    content: Explain the process of photosynthesis in simple terms suitable for a ten-year-old. Use short sentences, real-world examples, and avoid technical jargon. Make sure your explanation would be clear to an elementary school student.
+                    model: Claude 3 Opus
+                    tags: [science, education, explanation]
+                    createdAt: 2024-06-20T13:21:12.000Z
+                    updatedAt: 2024-06-20T13:21:12.000Z
+                technicalPrompt:
+                  summary: Response for technical prompt
+                  value:
+                    _id: prompt314
+                    ownerId: user980
+                    title: Python Function Generator
+                    content: Write a Python function that takes a list of dictionaries representing users (each with 'id', 'name', and 'email' keys) and returns a list of emails for all users whose name starts with 'A'. Include appropriate docstrings and handle edge cases.
+                    model: GPT-4.1
+                    tags: [python, code-generation, developer, automation]
+                    createdAt: 2025-06-20T13:22:12.000Z
+                    updatedAt: 2025-06-20T13:22:12.000Z
         '400':
-          description: Invalid input (missing fields)
+          description: |-
+            The server cannot process the request because the request body is malformed.
+            This error occurs when your request is missing one or more of the required fields: `title`, `content`, or `model`.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Missing required fields." }
+              examples:
+                missingFields:
+                  summary: Required fields are missing
+                  description: The server returns this error when the request payload does not include all required properties for creating a prompt.
+                  value:
+                    error: "Required fields are missing or invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To create a prompt, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
         '500':
-          description: Server error
+          description: |-
+            The server encountered an unexpected condition that prevented it from creating the prompt.
+            If this error persists, it may indicate a server-side issue that requires attention.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Internal server error." }
+              example:
+                error: "An unexpected server error occurred."
+
 
   /prompts/{id}:
     get:
@@ -339,31 +575,83 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Prompt'
+        '400':
+          description: |-
+            The server cannot process the request because the prompt ID is malformed.
+            The ID in the path must conform to the expected format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidIdFormat:
+                  summary: The prompt ID format is invalid
+                  description: The server returns this error when the provided prompt ID does not match the required format (e.g., contains invalid characters or is not the correct length).
+                  value:
+                    error: "The request is malformed or the prompt ID format is invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials for the target resource. To access a prompt, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
+
         '403':
-          description: Forbidden (not owner)
+          description: |-
+            The server understood the request but refuses to authorize it. This occurs because the requested prompt belongs to another user.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "You do not have permission to access this prompt." }
+              examples:
+                notOwner:
+                  summary: The user does not own the prompt
+                  description: The server returns this error when the authenticated user attempts to access a prompt that they did not create.
+                  value:
+                    error: "You do not have permission to access this resource."
         '404':
-          description: Prompt not found
+          description: |-
+            The server cannot find the requested resource. There is no prompt that matches the ID provided in the request URI.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Prompt not found." }
+              examples:
+                promptNotFound:
+                  summary: A prompt with the specified ID was not found
+                  description: The server returns this error when the prompt ID is valid in format but does not correspond to any existing prompt in the database.
+                  value:
+                    error: "No prompt found with the specified ID."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from fulfilling the request.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
+
     patch:
       tags: [Prompts]
       summary: Update a prompt
-      description: Updates a prompt by its unique ID. Only specified fields are updated. Users can only update prompts they own.
+      description: >
+        Updates a prompt by its unique ID. Only the fields provided in the request body will be updated;
+        all other fields will remain unchanged. The `updatedAt` timestamp is automatically set to the
+        time of the update. Users can only update prompts they own.
       security:
         - BearerAuth: []
       parameters:
@@ -397,33 +685,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/Prompt'
         '400':
-          description: Invalid input
+          description: |-
+            The server cannot process the request due to a client error. This can happen for two reasons:
+            1.  The prompt ID provided in the path is not in a valid format.
+            2.  The data submitted in the request body is invalid (e.g., a title that is too short).
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Missing required fields." }
+              examples:
+                invalidIdFormat:
+                  summary: The prompt ID format is invalid
+                  description: The server returns this error when the prompt ID in the URI does not conform to the required format.
+                  value:
+                    error: "The prompt ID format is invalid."
+                invalidInput:
+                  summary: The submitted data is invalid
+                  description: The server returns this error when the request body contains data that fails validation, such as a title shorter than the minimum length.
+                  value:
+                    error: "Submitted data is invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To update a prompt, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                      error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
         '403':
-          description: Forbidden (not owner)
+          description: |-
+            The server refuses to authorize the request because the prompt does not belong to the authenticated user. You can only update prompts that you own.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "You do not have permission to update this prompt." }
+              examples:
+                notOwner:
+                  summary: The user does not own the prompt
+                  description: The server returns this error when an authenticated user tries to modify a prompt created by another user.
+                  value:
+                    error: "Prompt does not belong to the authenticated user."
         '404':
-          description: Prompt not found
+          description: |-
+            The server cannot find the requested resource. No prompt exists with the ID provided in the request URI.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Prompt not found." }
+              examples:
+                promptNotFound:
+                  summary: A prompt with the specified ID was not found
+                  description: The server returns this error when the prompt ID is valid in format but does not match any existing prompt.
+                  value:
+                    error: "No prompt found with the specified ID."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from updating the prompt.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
+
     delete:
       tags: [Prompts]
       summary: Delete a prompt by ID
@@ -434,52 +769,196 @@ paths:
         - $ref: '#/components/parameters/PromptId'
       responses:
         '204':
-          description: Prompt deleted successfully
+          description: Prompt deleted successfully. Response body returns no content.
+        '400':
+          description: |-
+            The server cannot process the request because the prompt ID provided in the path is invalid.
+            The ID must conform to the expected format for the server to locate the resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidIdFormat:
+                  summary: The prompt ID format is invalid
+                  description: The server returns this error when the provided prompt ID does not match the required format (e.g., contains invalid characters).
+                  value:
+                    error: "The prompt ID format is invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To delete a prompt, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
         '403':
-          description: Forbidden (not owner)
+          description: |-
+            The server refuses to authorize the request because the prompt does not belong to the authenticated user. You can only delete prompts that you own.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "You do not have permission to delete this prompt." }
+              examples:
+                notOwner:
+                  summary: The user does not own the prompt
+                  description: The server returns this error when an authenticated user attempts to delete a prompt that was created by another user.
+                  value:
+                    error: "Prompt does not belong to the authenticated user."
         '404':
-          description: Prompt not found
+          description: |-
+            The server cannot find the requested resource. No prompt exists with the ID provided in the request URI.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Prompt not found." }
+              examples:
+                promptNotFound:
+                  summary: A prompt with the specified ID was not found
+                  description: The server returns this error when the prompt ID is valid in format but does not correspond to any existing prompt in the database.
+                  value:
+                    error: "No prompt found with the specified ID."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from deleting the prompt.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
 
   /logs:
     get:
       tags: [Logs]
       summary: Retrieve all logs
-      description: Returns an array of log objects belonging to the user.
+      description: > 
+        Returns an array of log objects belonging to the user.
+        
+        Note: This endpoint returns a complete, unpaginated list of all logs.
+        For applications with a large number of logs, the response size may be substantial,
+        possibly affecting client-side performance and load times. Consider
+        this behavior when designing integrations.
       security:
         - BearerAuth: []
       responses:
         '200':
-          description: Array of log objects
+          description: List of log objects
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Log'
-        '401':
-          description: Unauthorized
+              example:
+                - _id: log105
+                  promptId: prompt482
+                  output: >
+                    9:00-9:30 Introduction to Time Management: Overview of the day and key concepts. 
+                    9:30-10:15 Identifying Time Wasters: Interactive session with examples. 10:30-12:00 
+                    Prioritization Techniques: Tools and exercises. 1:00-3:00 Building Better Habits: 
+                    Practical strategies. 3:15-4:00 Q&A and Action Planning.
+                  notes: Agenda is clear, segmented, and actionable for working professionals.
+                  modelUsed: GPT-4o
+                  score: 9
+                  createdAt: 2025-06-20T13:22:12.000Z
+                - _id: log106
+                  promptId: prompt112
+                  output: Plants use sunlight, water, and air to make their own food. The leaves act like kitchens, turning sunlight into energy. This helps plants grow and gives us oxygen to breathe, just like how people need food to have energy.
+                  notes: Simple language and clear analogy for young students.
+                  modelUsed: Claude 3 Opus
+                  score: 8
+                  createdAt: 2025-06-20T13:23:12.000Z
+                - _id: log902
+                  promptId: prompt314
+                  output: |
+                    def get_emails_starting_with_a(users):
+                        """
+                        Extracts emails of users whose names start with the letter 'A'.
+
+                        Args:
+                            users (list of dict): A list where each dictionary represents a user
+                                with keys 'id', 'name', and 'email'.
+
+                        Returns:
+                            list: A list of email strings for users whose names start with 'A' (case-insensitive).
+
+                        Edge Cases Handled:
+                            - The input list is empty.
+                            - User dictionaries might be missing 'name' or 'email' keys.
+                            - Names are checked case-insensitively.
+                            - Ignores non-dictionary entries in the list.
+                        """
+                        if not isinstance(users, list):
+                            raise ValueError("Input must be a list of dictionaries.")
+
+                        emails = []
+                        for user in users:
+                            if not isinstance(user, dict):
+                                continue  # Skip non-dictionary entries
+                            name = user.get('name', '')
+                            email = user.get('email', '')
+                            if isinstance(name, str) and isinstance(email, str) and name.lower().startswith('a'):
+                                emails.append(email)
+                        return emails
+                  notes: Generated code is functional and includes edge case handling and clear docstrings.
+                  modelUsed: GPT-4.1
+                  score: 9.5
+                  createdAt: 2025-06-20T13:23:12.000Z
+        '400':
+          description: |-
+            The server cannot process the request because it contains invalid parameters.
+            Review the API documentation to ensure all query parameters are correctly formatted.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                invalidParameter:
+                  summary: The request contains an invalid parameter
+                  description: The server returns this error if the request includes an unsupported or malformed query parameter.
+                  value:
+                    error: "The request is malformed or contains invalid parameters."
+        '401':
+          description: |-
+            The request lacks valid authentication credentials. To retrieve logs, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from retrieving the logs.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
+
     post:
       tags: [Logs]
       summary: Log a generated output
@@ -509,6 +988,73 @@ paths:
                 score:
                   type: integer
                   example: 3
+            examples:
+              productivityPrompt:
+                summary: Log for productivity prompt
+                value:
+                  _id: log105
+                  promptId: prompt482
+                  output: > 
+                    9:00-9:30 Introduction to Time Management: Overview of the day and key concepts. 
+                    9:30-10:15 Identifying Time Wasters: Interactive session with examples. 
+                    10:30-12:00 Prioritization Techniques: Tools and exercises. 1:00-3:00 Building 
+                    Better Habits: Practical strategies. 3:15-4:00 Q&A and Action Planning.
+                  notes: Agenda is clear, segmented, and actionable for working professionals.
+                  modelUsed: GPT-4o
+                  score: 9
+                  createdAt: 2025-06-20T13:22:12.000Z
+
+              educationPrompt:
+                summary: Log for education prompt
+                value:
+                  _id: log106
+                  promptId: prompt112
+                  output: Plants use sunlight, water, and air to make their own food. The leaves act like kitchens, turning sunlight into energy. This helps plants grow and gives us oxygen to breathe, just like how people need food to have energy.
+                  notes: Simple language and clear analogy for young students.
+                  modelUsed: Claude 3 Opus
+                  score: 8
+                  createdAt: 2025-06-20T13:23:12.000Z
+
+              technicalPrompt:
+                summary: Log entry for technical prompt response
+                value:
+                  _id: log902
+                  promptId: prompt314
+                  output: |
+                    def get_emails_starting_with_a(users):
+                        """
+                        Extracts emails of users whose names start with the letter 'A'.
+
+                        Args:
+                            users (list of dict): A list where each dictionary represents a user
+                                with keys 'id', 'name', and 'email'.
+
+                        Returns:
+                            list: A list of email strings for users whose names start with 'A' (case-insensitive).
+
+                        Edge Cases Handled:
+                            - The input list is empty.
+                            - User dictionaries might be missing 'name' or 'email' keys.
+                            - Names are checked case-insensitively.
+                            - Ignores non-dictionary entries in the list.
+                        """
+                        if not isinstance(users, list):
+                            raise ValueError("Input must be a list of dictionaries.")
+
+                        emails = []
+                        for user in users:
+                            if not isinstance(user, dict):
+                                continue  # Skip non-dictionary entries
+                            name = user.get('name', '')
+                            email = user.get('email', '')
+                            if isinstance(name, str) and isinstance(email, str) and name.lower().startswith('a'):
+                                emails.append(email)
+                        return emails
+                  notes: Generated code is functional and includes edge case handling and clear docstrings.
+                  modelUsed: GPT-4.1
+                  score: 9
+                  createdAt: 2025-06-20T13:23:12.000Z
+
       responses:
         '201':
           description: Log created
@@ -516,34 +1062,127 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Log'
+              examples:
+                productivityPrompt:
+                  summary: Log for productivity prompt response
+                  value:
+                    _id: log105
+                    promptId: prompt482
+                    output: > 
+                      9:00-9:30 Introduction to Time Management: Overview of the day and key concepts. 
+                      9:30-10:15 Identifying Time Wasters: Interactive session with examples. 10:30-12:00 
+                      Prioritization Techniques: Tools and exercises. 1:00-3:00 Building Better Habits: 
+                      Practical strategies. 3:15-4:00 Q&A and Action Planning.
+                    notes: Agenda is clear, segmented, and actionable for working professionals.
+                    modelUsed: GPT-4o
+                    score: 9
+                    createdAt: 2025-06-20T13:22:12.000Z
+
+                educationPrompt:
+                  summary: Log for education prompt response
+                  value:
+                    _id: log106
+                    promptId: prompt112
+                    output: Plants use sunlight, water, and air to make their own food. The leaves act like kitchens, turning sunlight into energy. This helps plants grow and gives us oxygen to breathe, just like how people need food to have energy.
+                    notes: Simple language and clear analogy for young students.
+                    modelUsed: Claude 3 Opus
+                    score: 8
+                    createdAt: 2025-06-20T13:23:12.000Z
+
+                technicalPrompt:
+                  summary: Log entry for technical prompt response
+                  value:
+                    _id: log902
+                    promptId: prompt314
+                    output: |
+                      def get_emails_starting_with_a(users):
+                          """
+                          Extracts emails of users whose names start with the letter 'A'.
+
+                          Args:
+                              users (list of dict): A list where each dictionary represents a user
+                                  with keys 'id', 'name', and 'email'.
+
+                          Returns:
+                              list: A list of email strings for users whose names start with 'A' (case-insensitive).
+
+                          Edge Cases Handled:
+                              - The input list is empty.
+                              - User dictionaries might be missing 'name' or 'email' keys.
+                              - Names are checked case-insensitively.
+                              - Ignores non-dictionary entries in the list.
+                          """
+                          if not isinstance(users, list):
+                              raise ValueError("Input must be a list of dictionaries.")
+
+                          emails = []
+                          for user in users:
+                              if not isinstance(user, dict):
+                                  continue  # Skip non-dictionary entries
+                              name = user.get('name', '')
+                              email = user.get('email', '')
+                              if isinstance(name, str) and isinstance(email, str) and name.lower().startswith('a'):
+                                  emails.append(email)
+                          return emails
+                    modelUsed: GPT-4.1
+                    createdAt: 2025-06-20T13:23:12.000Z
         '400':
-          description: Invalid input (missing fields)
+          description: |-
+            The server cannot process the request because the request body is malformed.
+            This error occurs when your request is missing one or more of the required fields: `promptId`, `output`, or `modelUsed`.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Missing required fields." }
+              examples:
+                missingFields:
+                  summary: Required fields are missing
+                  description: The server returns this error when the request payload does not include all required properties for creating a log.
+                  value:
+                    error: "Required fields are missing or invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To create a log, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
         '404':
-          description: Prompt not found
+          description: |-
+            The server cannot create the log because the specified `promptId` does not correspond to an existing resource.
+            This may also occur if the prompt exists but is not accessible to the authenticated user.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Prompt not found." }
+              examples:
+                promptNotFound:
+                  summary: The specified prompt ID was not found
+                  description: The server returns this error when the `promptId` in the request body does not match any existing prompt owned by the user.
+                  value:
+                    error: "Prompt ID does not exist or is not accessible."
         '500':
-          description: Server error
+          description: |-
+            The server encountered an unexpected condition that prevented it from creating the log.
+            This error suggests a problem on the server itself.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Internal server error." }
+              example:
+                error: "An unexpected server error occurred."
+
 
   /logs/{id}:
     delete:
@@ -557,27 +1196,74 @@ paths:
       responses:
         '204':
           description: Log deleted successfully
+        '400':
+          description: |-
+            The server cannot process the request because the log ID provided in the path is invalid.
+            The ID must conform to the expected format for the server to locate the resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidIdFormat:
+                  summary: The log ID format is invalid
+                  description: The server returns this error when the provided log ID does not match the required format (e.g., contains invalid characters).
+                  value:
+                    error: "The request is malformed or the log ID format is invalid."
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To delete a log, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
         '403':
-          description: Forbidden (not owner)
+          description: |-
+            The server refuses to authorize the request because the log does not belong to the authenticated user. You can only delete logs associated with prompts that you own.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "You do not have permission to delete this log." }
+              examples:
+                notOwner:
+                  summary: The user does not own the log
+                  description: The server returns this error when an authenticated user attempts to delete a log that belongs to another user.
+                  value:
+                    error: "Log does not belong to the authenticated user."
         '404':
-          description: Log not found
+          description: |-
+            The server cannot find the requested resource. No log exists with the ID provided in the request URI.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Log not found." }
+              examples:
+                logNotFound:
+                  summary: A log with the specified ID was not found
+                  description: The server returns this error when the log ID is valid in format but does not correspond to any existing log in the database.
+                  value:
+                    error: "No log found with the specified ID."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from deleting the log.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
 
   /logs-by-prompt:
     get:
@@ -597,26 +1283,85 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Log'
+        '400':
+          description: |-
+            The server cannot process the request because the `promptId` query parameter is missing or malformed.
+            You must provide a valid ID for the prompt whose logs you want to retrieve.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingQuery:
+                  summary: The promptId parameter is missing
+                  description: The server returns this error when the `promptId` query parameter is omitted from the request.
+                  value:
+                    error: "`promptId` missing or malformed"
         '401':
-          description: Unauthorized
+          description: |-
+            The request lacks valid authentication credentials. To retrieve logs, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token missing or invalid."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token missing or invalid."
+        '403':
+          description: |-
+            The server refuses to authorize the request because you do not have permission to view these logs.
+            This occurs when the requested prompt belongs to another user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notOwner:
+                  summary: User does not own the parent prompt
+                  description: The server returns this error when an authenticated user attempts to access logs for a prompt that they did not create.
+                  value:
+                    error: "User is not authorized to view logs for this prompt."
         '404':
-          description: Prompt not found
+          description: |-
+            The server cannot find any logs for the specified `promptId`. This could be because the prompt ID does not exist or because no logs have been created for it yet.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Prompt not found." }
+              examples:
+                promptNotFound:
+                  summary: The specified prompt ID was not found
+                  description: The server returns this error when the `promptId` is valid in format but does not correspond to any existing prompt in the database.
+                  value:
+                    error: "No logs found for the specified prompt ID."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from retrieving the logs.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected error occurred on the server."
 
   /search:
     get:
       tags: [Search]
       summary: Search prompts
-      description: Returns an array of prompt objects matching a full-text search query. The query matches against the title, content, and tags fields.
+      description: >
+        Performs a case-insensitive, full-text search across all of a user's prompts.
+        The search query `q` is matched against the `title`, `content`, and `tags` fields.
+        The endpoint returns an array of prompt objects that meet the search criteria.
+        If no matches are found, an empty array is returned.
       security:
         - BearerAuth: []
       parameters:
@@ -630,10 +1375,47 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Prompt'
-        '401':
-          description: Unauthorized
+        '400':
+          description: |-
+            The server cannot process the search request because the required `q` query parameter is missing or empty.
+            You must include a search term to use this endpoint.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              example: { "error": "Authentication required." }
+              examples:
+                missingQuery:
+                  summary: The search query is missing
+                  description: The server returns this error when the `q` parameter is not included in the request URL.
+                  value:
+                    error: "Missing or malformed query string."
+        '401':
+          description: |-
+            The request lacks valid authentication credentials. To search prompts, you must include a valid JWT in the `Authorization` header using the Bearer scheme.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                tokenMissing:
+                  summary: The authentication token is missing
+                  description: The server returns this error when the client omits the `Authorization` header from the request.
+                  value:
+                    error: "Authentication token is missing."
+                tokenInvalid:
+                  summary: The authentication token is invalid or expired
+                  description: The server returns this error when the client provides a Bearer token that is malformed, expired, or otherwise invalid.
+                  value:
+                    error: "Authentication token is expired or invalid."
+        '500':
+          description: |-
+            The server encountered an unexpected condition that prevented it from performing the search.
+            This error suggests a problem on the server itself.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "An unexpected server error occurred."
+
+
