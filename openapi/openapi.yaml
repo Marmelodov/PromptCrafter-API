@@ -3,10 +3,12 @@ info:
   title: PromptCrafter API
   version: 1.0.0
   description: |
-    PromptCrafter is a REST API for storing, organizing, and evaluating generative AI prompts.
-    It enables developers and prompt engineers to maintain a structured prompt library, track prompt performance, and integrate prompt management with their own tools.
-    The API provides endpoints for user authentication, prompt CRUD operations, and prompt usage logging.
-    Authentication is required for most endpoints using a Bearer token (JWT) provided at login.
+    PromptCrafter API is a backend service for easily storing, organizing, and evaluating generative AI prompts. Whether you're a developer, a prompt engineer, or someone experimenting with gen AI, PromptCrafter makes it easy to build a prompt library, track changes and performance, and connect your prompts to your favorite tools.
+
+    **Key features:**
+    - **Save and manage prompts:** Organize your prompts with titles, content, model specifications, and tags.
+    - **Log and score outputs:** Keep detailed records of prompt outputs, add notes, and score their performance.
+    - **Search your library:** Use full-text search across all your prompt data.
 
     ## Resources
     - [GitHub repo](https://github.com/Marmelodov/PromptCrafter-API)
