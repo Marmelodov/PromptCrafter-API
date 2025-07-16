@@ -1,23 +1,26 @@
----
-layout: page
----
-
 # Quickstart
 
-Create a PromptCrafter account, log in, save a prompt, and retrieve it with a `GET` request. Each step includes examples in both cURL and Postman.
+This guide walks you through the essential workflow of creating an account, authenticating, and saving your first prompt. Follow these steps to make your first authenticated API calls and store a prompt in your library.
 
-## 1. Sign up
+The entire process takes about 5 minutes.
 
-Create a user account.
+## Before you begin
 
-**Endpoint**: `POST https://promptcrafter-production.up.railway.app/auth/signup`  
-**Headers**:
+Make sure you have one of the following tools:
 
-- `Content-Type: application/json`
+* [cURL](https://curl.se/docs/install.html)
+* [Postman](https://www.postman.com/downloads/)
 
-### In cURL
+## 1. Create your account
 
-```shell
+First, create a user account. A successful request confirms that your account was created. You then use your new credentials to log in.
+
+**Endpoint**: `POST /auth/signup`
+
+<details>
+<summary>cURL</summary>
+
+```bash
 curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
@@ -26,35 +29,36 @@ curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
     "password": "password123"
   }'
 ```
+</details>
 
-### In Postman
+<details>
+<summary>Postman</summary>
 
-- **Method**: `POST`  
-- **URL**: `https://promptcrafter-production.up.railway.app/auth/signup`  
-- **Headers**:
-    - `Content-Type`: `application/json`
-- **Body** (raw JSON):
+1. Set the method to `POST`.
+2. Enter the URL: `https://promptcrafter-production.up.railway.app/auth/signup`.
+3. In the **Body** tab, select **raw** and **JSON**, then paste the following:
 
-```json
+```
 {
   "name": "Alice",
   "email": "alice@example.com",
   "password": "password123"
 }
 ```
+</details>
 
-## 2. Log in
+A successful request returns a `201 Created` status with an empty response body, confirming the account is ready.
 
-Obtain a JWT token to authenticate your requests.
+## 2. Log in to get your token
 
-**Endpoint**: `POST https://promptcrafter-production.up.railway.app/auth/login`  
-**Headers**:
+Now, use your new credentials to log in. This endpoint authenticates you and returns a new JWT token for your session. All protected API endpoints require this token for authentication.
 
-- `Content-Type: application/json`
+**Endpoint**: `POST /auth/login`
 
-### In cURL
+<details>
+<summary>cURL</summary>
 
-```shell
+```bash
 curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -62,101 +66,99 @@ curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
     "password": "password123"
   }'
 ```
+</details>
 
-### In Postman
+<details>
+<summary>Postman</summary>
+Use the **Log in** request in the `Auth` folder of the Postman Collection. The request body is pre-filled with example credentials.
 
-- **Method**: `POST`  
-- **URL**: `https://promptcrafter-production.up.railway.app/auth/login`  
-- **Headers**:
-    - `Content-Type`: `application/json`
-- **Body** (raw JSON):
+> **✨ Note:**
+> The Postman Collection is configured to automatically save your token to a collection variable (`{{token}}`) upon successful login. This variable is automatically included in the authorization header of every other request, so you don't need to copy and paste it.
 
-```json
-{
-  "email": "alice@example.com",
-  "password": "password123"
-}
-```
+</details>
 
-The response body contains your JWT token:
+Save the `token` from the response body. You need it for the next step.
 
-```json
-{
-  "token": "{your_token}"
-}
-```
+## 3. Save your first prompt
 
-## 3. Save a prompt
+It's time to create your first prompt. This request sends your token in an `Authorization` header and includes the details of your prompt in the request body.
 
-Use the JWT token you received to create a new prompt object.
+**Endpoint**: `POST /prompts`
 
-**Endpoint**: `POST https://promptcrafter-production.up.railway.app/prompts`  
-**Headers**:  
+<details>
+<summary>cURL</summary>
+Replace `{your_token}` with the token you received from the login step.
 
-- `Authorization`: `Bearer {your_token}`  
-- `Content-Type`: `application/json`
-
-Note: replace `{your_token}` with the bearer token returned by your login request.
-
-### In cURL
-
-```shell
+```bash
 curl -X POST https://promptcrafter-production.up.railway.app/prompts \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Positive Product Review Writer",
     "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
-    "model": "Grok-3 Beta",
+    "model": "GPT-4o",
     "tags": ["review", "product", "writing"]
   }'
 ```
+</details>
 
-### In Postman
+<details>
+<summary>Postman</summary>
+Use the **Save a prompt** request in the `Prompts` folder. The request body is pre-filled, and your authorization token is already included as a variable. Just click **Send**.
+</details>
 
-- **Method**: `POST`  
-- **URL**: `https://promptcrafter-production.up.railway.app/prompts`  
-- **Headers**:
-    - `Authorization`: `Bearer {your_token}`
-    - `Content-Type`: `application/json`
-- **Body** (raw JSON):
+A successful request returns the full prompt object, including its unique server-generated `_id`.
+
+**✅ Example Response**
 
 ```json
 {
-  "title": "Positive Product Review Writer",
-  "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
-  "model": "Grok-3 Beta",
-  "tags": ["review", "product", "writing"]
+    "_id": "prompt482",
+    "ownerId": "user67",
+    "title": "Positive Product Review Writer",
+    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle...",
+    "model": "GPT-4o",
+    "tags": [
+        "review",
+        "product",
+        "writing"
+    ],
+    "createdAt": "2024-06-20T13:20:12.000Z",
+    "updatedAt": "2024-06-20T13:20:12.000Z"
 }
 ```
 
-## 4. View your saved prompt
+Copy the `_id` from the response. Use it in the final step to retrieve your new prompt.
 
-Replace `{prompt_id}` with the ID of the prompt you created.
+## 4. Retrieve your prompt
 
-**Endpoint**: `GET https://promptcrafter-production.up.railway.app/prompts/{prompt_id}`  
-**Headers**:  
+Finally, fetch the prompt you just created using its unique ID. This step confirms that your prompt saved correctly.
 
-- `Authorization`: `Bearer {your_token}`
+**Endpoint**: `GET /prompts/{id}`
 
-### In cURL
+<details>
+<summary>cURL</summary>
 
-```shell
-curl -X GET https://promptcrafter-production.up.railway.app/prompts/prompt2 \
+Replace `{your_token}` and `{prompt_id}` with your values.
+
+```bash
+curl -X GET https://promptcrafter-production.up.railway.app/prompts/{prompt_id} \
   -H "Authorization: Bearer {your_token}"
 ```
+</details>
 
-### In Postman
+<details>
+<summary>Postman</summary>
 
-- **Method**: `GET`  
-- **URL**: `https://promptcrafter-production.up.railway.app/prompts/prompt2`  
-- **Headers**:
-    - `Authorization`: `Bearer {your_token}`
+1. In the collection's **Variables** tab, paste the `_id` from the previous step into the `CURRENT VALUE` field for the `promptId` variable.
+2. Run the **Retrieve a prompt by ID** request. It uses the `{{promptId}}` variable in the URL to fetch your specific prompt.
+</details>
 
-## 5. Next steps
+## Next steps
 
-[Log a generated output](tutorials/test-prompt.md)  
-[View logs](tutorials/view-logs.md)  
-[Search prompts](tutorials/search-prompts.md)  
-[Update a prompt](reference/endpoints/patch-prompts-id.md)  
-[API reference](reference/index.md)  
+You've successfully authenticated with the PromptCrafter API and managed your first prompt.
+
+You're now ready to explore more features:  
+* **Test a prompt**: [Log a generated output](tutorials/test-prompt.md) and score its performance.
+* **Organize your library**: [Search your prompts](tutorials/search-prompts.md) by keyword or tag.
+* **Dive deeper**: Explore the full [API reference](reference/index.md) for more endpoints.
