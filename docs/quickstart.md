@@ -29,22 +29,24 @@ curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
     "password": "password123"
   }'
 ```
+
 </details>
 
 <details>
 <summary>Postman</summary>
 
-1. Set the method to `POST`.
-2. Enter the URL: `https://promptcrafter-production.up.railway.app/auth/signup`.
-3. In the **Body** tab, select **raw** and **JSON**, then paste the following:
+1. Set the method to `POST`.  
+2. Enter the URL: `https://promptcrafter-production.up.railway.app/auth/signup`.  
+3. In the **Body** tab, select **raw** and **JSON**, then paste the following:  
 
-```
+```json
 {
   "name": "Alice",
   "email": "alice@example.com",
   "password": "password123"
 }
 ```
+
 </details>
 
 A successful request returns a `201 Created` status with an empty response body, confirming the account is ready.
@@ -58,7 +60,7 @@ Now, use your new credentials to log in. This endpoint authenticates you and ret
 <details>
 <summary>cURL</summary>
 
-```bash
+```bash  
 curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -66,10 +68,12 @@ curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
     "password": "password123"
   }'
 ```
+
 </details>
 
 <details>
 <summary>Postman</summary>
+
 Use the **Log in** request in the `Auth` folder of the Postman Collection. The request body is pre-filled with example credentials.
 
 > **✨ Note:**
@@ -87,9 +91,10 @@ It's time to create your first prompt. This request sends your token in an `Auth
 
 <details>
 <summary>cURL</summary>
+
 Replace `{your_token}` with the token you received from the login step.
 
-```bash
+```bash  
 curl -X POST https://promptcrafter-production.up.railway.app/prompts \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
@@ -100,11 +105,14 @@ curl -X POST https://promptcrafter-production.up.railway.app/prompts \
     "tags": ["review", "product", "writing"]
   }'
 ```
+
 </details>
 
 <details>
 <summary>Postman</summary>
+
 Use the **Save a prompt** request in the `Prompts` folder. The request body is pre-filled, and your authorization token is already included as a variable. Just click **Send**.
+
 </details>
 
 A successful request returns the full prompt object, including its unique server-generated `_id`.
@@ -141,17 +149,19 @@ Finally, fetch the prompt you just created using its unique ID. This step confir
 
 Replace `{your_token}` and `{prompt_id}` with your values.
 
-```bash
+```bash  
 curl -X GET https://promptcrafter-production.up.railway.app/prompts/{prompt_id} \
   -H "Authorization: Bearer {your_token}"
 ```
+
 </details>
 
 <details>
 <summary>Postman</summary>
 
-1. In the collection's **Variables** tab, paste the `_id` from the previous step into the `CURRENT VALUE` field for the `promptId` variable.
-2. Run the **Retrieve a prompt by ID** request. It uses the `{{promptId}}` variable in the URL to fetch your specific prompt.
+1. In the collection's **Variables** tab, paste the `_id` from the previous step into the `CURRENT VALUE` field for the `promptId` variable.  
+2. Run the **Retrieve a prompt by ID** request. It uses the `{{promptId}}` variable in the URL to fetch your specific prompt.  
+
 </details>
 
 ## Next steps
