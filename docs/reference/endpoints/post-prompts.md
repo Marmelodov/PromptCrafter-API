@@ -1,4 +1,4 @@
-# Save a prompt
+# API Reference: Save a prompt
 
 Creates a new [`prompt`](../resources/prompt.md) owned by the user.
 

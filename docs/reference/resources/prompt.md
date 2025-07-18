@@ -1,4 +1,6 @@
-# `prompt` resource
+# API Reference: `prompt` resource
+
+The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on the prompt resource require user authentication with a bearer token. 
 
 **Resource endpoint**:
 
@@ -6,9 +8,18 @@
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on the prompt resource require user authentication with a bearer token.  
-
 ## Resource properties
+
+| Name        | Type   | Required | Description                                                   |
+| ----------- | ------ | -------- | ------------------------------------------------------------- |
+| `_id`       | string | Yes      | Unique identifier for the prompt.                             |
+| `ownerId`   | string | Yes      | ID of the user who created the prompt.                        |
+| `title`     | string | Yes      | Short title for the prompt.                                   |
+| `content`   | string | Yes      | Text of the prompt.                                  |
+| `model`     | string | Yes      | Intended AI model for the prompt (e.g., ChatGPT, DALL·E). |
+| `tags`      | array  | No       | Optional tags for categorizing the prompt.          |
+| `createdAt` | string | Yes      | Timestamp of when the prompt was created (ISO 8601 format). Set automatically by the server.   |
+| `updatedAt` | string | Yes      | Timestamp of the prompt's last update (ISO 8601 format). Set automatically by the server.                  |
 
 Sample `prompt` resource:  
 
@@ -24,17 +35,6 @@ Sample `prompt` resource:
   "updatedAt": "2025-06-20T13:03:00Z"
  }
 ```
-
-| Name        | Type   | Required | Description                                                   |
-| ----------- | ------ | -------- | ------------------------------------------------------------- |
-| `_id`       | string | Yes      | Unique identifier for the prompt.                             |
-| `ownerId`   | string | Yes      | ID of the user who created the prompt.                        |
-| `title`     | string | Yes      | Short title for the prompt.                                   |
-| `content`   | string | Yes      | Text of the prompt.                                  |
-| `model`     | string | Yes      | Intended AI model for the prompt (e.g., ChatGPT, DALL·E). |
-| `tags`      | array  | No       | Optional tags for categorizing the prompt.          |
-| `createdAt` | string | Yes      | Timestamp of when the prompt was created (ISO 8601 format). Set automatically by the server.   |
-| `updatedAt` | string | Yes      | Timestamp of the prompt's last update (ISO 8601 format). Set automatically by the server.                  |
 
 ## Supported operations
 
