@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Log in
 
 Authenticates a user and returns a JWT token. All fields are required.

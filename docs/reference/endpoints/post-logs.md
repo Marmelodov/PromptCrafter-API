@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Log a generated output
 
 Creates a new [`log`](../resources/log.md) to record the output of a tested prompt. The log is owned by the user and linked to a [`prompt`](../resources/prompt.md).

@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Update a prompt
 
 Updates a [`prompt`](../resources/prompt.md) by its unique ID. Users can only update prompts they own. Only the fields included in the request body will be modified.

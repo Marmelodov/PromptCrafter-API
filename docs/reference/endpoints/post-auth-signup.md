@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Sign up
 
 Creates a new user account and returns a JWT authentication token. All fields are required.

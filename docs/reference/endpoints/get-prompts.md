@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Retrieve all prompts
 
 Returns an array of [`prompt`](../resources/prompt.md) objects belonging to the user.

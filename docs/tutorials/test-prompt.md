@@ -1,8 +1,3 @@
----
-layout: page
-title: Log a generated output
----
-
 # Tutorial: Log a generated output
 
 Record the output of a prompt test with a `POST /logs` request. A log contains the model’s output, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it and compare the results of different tests. This tutorial takes about 10 minutes to complete.

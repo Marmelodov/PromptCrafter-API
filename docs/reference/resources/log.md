@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # `log` resource
 
 Resource endpoint:

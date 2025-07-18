@@ -1,8 +1,3 @@
----
-layout: page
-title: Search prompts
----
-
 # Tutorial: Search prompts
 
 Search prompts with a GET /search?q= request. This endpoint performs a full-text, case-insensitive scan of every prompt’s title, content, model, and tags and returns matching prompts ordered by relevance. This tutorial takes about 10 minutes to complete.

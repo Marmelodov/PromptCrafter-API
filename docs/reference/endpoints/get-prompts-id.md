@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Retrieve a prompt by ID
 
 Returns a [`prompt`](../resources/prompt.md) by its unique ID. Users can only access prompts they own.

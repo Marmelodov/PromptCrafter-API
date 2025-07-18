@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PromptCrafter API Docs</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="API Documentation for PromptCrafter">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+ 
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-coy.css">
+
+
+  <style>
+    :root {
+      --theme-color: #1e6bb8;
+      --sidebar-background: #f7f8fa;
+      --sidebar-nav-link-color--active: #1e6bb8;
+    }
+
+
+    .sidebar h1.app-name {
+      font-size: 25px; /* Increased from default size */
+      font-weight: 600; /* Makes the font bold */
+      text-align: left;
+      padding-left: 15px;
+    }
+   
+    .markdown-section :not(pre) > code {
+      color: #444;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      background-color: #f7f8fa;
+      border-radius: 3px;
+      padding: 2px 5px;
+    }
+
+
+    .markdown-section pre {
+      margin-top: 10px !important;
+      margin-bottom: 10px !important;
+    }
+
+
+    .content {
+      padding-top: 10px;
+    }
+
+
+    .markdown-section h1, .markdown-section h2, .markdown-section h3 {
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+
+    .sidebar-nav a {
+      font-size: 20px;
+    }
+
+
+    /* --- NEW RULE FOR PAGE TEXT SIZE --- */
+    .markdown-section p {
+      font-size: 15px; /* Standard body font size */
+    }
+  </style>
+
+
+</head>
+<body>
+  <div id="app"></div>
+ 
+  <script>
+    window.$docsify = {
+      name: 'PromptCrafter API',
+      repo: 'Marmelodov/PromptCrafter-API',
+      loadSidebar: true,
+      homepage: 'index.md',
+      nativeEmoji: true,
+      // The search:'auto' line has been removed
+      subMaxLevel: 0,
+      sidebarDisplayLevel: 0,
+    }
+  </script>
+ 
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+ 
+  <!-- The script for the search plugin has been removed from this section -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>  
+</body>
+</html>

@@ -1,8 +1,3 @@
----
-layout: page
-title: View Logs
----
-
 # Tutorial: View logs
 
 Retrieve prompt test logs with a `GET /logs` request. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. This tutorial takes about 5 minutes to complete.

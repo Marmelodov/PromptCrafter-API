@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Retrieve all logs
 
 Returns an array of [`log`](../resources/log.md) objects belonging to the user.  

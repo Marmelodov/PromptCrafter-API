@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Retrieve logs for a specific prompt
 
 Returns an array of [logs](../resources/log.md) recording the outputs of a specified prompt.

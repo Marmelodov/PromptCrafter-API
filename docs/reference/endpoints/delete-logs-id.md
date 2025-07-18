@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Delete a log
 
 Deletes a [`log`](../resources/log.md) by its unique ID. Users can only delete logs they own.

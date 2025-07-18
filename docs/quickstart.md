@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Quickstart
 
 Create a PromptCrafter account, log in, save a prompt, and retrieve it with a `GET` request. Each step includes examples in both cURL and Postman.

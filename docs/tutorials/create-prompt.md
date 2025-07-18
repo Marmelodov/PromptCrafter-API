@@ -1,8 +1,3 @@
----
-layout: page
-title: Save a prompt
----
-
 # Tutorial: Save a prompt
 
 Save a prompt by sending a `POST /prompts` request. Prompts are the API’s core resource: reusable instructions for generative-AI models such as GPT-4o, Gemini, and Claude. After saving a prompt, you can update it, test it, and log its outputs. This tutorial takes about 10 minutes to complete.

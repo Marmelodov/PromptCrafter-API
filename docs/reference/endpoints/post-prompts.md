@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Save a prompt
 
 Creates a new [`prompt`](../resources/prompt.md) owned by the user.

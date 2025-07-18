@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # `prompt` resource
 
 **Resource endpoint**:

@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Search prompts
 
 Returns an array of [`prompt`](../resources/prompt.md) objects matching a full-text search query. The query matches against the `title`, `content`, and `tags` fields of each prompt.
