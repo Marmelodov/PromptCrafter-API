@@ -4,7 +4,7 @@ layout: page
 
 # Sign up
 
-Creates a new user account and returns a JWT authentication token. All fields are required.
+Creates a new user account. All fields are required.
 
 ## URL
 
@@ -56,7 +56,7 @@ A JSON object containing an authentication token.
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "message": "User account created successfully."
 }
 ```
 

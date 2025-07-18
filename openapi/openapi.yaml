@@ -177,7 +177,7 @@ paths:
     post:
       tags: [Auth]
       summary: Create a new user account
-      description: Creates a new user account and returns a JWT authentication token.
+      description: Creates a new user account. After a successful signup, call the /auth/login endpoint to authenticate and obtain a JWT token.
       requestBody:
         required: true
         content:
@@ -200,12 +200,16 @@ paths:
                   maxLength: 30
                   example: password123
       responses:
-        '200':
-          description: Successful signup
+        '201':
+          description: User account created successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthToken'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User account created successfully."
         '400':
           description: |-
             The server cannot process the signup request because the provided data is malformed. This error occurs if:
