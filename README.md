@@ -50,7 +50,7 @@ See the complete documentation in the [**docs folder**](./docs/).
 
 ## Postman Collection
 
-A complete Postman Collection is included for developers to explore and test all endpoints in an interactive environment.
+A complete Postman Collection is included to allow testing of all endpoints in an interactive environment.
 
 - **File:** [`/postman/PromptCrafter.postman_collection.json`](./postman/PromptCrafter.postman_collection.json)
 - **How to use:**  
@@ -60,7 +60,7 @@ A complete Postman Collection is included for developers to explore and test all
 
 ## OpenAPI Specification
 
-The OpenAPI (Swagger) file provides a machine-readable description of the API for use with tools, code generators, and developer portals.
+The OpenAPI (Swagger) file provides a machine-readable description of the API to be used with tools, code generators, and developer portals.
 
 - **File:** [`/openapi/openapi.yaml`](./openapi/openapi.yaml)
 - **Use cases:**  
@@ -80,7 +80,7 @@ Documentation for generated SDKs are provided in the following languages:
 - **Ruby** (`/sdk/ruby/`)
 - **Java** (`/sdk/java/`)
 
-Documentation sets for the five SDKs are written to account for the idiom and particular challenges of each language.
+Documentation for each SDK accounts for the idiom and particular challenges of the language.
 
 ## How to use this repository
 
