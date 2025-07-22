@@ -1,10 +1,10 @@
 # Postman Collection
 
-The PromptCrafter API Postman Collection provides an interactive, ready-to-use reference for every endpoint in the PromptCrafter API. Use this collection to explore the API, see request and response examples, and review detailed error handling and common API operations.
+The PromptCrafter API Postman Collection provides an interactive, ready-to-use reference for every endpoint in the PromptCrafter API. Use the collection to explore the API, see request and response examples, and review detailed error handling and common API operations.
 
 > **Note:** The PromptCrafter API server is currently offline. This collection documents the API as it was implemented and tested. Live requests will fail, but you can still review endpoints, workflows, and error handling scenarios.
 
-## How to import the collection into Postman
+## Import the collection into Postman
 
 1. Download the Postman Collection JSON file from the link below.
 2. Open Postman and click **Import** in the top left corner.

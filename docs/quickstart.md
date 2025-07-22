@@ -11,7 +11,7 @@ If you're using Postman, [import the PromptCrafter API Collection](postman.md). 
 
 ## 1. Create your account
 
-This step establishes your identity in the system, creating a secure and private workspace. It ensures that every prompt you create is tied to your account, so only you can access and manage your library.
+This step establishes your identity in the system, creating a private workspace. It ensures that every prompt you save is tied to your account, so only you can access your library.
 
 **Endpoint**: `POST /auth/signup`
 
