@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9cd6dd62-cc29-4535-b83b-1a4d035940f1",
 		"name": "PromptCrafter API",
-		"description": "### Overview\n\nPromptCrafter API is a backend service for easily storing, organizing, and evaluating generative AI prompts. Whether you’re a developer, a prompt engineer, or someone who enjoys experimenting with gen AI, PromptCrafter makes it easy to build a prompt library, track changes and performance, and connect your prompts to your favorite tools.\n\nWith this API, you can:\n\n- **Save and Manage Prompts:** Store, update, and organize your prompts with titles, content, model specifications, and tags.\n    \n- **Log and Score Outputs:** Keep a detailed record of prompt outputs from different models, add notes, and score their performance for systematic testing.\n    \n- **Search Your Library:** Quickly find the exact prompts you need with full-text search across titles, content, and tags.\n    \n\nThis Postman Collection is a complete, interactive reference for all PromptCrafter API endpoints. It's part of the full PromptCrafter API developer portal, which you can explore here:\n\n- [Live API documentation](https://marmelodov.github.io/PromptCrafter-API/)\n- [GitHub repository](https://github.com/Marmelodov/PromptCrafter-API)\n\nThe full project also includes a complete OpenAPI 3.0 specification and fully documented SDKs for Python, JavaScript, Go, Java, and Ruby. The core API documentation Markdown files served as the source of truth for this Collection and all other portfolio artifacts.\n\n\n### Authentication\n\nAll protected endpoints in the PromptCrafter API require a JWT Bearer token. This collection is configured to handle authentication for you automatically.\n\n**Step-by-Step Guide:**\n\n1. **Get Your Authentication Token:**\n    \n    - **For new users**, open the `Auth` folder and select the **Sign up** request. Fill in your details in the request body and send the `POST /auth/signup` request.\n        \n    - **For existing users**, use the **Log in** request (`POST /auth/login`).\n        \n2. **Automatic Token Handling:**  \n    Upon a successful login, a test script automatically captures the JWT token from the response. It saves this token to a collection variable named `{{token}}`. This variable is automatically included in the authorization header of every subsequent request, so you don't need to manually copy and paste the token.\n    \n\n### Basic Workflow: Create and Retrieve Your First Prompt\n\nThis workflow will guide you through the fundamental cycle of creating a prompt and then retrieving it.\n\n1. **Sign Up (****`POST /auth/signup`****)**\n    \n    - First, ensure you have a valid token by running the **Sign up** request as described in the **Authentication** section. This creates your account and automatically sets your `{{token}}` for the next steps.\n        \n2. **Save a Prompt (****`POST /prompts`****)**\n    \n    - Navigate to the `Prompts` folder and select the **Save a prompt** request.\n        \n    - The request body is pre-filled with an example. You can modify the `title`, `content`, `model`, and `tags` as needed.\n        \n    - Click **Send**. Upon success, the API returns a JSON object for the newly created prompt. Locate the `_id` field in the response body; this is the unique identifier for your prompt.\n        \n3. **Retrieve a Prompt by ID (****`GET /prompts/{promptId}`****)**\n    \n    - Now, let's retrieve the prompt you just created. First, copy the `_id` value from the JSON response of the previous step.\n        \n    - Navigate to the Postman Collection's **Variables** tab. Paste the copied ID into the `CURRENT VALUE` column for the `promptId` variable.\n        \n    - Finally, run the **Retrieve prompt by ID** request. It will use the `{{promptId}}` variable to fetch the specific prompt you created.\n        \n\nYou've now successfully created and retrieved your first prompt. You can explore other endpoints to update, delete, or search for prompts and logs.",
+		"description": "### Overview\n\nPromptCrafter API is a backend service for easily storing, organizing, and evaluating generative AI prompts. Whether you’re a developer, a prompt engineer, or someone who enjoys experimenting with gen AI, PromptCrafter makes it easy to build a prompt library, track changes and performance, and connect your prompts to your favorite tools.\n\nWith this API, you can:\n\n- **Save and Manage Prompts:** Store, update, and organize your prompts with titles, content, model specifications, and tags.\n    \n- **Log and Score Outputs:** Keep a detailed record of prompt outputs from different models, add notes, and score their performance for systematic testing.\n    \n- **Search Your Library:** Quickly find the exact prompts you need with full-text search across titles, content, and tags.\n    \n\nThis Postman Collection is a complete, interactive reference for all PromptCrafter API endpoints. It's part of the full PromptCrafter API developer portal, which you can explore here:\n\n- [Live API documentation](https://marmelodov.github.io/PromptCrafter-API/)\n    \n- [GitHub repository](https://github.com/Marmelodov/PromptCrafter-API)\n    \n\nThe full project also includes a complete OpenAPI 3.0 specification and fully documented SDKs for Python, JavaScript, Go, Java, and Ruby. The core API documentation Markdown files served as the source of truth for this Collection and all other portfolio artifacts.\n\n### Authentication\n\nAll protected endpoints in the PromptCrafter API require a JWT Bearer token. This collection is configured to handle authentication for you automatically.\n\n**Step-by-Step Guide:**\n\n1. **Get Your Authentication Token:**\n    \n    - **For new users**, open the `Auth` folder and select the **Sign up** request. Fill in your details in the request body and send the `POST /auth/signup` request.\n        \n    - **For existing users**, use the **Log in** request (`POST /auth/login`).\n        \n2. **Automatic Token Handling:**  \n    Upon a successful login, a test script automatically captures the JWT token from the response. It saves this token to a collection variable named `{{token}}`. This variable is automatically included in the authorization header of every subsequent request, so you don't need to manually copy and paste the token.\n    \n\n### Basic Workflow: Create and Retrieve Your First Prompt\n\nThis workflow will guide you through the fundamental cycle of creating a prompt and then retrieving it.\n\n1. **Sign Up (****`POST /auth/signup`****)**\n    \n    - First, ensure you have a valid token by running the **Sign up** request as described in the **Authentication** section. This creates your account and automatically sets your `{{token}}` for the next steps.\n        \n2. **Save a Prompt (****`POST /prompts`****)**\n    \n    - Navigate to the `Prompts` folder and select the **Save a prompt** request.\n        \n    - The request body is pre-filled with an example. You can modify the `title`, `content`, `model`, and `tags` as needed.\n        \n    - Click **Send**. Upon success, the API returns a JSON object for the newly created prompt. Locate the `_id` field in the response body; this is the unique identifier for your prompt.\n        \n3. **Retrieve a Prompt by ID (****`GET /prompts/{promptId}`****)**\n    \n    - Now, let's retrieve the prompt you just created. First, copy the `_id` value from the JSON response of the previous step.\n        \n    - Navigate to the Postman Collection's **Variables** tab. Paste the copied ID into the `CURRENT VALUE` column for the `promptId` variable.\n        \n    - Finally, run the **Retrieve prompt by ID** request. It will use the `{{promptId}}` variable to fetch the specific prompt you created.\n        \n\nYou've now successfully created and retrieved your first prompt. You can explore other endpoints to update, delete, or search for prompts and logs.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40422911"
 	},
@@ -49,7 +49,7 @@
 								"signup"
 							]
 						},
-						"description": "Creates your permanent user account for PromptCrafter API. After creating your account, proceed to the **Log in** endpoint to authenticate and start a new session.\n\n**Authentication:** None required.\n\n**Request Body:**\n\n``` json\n{\n  \"name\": \"John Doe\",     (string, required)\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n\n ```\n\n**Response:**\n\n``` json\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n\n ```\n\n**Status Codes:**\n\n- 201 Created: Account created successfully.\n    \n- 400 Bad Request: Required fields are missing or invalid.\n    \n- 409 Conflict: Email already in use.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
+						"description": "Creates your permanent user account for PromptCrafter API. After creating your account, proceed to the **Log in** endpoint to authenticate and start a new session.\n\n**Authentication:** None required.\n\n**Request Body:**\n\n``` json\n{\n  \"name\": \"John Doe\",     (string, required)\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n\n ```\n\n**Response:**\n\n``` json\n{\n  \"message\": \"User account created successfully.\"\n}\n\n ```\n\n**Status Codes:**\n\n- 201 Created: Account created successfully.\n    \n- 400 Bad Request: Required fields are missing or invalid.\n    \n- 409 Conflict: Email already in use.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
 					},
 					"response": [
 						{
@@ -73,9 +73,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/auth/signup",
+									"raw": "https://promptcrafter-production.up.railway.app/auth/signup",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"auth",
@@ -251,9 +255,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/auth/login",
+									"raw": "https://promptcrafter-production.up.railway.app/auth/login",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"auth",
@@ -365,7 +373,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									},
 									{
 										"key": "Content-Type",
@@ -383,9 +391,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/prompts",
+									"raw": "https://promptcrafter-production.up.railway.app/prompts",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"prompts"
@@ -534,17 +546,21 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"prompts",
-										"{{promptId}}"
+										""
 									]
 								}
 							},
@@ -742,7 +758,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									},
 									{
 										"key": "Content-Type",
@@ -760,13 +776,17 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"prompts",
-										"{{promptId}}"
+										""
 									]
 								}
 							},
@@ -1208,17 +1228,21 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"prompts",
-										"{{promptId}}"
+										""
 									]
 								}
 							},
@@ -1421,7 +1445,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									},
 									{
 										"key": "Content-Type",
@@ -1439,9 +1463,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/logs",
+									"raw": "https://promptcrafter-production.up.railway.app/logs",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"logs"
@@ -1635,13 +1663,17 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/logs",
+									"raw": "https://promptcrafter-production.up.railway.app/logs",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"logs"
@@ -1771,13 +1803,17 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer {{token}}"
+										"value": "Bearer "
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+									"raw": "https://promptcrafter-production.up.railway.app/logs?promptId=",
+									"protocol": "https",
 									"host": [
-										"{{baseUrl}}"
+										"promptcrafter-production",
+										"up",
+										"railway",
+										"app"
 									],
 									"path": [
 										"logs"
@@ -1785,7 +1821,7 @@
 									"query": [
 										{
 											"key": "promptId",
-											"value": "{{promptId}}"
+											"value": ""
 										}
 									]
 								}
@@ -2313,7 +2349,6 @@
 								{
 									"key": "Content-Type",
 									"value": "application/json",
-									"name": "Content-Type",
 									"description": "",
 									"type": "text"
 								}
@@ -2354,7 +2389,6 @@
 								{
 									"key": "Content-Type",
 									"value": "application/json",
-									"name": "Content-Type",
 									"description": "",
 									"type": "text"
 								}
@@ -2395,7 +2429,6 @@
 								{
 									"key": "Content-Type",
 									"value": "application/json",
-									"name": "Content-Type",
 									"description": "",
 									"type": "text"
 								}
