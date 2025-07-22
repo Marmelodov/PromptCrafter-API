@@ -1,6 +1,6 @@
-# Search prompts
+# API Reference: Search prompts
 
-Returns an array of [`prompt`](../resources/prompt.md) objects matching a full-text search query. The query matches against the `title`, `content`, and `tags` fields of each prompt.
+Returns an array of `prompt` objects matching a full-text search query. The query matches against the `title`, `content`, and `tags` fields of each `prompt`.
 
 ## URL
 
@@ -16,7 +16,7 @@ https://promptcrafter-production.up.railway.app/search?q=your+query+terms
 
 | Parameter name | Type   | Required | Description                                 |
 |----------------|--------|----------|---------------------------------------------|
-| `q`            | string | Yes      | Full-text search query. Matches title, content, and tags. |
+| `q`            | string | Yes      | Full-text search query. Matches `title`, `content`, and `tags`. |
 
 ## Request headers
 
@@ -28,7 +28,7 @@ https://promptcrafter-production.up.railway.app/search?q=your+query+terms
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/search?q=marketing+email
@@ -39,8 +39,8 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 ```json
 [
   {
-    "_id": "prompt3",
-    "ownerId": "user3",
+    "_id": "prompt306",
+    "ownerId": "user1066",
     "title": "Newsletter subject lines",
     "content": "Generate subject lines for a tech product launch email.",
     "model": "Claude 4.0 Sonnet",
@@ -62,8 +62,8 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Save a prompt](post-prompts.md): `POST /prompts` 
-[Retrieve all prompts](get-prompts.md): `GET /prompts`  
-[Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
-[Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
-[Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
+[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
+[Retrieve all prompts](reference/endpoints/get-prompts.md): `GET /prompts`  
+[Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
+[Update a prompt](reference/endpoints/patch-prompts-id.md): `PATCH /prompts/:id`  
+[Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`  

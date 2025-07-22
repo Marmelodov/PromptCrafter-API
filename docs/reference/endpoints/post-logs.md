@@ -1,6 +1,6 @@
-# Log a generated output
+# API Reference: Log a generated output
 
-Creates a new [`log`](../resources/log.md) to record the output of a tested prompt. The log is owned by the user and linked to a [`prompt`](../resources/prompt.md).
+Creates a `log` object recording the output of a tested `prompt`. The `log` is owned by the user and linked to a `prompt`.
 
 ## URL
 
@@ -25,7 +25,7 @@ None
 
 ## Request body
 
-A JSON object representing the new log. All fields are required except `notes` and `score`.
+A JSON object representing the new `log`. All fields are required except `notes` and `score`.
 
 ```json
 {
@@ -37,7 +37,7 @@ A JSON object representing the new log. All fields are required except `notes` a
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X POST https://promptcrafter-production.up.railway.app/logs \
@@ -80,6 +80,6 @@ The newly created `log` object.
 
 ## Related
 
-[Retrieve all logs](get-logs.md): `GET /logs`  
-[Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`  
-[Delete a log](delete-logs-id.md): `DELETE /logs/:id`
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  
+[Retrieve logs for a specific prompt](reference/endpoints/get-logs-by-prompt.md): `GET /logs?promptId=...`  
+[Delete a log](reference/endpoints/delete-logs-id.md): `DELETE /logs/:id`  

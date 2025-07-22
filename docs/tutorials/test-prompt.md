@@ -128,11 +128,11 @@ Here are error codes you might encounter, what each means, and what you can do t
 
 ## Next steps
 
-Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md).
+Learn how to [view all logs](tutorials/view-logs.md) or [search prompts](tutorials/search-prompts.md).
 
 ## Related
 
-[Log](../reference/resources/log.md)  
-[Prompt](../reference/resources/prompt.md)  
-[Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
-[Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
+[Log](reference/resources/log.md)  
+[Prompt](reference/resources/prompt.md)  
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  

@@ -1,27 +1,27 @@
 # API Reference: `prompt` resource
 
-The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, associated AI model, optional tags, and timestamps. All operations on the prompt resource require user authentication with a bearer token. 
+The `prompt` resource stores a generative AI prompt created and managed by a user. It includes the prompt text, the intended AI model, optional tags, and timestamps. All operations on the `prompt` resource require user authentication with a bearer token.  
 
-**Resource endpoint**:
+## Endpoint
 
 ```text
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-## Resource properties
+## Field definitions
 
 | Name        | Type   | Required | Description                                                   |
 | ----------- | ------ | -------- | ------------------------------------------------------------- |
-| `_id`       | string | Yes      | Unique identifier for the prompt.                             |
-| `ownerId`   | string | Yes      | ID of the user who created the prompt.                        |
-| `title`     | string | Yes      | Short title for the prompt.                                   |
+| `_id`       | string | Yes      | Unique identifier for the `prompt`.                             |
+| `ownerId`   | string | Yes      | ID of the user who created the `prompt`.                        |
+| `title`     | string | Yes      | Short title for the `prompt`.                                   |
 | `content`   | string | Yes      | Text of the prompt.                                  |
-| `model`     | string | Yes      | Intended AI model for the prompt (e.g., ChatGPT, DALL·E). |
-| `tags`      | array  | No       | Optional tags for categorizing the prompt.          |
-| `createdAt` | string | Yes      | Timestamp of when the prompt was created (ISO 8601 format). Set automatically by the server.   |
-| `updatedAt` | string | Yes      | Timestamp of the prompt's last update (ISO 8601 format). Set automatically by the server.                  |
+| `model`     | string | Yes      | Intended AI model for the `prompt` (e.g., ChatGPT, DALL·E). |
+| `tags`      | array  | No       | Optional tags for categorizing the `prompt`.          |
+| `createdAt` | string | Yes      | Timestamp when the `prompt` was created (ISO 8601 format). Set automatically by the server.   |
+| `updatedAt` | string | Yes      | Timestamp when the `prompt` was last updated (ISO 8601 format). Set automatically by the server.                  |
 
-Sample `prompt` resource:  
+## Example `prompt`  
 
 ```json
  {
@@ -40,8 +40,8 @@ Sample `prompt` resource:
 
 | Method | Endpoint       | Description                                      |
 | ------ | -------------- | ------------------------------------------------ |
-| GET    | `/prompts`     | [Retrieve all prompts](../endpoints/get-prompts.md) |
-| POST   | `/prompts`     | [Save a prompt](../endpoints/post-prompts.md)                             |
-| GET    | `/prompts/:id` | [Retrieve a prompt by ID](../endpoints/get-prompts-id.md)                  |
-| PATCH  | `/prompts/:id` | [Update a prompt](../endpoints/patch-prompts-id.md)                           |
-| DELETE | `/prompts/:id` | [Delete a prompt](../endpoints/delete-prompts-id.md)                           |
+| GET    | `/prompts`     | [Retrieve all prompts](reference/endpoints/get-prompts.md) |
+| POST   | `/prompts`     | [Save a prompt](reference/endpoints/post-prompts.md)                             |
+| GET    | `/prompts/:id` | [Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md)                  |
+| PATCH  | `/prompts/:id` | [Update a prompt](reference/endpoints/patch-prompts-id.md)                           |
+| DELETE | `/prompts/:id` | [Delete a prompt](reference/endpoints/delete-prompts-id.md)                           |

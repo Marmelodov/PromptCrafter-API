@@ -1,6 +1,6 @@
-# Update a prompt
+# API Reference: Update a prompt
 
-Updates a [`prompt`](../resources/prompt.md) by its unique ID. Users can only update prompts they own. Only the fields included in the request body will be modified.
+Updates a `prompt` object by its unique ID. Users can only update `prompt` objects they own. Only fields included in the request body are modified.
 
 ## URL
 
@@ -16,7 +16,7 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 | Parameter name | Type   | Required | Description                       |
 |----------------|--------|----------|-----------------------------------|
-| `id`           | string | Yes      | Unique identifier of the prompt. |
+| `id`           | string | Yes      | Unique identifier of the `prompt`. |
 
 ## Request headers
 
@@ -27,7 +27,7 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 ## Request body
 
-A JSON object containing updated versions of one or more of the prompt's fields. All fields are optional.
+A JSON object containing updated versions of one or more of the `prompt` object's fields. All fields are optional.
 
 ```json
 {    
@@ -36,7 +36,7 @@ A JSON object containing updated versions of one or more of the prompt's fields.
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X PATCH https://promptcrafter-production.up.railway.app/prompts/prompt103 \
@@ -78,7 +78,7 @@ The updated `prompt` object.
 
 ## Related
 
-[Save a prompt](post-prompts.md): `POST /prompts` 
-[Retrieve all prompts](get-prompts.md): `GET /prompts`  
-[Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
-[Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
+[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
+[Retrieve all prompts](reference/endpoints/get-prompts.md): `GET /prompts`  
+[Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
+[Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`

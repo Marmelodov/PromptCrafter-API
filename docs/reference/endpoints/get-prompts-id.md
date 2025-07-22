@@ -1,6 +1,6 @@
-# Retrieve a prompt by ID
+# API Reference: Retrieve a prompt by ID
 
-Returns a [`prompt`](../resources/prompt.md) by its unique ID. Users can only access prompts they own.
+Retrieves a `prompt` object by its unique ID. Users can only access `prompt` objects they own.
 
 ## URL
 
@@ -16,7 +16,7 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 | Parameter name | Type   | Required | Description                       |
 |----------------|--------|----------|-----------------------------------|
-| `id`           | string | Yes      | Unique identifier of the prompt. |
+| `id`           | string | Yes      | Unique identifier of the `prompt`. |
 
 ## Request headers
 
@@ -28,7 +28,7 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts/104
@@ -62,7 +62,7 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Retrieve all prompts](get-prompts.md): `GET /prompts`  
-[Save a prompt](post-prompts.md): `POST /prompts`  
-[Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
-[Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
+[Retrieve all prompts](reference/endpoints/get-prompts.md): `GET /prompts`  
+[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
+[Update a prompt](reference/endpoints/patch-prompts-id.md): `PATCH /prompts/:id`  
+[Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`

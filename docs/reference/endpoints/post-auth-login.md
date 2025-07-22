@@ -1,4 +1,4 @@
-# Log in
+# API Reference: Log in
 
 Authenticates a user and returns a JWT token. All fields are required.
 
@@ -33,7 +33,7 @@ A JSON object with the user's email and password.
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X POST https://promptcrafter-production.up.railway.app/auth/login \
@@ -65,4 +65,4 @@ A JSON object containing a JWT authentication token.
 
 ## Related
 
-[Sign up](post-auth-signup.md): `POST /auth/signup`
+[Sign up](reference/endpoints/post-auth-signup.md): `POST /auth/signup`

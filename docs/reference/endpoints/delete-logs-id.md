@@ -1,6 +1,6 @@
-# Delete a log
+# API Reference: Delete a log
 
-Deletes a [`log`](../resources/log.md) by its unique ID. Users can only delete logs they own.
+Deletes a `log` object by its unique ID. Users can only delete `log` objects they own.
 
 ## URL
 
@@ -16,7 +16,7 @@ https://promptcrafter-production.up.railway.app/logs/:id
 
 | Parameter name | Type   | Required | Description                   |
 |----------------|--------|----------|-------------------------------|
-| `id`           | string | Yes      | Unique identifier of the log. |
+| `id`           | string | Yes      | Unique identifier of the `log`. |
 
 ## Request headers
 
@@ -28,7 +28,7 @@ https://promptcrafter-production.up.railway.app/logs/:id
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -X DELETE https://promptcrafter-production.up.railway.app/logs/log3 \
@@ -52,6 +52,6 @@ None
 
 ## Related
 
-[Retrieve all logs](get-logs.md): `GET /logs`  
-[Log a generated output](post-logs.md): `POST /logs`  
-[Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Retrieve logs for a specific prompt](reference/endpoints/get-logs-by-prompt.md): `GET /logs?promptId=...`

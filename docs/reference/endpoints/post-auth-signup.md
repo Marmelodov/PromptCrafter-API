@@ -1,6 +1,6 @@
-# Sign up
+# API Reference: Sign up
 
-Creates a new user account and returns a JWT authentication token. All fields are required.
+Creates a new user account. All fields are required.
 
 ## URL
 
@@ -34,7 +34,7 @@ A JSON object containing user details. All fields are required.
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
@@ -52,7 +52,7 @@ A JSON object containing an authentication token.
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "message": "User account created successfully."
 }
 ```
 
@@ -67,4 +67,4 @@ A JSON object containing an authentication token.
 
 ## Related
 
-[Log in](post-auth-login.md): `POST /auth/login`
+[Log in](reference/endpoints/post-auth-login.md): `POST /auth/login`

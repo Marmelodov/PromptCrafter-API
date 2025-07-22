@@ -6,14 +6,14 @@
   - [Log a generated ouput](tutorials/test-prompt.md)
   - [View logs](tutorials/view-logs.md)
   - [Search prompts](tutorials/search-prompts.md)
-- **API reference**
+- **API Reference**
   - [Index](reference/index.md)
   - *Resources*
     - [Prompt](reference/resources/prompt.md)
     - [Log](reference/resources/log.md)
   - *Auth*
     - [Sign up](reference/endpoints/post-auth-signup.md)
-    - [Log in](reference/endpoints/post-auth-signup.md)
+    - [Log in](reference/endpoints/post-auth-login.md)
   - *Prompt operations*
     - [Retrieve all prompts](reference/endpoints/get-prompts.md)
     - [Save a prompt](reference/endpoints/post-prompts.md)
