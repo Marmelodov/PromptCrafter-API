@@ -1,22 +1,19 @@
 # Tutorial: Save a prompt
 
-Save a prompt by sending a `POST /prompts` request. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Build an organized, searchable library of saved prompts where you can update versions, test outputs across models, log performance with scores and notes, and integrate prompts into tools for automation or experimenting.  
-
-**Things you can do with saved prompts:**  
-- **Automate content creation**: Store a prompt for drafting blog posts in your marketing app, then retrieve it by ID to generate articles in the same style every time without rewriting instructions.  
-- **Test prompt variations**: Tag related prompts (e.g., `sentiment-v1` and `sentiment-v2`) to run side-by-side tests in different AI models, tracking which version produces the most accurate sentiment analysis.  
+Save a prompt by sending a `POST /prompts` request. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
+- **Automate content creation**: Design prompts for a marketing app that draft blog posts in your brand’s voice, then retrieve them by ID to generate articles in the same style every time without rewriting instructions.  
+- **Build a prompt evaluation suite**: Run systematic experiments to determine the best prompt for a job like sentiment analysis. Tag related prompts (e.g., `sentiment-v1` and `sentiment-v2`) to programmatically test them across AI models and measure which version produces the most accurate outputs.
 - **Collaborate with teams**: Group prompts by topic in a shared library (e.g., "marketing" or "research"), so your team can reuse and update them with version history, eliminating the chaos of prompts buried in emails, docs, or personal notebooks.
 
 This tutorial takes about ten minutes to complete.
 
-## Before you start
+## Prerequisites
 
-Make sure you have:
+To follow this tutorial, you need:
 
-- A PromptCrafter user account and the Bearer token you received when you logged in. For help signing up or logging in, see the [Quickstart](../quickstart.md).
-- cURL or Postman. If you're using Postman, download and import the [PromptCrafter Postman Collection](postman.md).
-
-This tutorial assumes you're familiar with the basics of authentication from the Quickstart. If you haven't already, follow those steps to get your token, which you need for all requests in this tutorial.  
+- **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
+- **An HTTP client:** This tutorial provides examples for both cURL and Postman.
+    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
 ## Build the request
 
@@ -50,10 +47,10 @@ The request body contains the information that defines your prompt.
 
 ```json
 {
-  "title": "Historical Explanation for Students",
-  "content": "Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.",
-  "model": "Claude 3 Sonnet",
-  "tags": ["history", "education", "explanation"]
+  "title": "Positive Product Review Writer",
+  "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+  "model": "Grok-3 Beta",
+  "tags": ["review", "product", "writing"]
 }
 ```
 
@@ -66,7 +63,7 @@ To make the cURL commands cleaner, set shell variables for the base URL and your
 
 ```bash
 BASE_URL="https://promptcrafter-production.up.railway.app"
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  # Replace with your actual token
+TOKEN="your-jwt-goes-here" # Replace with your actual token
 ```
 
 Now send the request:
@@ -76,17 +73,17 @@ curl -X POST $BASE_URL/prompts \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Historical Explanation for Students",
-    "content": "Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.",
-    "model": "Claude 3 Sonnet",
-    "tags": ["history", "education", "explanation"]
+    "title": "Positive Product Review Writer",
+    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+    "model": "Grok-3 Beta",
+    "tags": ["review", "product", "writing"]
   }'
 ```
 
 After a successful response, save the prompt's `_id` to a variable so you can verify it saved correctly:
 
 ```bash
-PROMPT_ID="prompt104"  # Replace with the _id from your response
+PROMPT_ID="prompt102"  # Replace with the _id from your response
 ```
 
 </details>
@@ -94,27 +91,11 @@ PROMPT_ID="prompt104"  # Replace with the _id from your response
 <details>
 <summary>Postman</summary>
 
-If using the PromptCrafter Postman Collection, select the 'Save a prompt' request, replace the pre-filled example body with the details of your new prompt, and send. The Collection handles authentication automatically by capturing and setting the JWT token in the `{{token}}` variable after login.
+If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
 
-<details>
-<summary>Manual Postman Setup</summary>
-
-1. Navigate to **Send a new API request** and click **New Request**.
-2. Set method to `POST`.
-3. Set URL to:  
-   `https://promptcrafter-production.up.railway.app/prompts`
-4. Click the **Authorization** tab:
-   - In the **Type** dropdown, select `Bearer Token`.
-   - In the **Token** field, enter the bearer token you received after logging in.
-5. Click the **Headers** tab. Add a new header with:
-   - Key: `Content-Type`
-   - Value: `application/json`
-6. In the **Body** tab:
-   - Choose `raw` and `JSON`.
-   - Enter the request body.
-7. Click **Send** to submit the request.
-
-</details>
+1. In the **Prompts** folder, select the **Save a prompt** request.
+2. In the **Body** tab, modify the pre-filled JSON with your prompt's details.
+3. Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
 
 </details>
 
@@ -126,18 +107,18 @@ If your request is successful, the server returns a status code `201 Created` an
 
 ```json
 {
-  "_id": "prompt104",
-  "ownerId": "user7",
-  "title": "Historical Explanation for Students",
-  "content": "Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.",
-  "model": "Claude 3 Sonnet",
-  "tags": ["history", "education", "explanation"],
-  "createdAt": "2025-06-20T13:03:00Z",
-  "updatedAt": "2025-06-20T13:03:00Z"
+  "_id": "prompt102",
+  "ownerId": "user5",
+  "title": "Positive Product Review Writer",
+  "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+  "model": "Grok-3 Beta",
+  "tags": ["review", "product", "writing"],
+  "createdAt": "2024-06-20T13:01:00Z",
+  "updatedAt": "2024-06-20T13:01:00Z"
 }
 ```
 
-**Note:** the server adds the `_id`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
+**Note:** the server adds the `_id`, `ownerId`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
 
 ## Verify the prompt
 
@@ -177,15 +158,10 @@ Here are issues you might encounter when saving prompts and what to do about the
 | **404 Not Found** | `{"error": "Route not found"}` | Incorrect endpoint URL. | Verify the endpoint is `/prompts` with no trailing slash or typos. |
 | **500 Internal Server Error** | `{"error": "An unexpected server error occurred"}` | Server-side processing error. | Retry the request; contact support if the error persists. |
 
-## Next steps
+## Next Steps
 
-- Search your library: [Search prompts](tutorials/search-prompts.md)
-- Test and log outputs: [Log generated outputs](tutorials/test-prompt.md)
-- Update an existing prompt: [Update a prompt](tutorials/update-prompt.md)
-- Explore the full reference: [Prompt resource](reference/resources/prompt.md)
+Now that you've saved your first prompt, you're ready to explore PromtCrafter further.
 
-## Related
-
-[Prompt](reference/resources/prompt.md)  
-[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
-[Retrieve prompts](reference/endpoints/get-prompts.md): `GET /prompts/:id`
+- Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.
+- See the [Log a generated output tutorial](tutorials/test-prompt.md) to track prompt performance.
+- For complete details on parameters and endpoints, see the [Prompt resource](reference/resources/prompt.md) and the [`POST /prompts`](reference/endpoints/post-prompts.md) endpoint documentation.

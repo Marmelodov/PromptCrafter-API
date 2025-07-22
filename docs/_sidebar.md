@@ -5,6 +5,7 @@
   - [Save a prompt](tutorials/create-prompt.md)
   - [Log a generated ouput](tutorials/test-prompt.md)
   - [View logs](tutorials/view-logs.md)
+  - [Update a prompt](tutorials/update-prompt.md)
   - [Search prompts](tutorials/search-prompts.md)
 - **API Reference**
   - [Index](reference/index.md)
