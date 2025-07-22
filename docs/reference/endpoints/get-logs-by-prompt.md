@@ -1,10 +1,6 @@
----
-layout: page
----
+# API Reference: Retrieve logs for a specific prompt
 
-# Retrieve logs for a specific prompt
-
-Returns an array of [logs](../resources/log.md) recording the outputs of a specified prompt.
+Returns an array of `log` objects recording the outputs of a specified `prompt`.
 
 ## URL
 
@@ -20,7 +16,7 @@ https://promptcrafter-production.up.railway.app/logs?promptId={prompt_id}
 
 | Parameter name | Type   | Required | Description                      |
 |----------------|--------|----------|----------------------------------|
-| `promptId`     | string | Yes      | The unique ID of the prompt whose logs are to be retrieved |
+| `promptId`     | string | Yes      | The unique ID of the `prompt` whose logs are to be retrieved |
 
 ## Request headers
 
@@ -32,7 +28,7 @@ https://promptcrafter-production.up.railway.app/logs?promptId={prompt_id}
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -H "Authorization: Bearer {your_token}" \
@@ -40,8 +36,6 @@ curl -H "Authorization: Bearer {your_token}" \
 ```
 
 ## Response body
-
-A JSON array of `log` objects associated with the specified prompt:
 
 ```json
 [
@@ -62,14 +56,14 @@ A JSON array of `log` objects associated with the specified prompt:
 | Status code  | Status       | Description                                            |
 |--------------|--------------|--------------------------------------------------------|
 | 200          | Success      | Logs returned successfully                             |
-| 400          | Bad request  | `promptId` missing or malformed                        |
+| 400          | Bad Request  | `promptId` missing or malformed                        |
 | 401          | Unauthorized | Authentication token missing or invalid               |
 | 403          | Forbidden    | User is not authorized to view logs for this prompt    |
-| 404          | Not found    | No logs found for the specified prompt ID              |
-| 500          | Server error | An unexpected error occurred on the server             |
+| 404          | Not Found    | No logs found for the specified prompt ID              |
+| 500          | Server Error | An unexpected error occurred on the server             |
 
 ## Related
 
-[Retrieve all logs](get-logs.md): `GET /logs`  
-[Log a generated output](post-logs.md): `POST /logs`  
-[Delete a log](delete-logs-id.md): `DELETE /logs/:id`  
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Delete a log](reference/endpoints/delete-logs-id.md): `DELETE /logs/:id`  

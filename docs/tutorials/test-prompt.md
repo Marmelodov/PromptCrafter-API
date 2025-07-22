@@ -1,8 +1,3 @@
----
-layout: page
-title: Log a generated output
----
-
 # Tutorial: Log a generated output
 
 Record the output of a prompt test with a `POST /logs` request. A log contains the model’s output, the prompt ID, optional notes, and a quality score, giving you a permanent history of each test. After logging an output you can review it and compare the results of different tests. This tutorial takes about 10 minutes to complete.
@@ -133,11 +128,11 @@ Here are error codes you might encounter, what each means, and what you can do t
 
 ## Next steps
 
-Learn how to [view all logs](view-logs.md) or [search prompts](search-prompts.md).
+Learn how to [view all logs](tutorials/view-logs.md) or [search prompts](tutorials/search-prompts.md).
 
 ## Related
 
-[Log](../reference/resources/log.md)  
-[Prompt](../reference/resources/prompt.md)  
-[Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
-[Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
+[Log](reference/resources/log.md)  
+[Prompt](reference/resources/prompt.md)  
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  

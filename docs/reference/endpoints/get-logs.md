@@ -1,10 +1,6 @@
----
-layout: page
----
+# API Reference: Retrieve all logs
 
-# Retrieve all logs
-
-Returns an array of [`log`](../resources/log.md) objects belonging to the user.  
+Returns an array of `log` objects belonging to the user.  
 
 ## URL
 
@@ -30,7 +26,7 @@ None
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/logs
@@ -72,6 +68,6 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Log a generated output](post-logs.md): `POST /logs`  
-[Retrieve logs for a specific prompt](get-logs-by-prompt.md): `GET /logs?promptId=...`  
-[Delete a log](delete-logs-id.md): `DELETE /logs/:id`
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Retrieve logs for a specific prompt](reference/endpoints/get-logs-by-prompt.md): `GET /logs?promptId=...`  
+[Delete a log](reference/endpoints/delete-logs-id.md): `DELETE /logs/:id`

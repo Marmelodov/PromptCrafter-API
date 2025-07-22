@@ -1,8 +1,3 @@
----
-layout: page
-title: Search prompts
----
-
 # Tutorial: Search prompts
 
 Search prompts with a GET /search?q= request. This endpoint performs a full-text, case-insensitive scan of every prompt’s title, content, model, and tags and returns matching prompts ordered by relevance. This tutorial takes about 10 minutes to complete.
@@ -104,11 +99,11 @@ Here are error codes you might encounter, what each means, and what you can do t
 
 ## Next steps
 
-Learn how to [save a prompt](create-prompt.md) or [log a generated result](test-prompt.md).
+Learn how to [save a prompt](tutorials/create-prompt.md) or [log a generated result](tutorials/test-prompt.md).
 
 ## Related
 
-[Prompt](../reference/resources/prompt.md)  
-[Save a prompt](../reference/endpoints/post-prompts.md): `POST /prompts`  
-[Retrieve prompts](../reference/endpoints/get-prompts.md): `GET /prompts/`  
-[Retrieve prompts by id](../reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
+[Prompt](reference/resources/prompt.md)  
+[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
+[Retrieve prompts](reference/endpoints/get-prompts.md): `GET /prompts/`  
+[Retrieve prompts by id](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  

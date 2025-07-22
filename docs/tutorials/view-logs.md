@@ -1,8 +1,3 @@
----
-layout: page
-title: View Logs
----
-
 # Tutorial: View logs
 
 Retrieve prompt test logs with a `GET /logs` request. Each log stores the model’s output, the prompt ID, the model name, optional notes, and a score. Reviewing logs lets you analyze and compare results across tests. This tutorial takes about 5 minutes to complete.
@@ -89,12 +84,12 @@ Here are error codes you might encounter, what each means, and what you can do t
 
 ## Next steps
 
-Learn how to [log a generated output](test-prompt.md) or [save a prompt](create-prompt.md).
+Learn how to [log a generated output](tutorials/test-prompt.md) or [save a prompt](tutorials/create-prompt.md).
 
 ## Related
 
-[Log](../reference/resources/log.md)  
-[Retrieve all logs](../reference/endpoints/get-logs.md): `GET /logs`  
-[Retrieve logs for a specific prompt](../reference/endpoints/get-logs-by-prompt.md)  
-[Log a generated output](../reference/endpoints/post-logs.md): `POST /logs`  
-[Delete a log](../reference/endpoints/delete-logs-id.md): `DELETE /logs`  
+[Log](reference/resources/log.md)  
+[Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  
+[Retrieve logs for a specific prompt](reference/endpoints/get-logs-by-prompt.md) `GET /logs?promptId=`  
+[Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
+[Delete a log](reference/endpoints/delete-logs-id.md): `DELETE /logs`  

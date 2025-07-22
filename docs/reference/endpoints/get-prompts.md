@@ -1,10 +1,6 @@
----
-layout: page
----
+# API Reference: Retrieve all prompts
 
-# Retrieve all prompts
-
-Returns an array of [`prompt`](../resources/prompt.md) objects belonging to the user.
+Returns an array of `prompt` objects belonging to the user.
 
 ## URL
 
@@ -30,13 +26,13 @@ None
 
 None
 
-## Request example
+## Example request
 
 ```shell
 curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up.railway.app/prompts
 ```
 
-## Response body
+## Example response body
 
 ```json
 [

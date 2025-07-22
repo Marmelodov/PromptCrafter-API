@@ -1,8 +1,4 @@
----
-layout: page
----
-
-# Sign up
+# API Reference: Sign up
 
 Creates a new user account. All fields are required.
 
@@ -38,7 +34,7 @@ A JSON object containing user details. All fields are required.
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X POST https://promptcrafter-production.up.railway.app/auth/signup \
@@ -71,4 +67,4 @@ A JSON object containing an authentication token.
 
 ## Related
 
-[Log in](post-auth-login.md): `POST /auth/login`
+[Log in](reference/endpoints/post-auth-login.md): `POST /auth/login`

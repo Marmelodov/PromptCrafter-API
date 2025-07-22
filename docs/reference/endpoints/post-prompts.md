@@ -1,10 +1,6 @@
----
-layout: page
----
+# API Reference: Save a prompt
 
-# Save a prompt
-
-Creates a new [`prompt`](../resources/prompt.md) owned by the user.
+Creates a `prompt` object owned by the user.
 
 ## URL
 
@@ -29,7 +25,7 @@ None
 
 ## Request body
 
-A JSON object representing the new prompt. All fields except `tags` are required.
+A JSON object representing the new `prompt`. All fields except `tags` are required.
 
 ```json
 {
@@ -40,7 +36,7 @@ A JSON object representing the new prompt. All fields except `tags` are required
 }
 ```
 
-## Request example
+## Example request
 
 ```shell
 curl -X POST https://promptcrafter-production.up.railway.app/prompts \
@@ -82,7 +78,7 @@ The newly created `prompt` object.
 
 ## Related
 
-[Retrieve all prompts](get-prompts.md): `GET /prompts`  
-[Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
-[Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
-[Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
+[Retrieve all prompts](reference/endpoints/get-prompts.md): `GET /prompts`  
+[Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
+[Update a prompt](reference/endpoints/patch-prompts-id.md): `PATCH /prompts/:id`  
+[Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`
