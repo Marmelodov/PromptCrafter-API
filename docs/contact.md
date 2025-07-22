@@ -1,6 +1,6 @@
 # Contact
 
-For questions, bug reports, or feature requests related to the PromptCrafter API documentation, please contact:
+For questions about the PromptCrafter API documentation, please contact:
 
-**Jay Norrell**  
+**Robert Norrell**  
 [robertjnorrell@gmail.com](mailto:robertjnorrell@gmail.com)
