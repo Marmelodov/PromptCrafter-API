@@ -13,7 +13,7 @@ This tutorial takes about five minutes to complete.
 To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
-- **At least one saved log:** You need to have logged at least one output. If you haven't, complete the [Log a generated output tutorial](test-prompt.md) first.
+- **At least one saved log:** You need to have logged at least one output. If you haven't, complete the [Log a generated output tutorial](log-output.md) first.
 - **An HTTP client:** This tutorial provides examples for both cURL and Postman.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
@@ -37,54 +37,455 @@ To retrieve logs for a single prompt, include the following optional query param
 
 If you omit the `promptId` parameter, the API returns all logs for your account.
 
-## Send the request
+## Retrieve all logs for your account
 
-<details>
-<summary>cURL</summary>
+This is the default behavior when you send a `GET` request to `/logs` without any query parameters.
 
-To make the cURL commands cleaner, set shell variables for the base URL and your token. This avoids repeating them in every request.
+<!-- tabs:start -->
+
+#### **cURL**
+
+To make the cURL commands cleaner, set shell variables for the base URL and your token.
 
 ```bash
+# Set shell variables for convenience
 BASE_URL="https://promptcrafter-production.up.railway.app"
 TOKEN="your-jwt-goes-here" # Replace with your actual token
-```
 
-**To retrieve all logs:**
-
-```bash
+# Send the request to get all logs
 curl -X GET $BASE_URL/logs \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-**To retrieve logs for a specific prompt:**
+#### **Postman**
 
-First set a variable for the prompt's ID.
+In the **Logs** folder of the Postman Collection, select the **Retrieve all logs** request and click **Send**. The collection automatically uses the `{{token}}` variable set during login.
 
-```bash
-PROMPT_ID="your-prompt-id-here" # Replace with a real prompt ID
+#### **Python**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```python
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
+
+# Replace with your actual JWT token
+token = "your-jwt-goes-here"
+client = PromptCrafterClient(token=token)
+
+try:
+    all_logs = client.get_logs()
+    print(f"Retrieved {len(all_logs)} total log(s).")
+    if all_logs:
+        # Print details of the first log as an example
+        first_log = all_logs[0]
+        print(f"Example Log ID: {first_log['_id']}, Prompt ID: {first_log['promptId']}")
+except PromptCrafterAPIError as e:
+    print(f"An API error occurred: {e}")
 ```
 
-Now send the request with the `promptId` query parameter.
+##### **Requests**
+
+```python
+import requests
+
+# Replace with your actual JWT token
+token = "your-jwt-goes-here"
+url = "https://promptcrafter-production.up.railway.app/logs"
+headers = {"Authorization": f"Bearer {token}"}
+
+try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()  # Raise an exception for bad status codes
+    all_logs = response.json()
+    
+    print(f"Retrieved {len(all_logs)} total log(s).")
+    if all_logs:
+        first_log = all_logs[0]
+        print(f"Example Log ID: {first_log['_id']}, Prompt ID: {first_log['promptId']}")
+except requests.exceptions.RequestException as e:
+    print(f"An HTTP error occurred: {e}")
+```
+<!-- tabs:end -->
+
+#### **JavaScript**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```javascript
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function getAllLogs() {
+    // Replace with your actual JWT token
+    const token = 'your-jwt-goes-here';
+    const client = new PromptCrafterClient({ token });
+
+    try {
+        const allLogs = await client.getLogs();
+        console.log(`Retrieved ${allLogs.length} total log(s).`);
+        if (allLogs.length > 0) {
+            const firstLog = allLogs[0];
+            console.log(`Example Log ID: ${firstLog._id}, Prompt ID: ${firstLog.promptId}`);
+        }
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+getAllLogs();
+```
+
+##### **Fetch**
+
+```javascript
+async function getAllLogs() {
+    // Replace with your actual JWT token
+    const token = "your-jwt-goes-here";
+    const url = "https://promptcrafter-production.up.railway.app/logs";
+    const headers = { 'Authorization': `Bearer ${token}` };
+
+    try {
+        const response = await fetch(url, { headers });
+        const allLogs = await response.json();
+
+        if (!response.ok) {
+            throw new Error(allLogs.error || `HTTP error! Status: ${response.status}`);
+        }
+        
+        console.log(`Retrieved ${allLogs.length} total log(s).`);
+        if (allLogs.length > 0) {
+            const firstLog = allLogs[0];
+            console.log(`Example Log ID: ${firstLog._id}, Prompt ID: ${firstLog.promptId}`);
+        }
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+getAllLogs();
+```
+<!-- tabs:end -->
+
+#### **Go**
+
+```go
+package main
+
+import (
+  "context"
+  "fmt"
+  "log"
+  "time"
+  "github.com/your-org/promptcrafter" // Replace with your actual import path
+)
+
+func main() {
+    // Replace with your actual JWT token
+  token := "your-jwt-goes-here"
+  client := promptcrafter.NewClient(token)
+  ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+  defer cancel()
+
+  allLogs, err := client.ListLogs(ctx)
+  if err != nil {
+    log.Fatalf("Error retrieving all logs: %v", err)
+  }
+    
+  fmt.Printf("Retrieved %d total log(s).\n", len(allLogs))
+  if len(allLogs) > 0 {
+    fmt.Printf("Example Log ID: %s, Prompt ID: %s\n", allLogs[0].ID, allLogs[0].PromptID)
+  }
+}
+```
+
+#### **Ruby**
+
+```ruby
+require 'promptcrafter'
+
+# Replace with your actual JWT token
+token = 'your-jwt-goes-here'
+client = PromptCrafter::Client.new(access_token: token)
+
+begin
+  all_logs = client.list_logs
+  puts "Retrieved #{all_logs.length} total log(s)."
+  if all_logs.any?
+    first_log = all_logs.first
+    puts "Example Log ID: #{first_log['_id']}, Prompt ID: #{first_log['promptId']}"
+  end
+rescue PromptCrafter::Error => e
+  puts "An API error occurred: #{e.message}"
+end
+```
+
+#### **Java**
+
+```java
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Log;
+import java.util.List;
+
+public class GetAllLogsExample {
+    public static void main(String[] args) {
+        // Replace with your actual JWT token
+        String token = "your-jwt-goes-here";
+
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+
+        try {
+            List<Log> allLogs = client.getAllLogs();
+            System.out.println("Retrieved " + allLogs.size() + " total log(s).");
+            if (!allLogs.isEmpty()) {
+                Log firstLog = allLogs.get(0);
+                System.out.println("Example Log ID: " + firstLog._id + ", Prompt ID: " + firstLog.promptId);
+            }
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("API Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+<!-- tabs:end -->
+
+## Retrieve logs for a specific prompt
+
+To filter logs by prompt, add the `promptId` query parameter to your `GET` request.
+
+<!-- tabs:start -->
+
+#### **cURL**
+
+To make the cURL commands cleaner, set shell variables for the base URL, your token, and the `promptID`.
 
 ```bash
+# Set shell variables for convenience
+BASE_URL="https://promptcrafter-production.up.railway.app"
+TOKEN="your-jwt-goes-here" # Replace with your actual token
+PROMPT_ID="your-prompt-id-here" # Replace with the ID of the prompt to filter by
+
+# Send the request with the promptId query parameter
 curl -X GET "$BASE_URL/logs?promptId=$PROMPT_ID" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-</details>
+#### **Postman**
 
-<details>
-<summary>Postman</summary>
+1. In the **Logs** folder, select the **Retrieve logs by prompt** request.
+2. In the **Params** tab, set the value of the `promptId` key to the ID of the prompt you want to see logs for.
+3. Click **Send**.
 
-If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
+#### **Python**
 
-- **To retrieve all logs:** In the **Logs** folder, select the **Retrieve all logs** request and click **Send**.
-- **To retrieve logs for a specific prompt:**
-    1. In the **Logs** folder, select the **Retrieve logs by prompt** request.
-    2. In the **Params** tab, replace the `{{promptId}}` variable with the ID of the prompt you want to see logs for.
-    3. Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
+<!-- tabs:start -->
 
-</details>
+##### **SDK**
+
+```python
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
+
+# Replace with your actual JWT token and a prompt ID from your account
+token = "your-jwt-goes-here"
+prompt_id_to_filter = "prompt104"
+
+client = PromptCrafterClient(token=token)
+
+try:
+    prompt_logs = client.get_logs_by_prompt(prompt_id=prompt_id_to_filter)
+    print(f"Found {len(prompt_logs)} log(s) for prompt ID '{prompt_id_to_filter}'.")
+    for log in prompt_logs:
+        print(f"  - Log ID: {log['_id']}, Score: {log.get('score', 'N/A')}")
+except PromptCrafterAPIError as e:
+    print(f"An API error occurred: {e}")
+```
+
+##### **Requests**
+
+```python
+import requests
+
+# Replace with your token and the prompt ID to filter by
+token = "your-jwt-goes-here"
+prompt_id_to_filter = "prompt104"
+
+url = "https://promptcrafter-production.up.railway.app/logs"
+headers = {"Authorization": f"Bearer {token}"}
+params = {"promptId": prompt_id_to_filter}
+
+try:
+    response = requests.get(url, headers=headers, params=params)
+    response.raise_for_status()
+    prompt_logs = response.json()
+    
+    print(f"Found {len(prompt_logs)} log(s) for prompt ID '{prompt_id_to_filter}'.")
+    for log in prompt_logs:
+        print(f"  - Log ID: {log['_id']}, Score: {log.get('score', 'N/A')}")
+except requests.exceptions.RequestException as e:
+    print(f"An HTTP error occurred: {e}")
+```
+<!-- tabs:end -->
+
+#### **JavaScript**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```javascript
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function getLogsByPrompt() {
+    // Replace with your token and the prompt ID to filter by
+    const token = 'your-jwt-goes-here';
+    const promptIdToFilter = 'prompt104';
+    
+    const client = new PromptCrafterClient({ token });
+
+    try {
+        const promptLogs = await client.getLogsByPrompt(promptIdToFilter);
+        console.log(`Found ${promptLogs.length} log(s) for prompt ID '${promptIdToFilter}'.`);
+        promptLogs.forEach(log => {
+            console.log(`  - Log ID: ${log._id}, Score: ${log.score || 'N/A'}`);
+        });
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+
+getLogsByPrompt();
+```
+
+##### **Fetch**
+
+```javascript
+async function getLogsByPrompt() {
+    // Replace with your token and the prompt ID to filter by
+    const token = "your-jwt-goes-here";
+    const promptIdToFilter = "prompt104";
+
+    const url = new URL("https://promptcrafter-production.up.railway.app/logs");
+    url.searchParams.append('promptId', promptIdToFilter);
+    const headers = { 'Authorization': `Bearer ${token}` };
+
+    try {
+        const response = await fetch(url, { headers });
+        const promptLogs = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(promptLogs.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        console.log(`Found ${promptLogs.length} log(s) for prompt ID '${promptIdToFilter}'.`);
+        promptLogs.forEach(log => {
+            console.log(`  - Log ID: ${log._id}, Score: ${log.score || 'N/A'}`);
+        });
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+getLogsByPrompt();
+```
+<!-- tabs:end -->
+
+#### **Go**
+
+```go
+package main
+
+import (
+  "context"
+  "fmt"
+  "log"
+  "time"
+  "github.com/your-org/promptcrafter" // Replace with your actual import path
+)
+
+func main() {
+    // Replace with your token and a real prompt ID from your account
+  token := "your-jwt-goes-here"
+  promptIDToFilter := "prompt104"
+
+  client := promptcrafter.NewClient(token)
+  ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+  defer cancel()
+
+  promptLogs, err := client.ListLogsByPrompt(ctx, promptIDToFilter)
+  if err != nil {
+    log.Fatalf("Error retrieving logs for prompt %s: %v", promptIDToFilter, err)
+  }
+
+  fmt.Printf("Found %d log(s) for prompt ID '%s'.\n", len(promptLogs), promptIDToFilter)
+  for _, lg := range promptLogs {
+    score := "N/A"
+    if lg.Score != nil {
+      score = fmt.Sprintf("%d", *lg.Score)
+    }
+    fmt.Printf("  - Log ID: %s, Score: %s\n", lg.ID, score)
+  }
+}
+```
+
+#### **Ruby**
+
+```ruby
+require 'promptcrafter'
+
+# Replace with your token and a real prompt ID from your account
+token = 'your-jwt-goes-here'
+prompt_id_to_filter = 'prompt104'
+client = PromptCrafter::Client.new(access_token: token)
+
+begin
+  prompt_logs = client.get_logs_by_prompt(prompt_id: prompt_id_to_filter)
+  puts "Found #{prompt_logs.length} log(s) for prompt ID '#{prompt_id_to_filter}'."
+  prompt_logs.each do |log|
+    puts "  - Log ID: #{log['_id']}, Score: #{log['score'] || 'N/A'}"
+  end
+rescue PromptCrafter::Error => e
+  puts "An API error occurred: #{e.message}"
+end
+```
+
+#### **Java**
+
+```java
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Log;
+import java.util.List;
+
+public class GetLogsByPromptExample {
+    public static void main(String[] args) {
+        // Replace with your token and a real prompt ID from your account
+        String token = "your-jwt-goes-here";
+        String promptIdToFilter = "prompt104";
+
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+
+        try {
+            List<Log> promptLogs = client.getLogsByPrompt(promptIdToFilter);
+            System.out.println("Found " + promptLogs.size() + " log(s) for prompt ID '" + promptIdToFilter + "'.");
+            for (Log log : promptLogs) {
+                String score = (log.score != null) ? log.score.toString() : "N/A";
+                System.out.println("  - Log ID: " + log._id + ", Score: " + score);
+            }
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("API Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+<!-- tabs:end -->
 
 ## Response
 
@@ -115,7 +516,8 @@ If you request all logs, the response looks like this:
 ]
 ```
 
-If you filter by `promptId`, the array contains only logs matching that ID. If there's no log for that prompt, the response contains an empty array `[]`.
+If you filter by `promptId`, the array contains only logs matching that ID. If there are no logs for that prompt, the response is an empty array `[]`.
+
 
 ## What to do if the request doesn't work
 

@@ -45,40 +45,242 @@ The search is case-insensitive and matches partial words; for example, a query f
 
 ## Send the request
 
-<details>
-<summary>cURL</summary>
+<!-- tabs:start -->
+
+#### **cURL**
 
 To make the cURL commands cleaner, set shell variables for the base URL and your token.
 
 ```bash
+# Set shell variables for convenience
 BASE_URL="https://promptcrafter-production.up.railway.app"
 TOKEN="your-jwt-goes-here" # Replace with your actual token
-```
 
-Now send a request with your search term in the `q` query parameter.
-
-```bash
 # Search for prompts related to a single term ("python")
-curl -X GET "$BASE_URL/search?q=python" \
+curl -G --data-urlencode "q=python" "$BASE_URL/search" \
   -H "Authorization: Bearer $TOKEN"
 
 # Search for prompts related to multiple terms ("product marketing")
-curl -X GET "$BASE_URL/search?q=product+marketing" \
+curl -G --data-urlencode "q=product marketing" "$BASE_URL/search" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-</details>
-
-<details>
-<summary>Postman</summary>
+#### **Postman**
 
 If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
 
-1. In the **Search** folder, select the **Search prompts** request.
-2. In the **Params** tab, find the key `q`. In the **VALUE** column next to it, enter your search term (e.g., `python`).
-3. Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
+1.  In the **Search** folder, select the **Search prompts** request.
+2.  In the **Params** tab, find the key `q`. In the **VALUE** column next to it, enter your search term (e.g., `python`).
+3.  Click **Send**. The collection automatically uses the `{{token}}` variable set during login.
 
-</details>
+#### **Python**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```python
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
+
+# Replace with your actual JWT token
+token = "your-jwt-goes-here"
+client = PromptCrafterClient(token=token)
+
+search_term = "python"
+
+try:
+    results = client.search_prompts(query=search_term)
+    print(f"Found {len(results)} prompt(s) matching '{search_term}':")
+    for prompt in results:
+        print(f"  - ID: {prompt['_id']}, Title: {prompt['title']}")
+except PromptCrafterAPIError as e:
+    print(f"An API error occurred: {e}")
+```
+
+##### **Requests**
+
+```python
+import requests
+
+# Replace with your actual JWT token
+token = "your-jwt-goes-here"
+base_url = "https://promptcrafter-production.up.railway.app"
+search_term = "python"
+
+# Set up headers and query parameters
+headers = {"Authorization": f"Bearer {token}"}
+params = {"q": search_term}
+
+try:
+    response = requests.get(f"{base_url}/search", headers=headers, params=params)
+    response.raise_for_status() # Raise an exception for bad status codes
+
+    results = response.json()
+    print(f"Found {len(results)} prompt(s) matching '{search_term}':")
+    for prompt in results:
+        print(f"  - ID: {prompt['_id']}, Title: {prompt['title']}")
+except requests.exceptions.RequestException as e:
+    print(f"An HTTP error occurred: {e}")
+```
+
+<!-- tabs:end -->
+
+#### **JavaScript**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```javascript
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function searchPrompts() {
+    // Replace with your actual JWT token
+    const token = 'your-jwt-goes-here';
+    const client = new PromptCrafterClient({ token });
+    const searchTerm = 'python';
+
+    try {
+        const results = await client.searchPrompts(searchTerm);
+        console.log(`Found ${results.length} prompt(s) matching '${searchTerm}':`);
+        results.forEach(prompt => {
+            console.log(`  - ID: ${prompt._id}, Title: ${prompt.title}`);
+        });
+    } catch (error) {
+        console.error("Failed to search prompts:", error.message);
+    }
+}
+
+searchPrompts();
+```
+
+##### **Fetch**
+
+```javascript
+async function searchPrompts() {
+    // Replace with your actual JWT token
+    const token = "your-jwt-goes-here";
+    const searchTerm = "python";
+
+    // Construct the URL with the search query
+    const url = new URL("https://promptcrafter-production.up.railway.app/search");
+    url.searchParams.append('q', searchTerm);
+
+    const headers = { 'Authorization': `Bearer ${token}` };
+
+    try {
+        const response = await fetch(url, { headers });
+        const results = await response.json();
+
+        if (!response.ok) {
+            throw new Error(results.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        console.log(`Found ${results.length} prompt(s) matching '${searchTerm}':`);
+        results.forEach(prompt => {
+            console.log(`  - ID: ${prompt._id}, Title: ${prompt.title}`);
+        });
+    } catch (error) {
+        console.error("Failed to search prompts:", error.message);
+    }
+}
+
+searchPrompts();
+```
+
+<!-- tabs:end -->
+
+#### **Go**
+
+```go
+package main
+
+import (
+  "context"
+  "fmt"
+  "log"
+  "time"
+  "github.com/your-org/promptcrafter" // Replace with your actual import path
+)
+
+func main() {
+    // Replace with your actual JWT token
+  token := "your-jwt-goes-here"
+  client := promptcrafter.NewClient(token)
+
+    // Using a context with a timeout is a best practice for network requests.
+  ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+  defer cancel()
+
+  searchTerm := "python"
+  results, err := client.SearchPrompts(ctx, searchTerm)
+  if err != nil {
+    log.Fatalf("Error searching prompts: %v", err)
+  }
+
+  fmt.Printf("Found %d prompt(s) matching '%s':\n", len(results), searchTerm)
+  for _, prompt := range results {
+    fmt.Printf("  - ID: %s, Title: %s\n", prompt.ID, prompt.Title)
+  }
+}
+```
+
+#### **Ruby**
+
+```ruby
+require 'promptcrafter'
+
+# Replace with your actual JWT token
+token = 'your-jwt-goes-here'
+client = PromptCrafter::Client.new(access_token: token)
+
+search_term = 'python'
+
+begin
+  results = client.search_prompts(q: search_term)
+  puts "Found #{results.length} prompt(s) matching '#{search_term}':"
+  results.each do |prompt|
+    puts "  - ID: #{prompt['_id']}, Title: #{prompt['title']}"
+  end
+rescue PromptCrafter::Error => e
+  puts "An API error occurred: #{e.message}"
+end
+```
+
+#### **Java**
+
+```java
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Prompt;
+import java.util.List;
+
+public class SearchPromptsExample {
+    public static void main(String[] args) {
+        // Replace with your actual JWT token
+        String token = "your-jwt-goes-here";
+        String searchTerm = "python";
+
+        // Initialize the client with your API token
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+
+        try {
+            // Use the client to search for prompts
+            List<Prompt> results = client.searchPrompts(searchTerm);
+
+            System.out.println("Found " + results.size() + " prompt(s) matching '" + searchTerm + "':");
+            for (Prompt prompt : results) {
+                System.out.println("  - ID: " + prompt._id + ", Title: " + prompt.title);
+            }
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("API Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+<!-- tabs:end -->
 
 ## Response
 
@@ -114,10 +316,10 @@ Here are issues you might encounter when searching for prompts and how to resolv
 | **401 Unauthorized** | `{"error": "Authentication token is expired or invalid"}` | The bearer token is expired or malformed. | Log in again to obtain a new token and update your request. |
 | **500 Internal Server Error** | `{"error": "An unexpected server error occurred"}` | An error occurred on the server. | Retry the request after a short wait. If the error persists, contact support. |
 
-## Next Steps
+## Next steps
 
 Now that you can find prompts in your library, you are ready to use them to build and test solutions.
 
-- Try the [Log a generated output tutorial](tutorials/test-prompt.md) to test a prompt you found.
+- Try the [Log a generated output tutorial](tutorials/log-output.md) to test a prompt you found.
 - Learn how to [update a prompt](tutorials/update-prompt.md) with new content or tags.
 - For complete details on parameters and endpoints, see the [Prompt resource](reference/resources/prompt.md) and the [`GET /search`](reference/endpoints/get-search.md) endpoint documentation.
