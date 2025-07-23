@@ -1,6 +1,6 @@
 # Tutorial: View logs
 
-Retrieve prompt test logs by sending a `GET /logs` request. Each log records a model's `output`, linking it to the `promptId` that produced it. Reviewing logs allows you to analyze and compare results across tests, identify performance patterns, and systematically improve your prompts. You can:
+This guide shows you how to retrieve and view the logged results of prompt tests. Each log records a model's `output`, linking it to the `promptId` that produced it. Reviewing logs allows you to analyze and compare results across tests, identify performance patterns, and systematically improve your prompts. You can:
 
 - **Analyze chatbot performance:** Retrieve logs for a specific `promptId` used by a chatbot to see a complete history of its responses to users, then analyze the scores and notes to find areas for improvement.
 - **Compare A/B test results:** Fetch logs for two different prompt versions (e.g., `prompt-A` and `prompt-B`) to compare their average scores and determine which is more effective.
@@ -19,13 +19,13 @@ To follow this tutorial, you need:
 
 ## Build the request
 
-To view logs, send a `GET` request to the `/logs` endpoint. You can either retrieve all logs associated with your account or filter them to see only the logs for a specific prompt.
+View logs by sending a `GET` request to the `/logs` endpoint. You can either retrieve all logs associated with your account or filter them to see only the logs for a specific prompt.
 
 ### Headers
 
 Add the following header to your request:
 
-- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
+- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with your Bearer token.
 
 ### Query parameters
 
@@ -76,7 +76,7 @@ curl -X GET "$BASE_URL/logs?promptId=$PROMPT_ID" \
 <details>
 <summary>Postman</summary>
 
-If you've imported the PromptCrafter Postman Collection, sending the request is simple. 
+If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
 
 - **To retrieve all logs:** In the **Logs** folder, select the **Retrieve all logs** request and click **Send**.
 - **To retrieve logs for a specific prompt:**
@@ -115,7 +115,7 @@ If you request all logs, the response looks like this:
 ]
 ```
 
-If you filter by `promptId`, the array contains only logs matching that ID. If there's no log for that prompt, the API returns an empty array `[]`.
+If you filter by `promptId`, the array contains only logs matching that ID. If there's no log for that prompt, the response contains an empty array `[]`.
 
 ## What to do if the request doesn't work
 

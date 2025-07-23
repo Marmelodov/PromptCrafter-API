@@ -1,6 +1,6 @@
 # Tutorial: Search for prompts
 
-Find prompts in your library by sending a `GET /search` request. This endpoint performs a case-insensitive search across the `title`, `content`, and `tags` of all prompts you own, making it easy to find the exact instructions you need. Systematically searching your library allows you to:
+This guide shows you how to search your prompt library. Use `GET /search` to performs a case-insensitive search across the `title`, `content`, and `tags` of all prompts you own, making it easy to find the exact instructions you need. Systematically searching your library allows you to:
 
 - **Find and reuse existing work:** A teammate needs to draft an apology email. They can search for `customer apology email` to find and adapt a high-quality prompt someone else has already perfected.
 - **Discover prompts for new tasks:** You're building a new feature that summarizes articles. Search your team's library for `summary` or `tldr` to find relevant prompts to use as a starting point.
@@ -19,17 +19,17 @@ To follow this tutorial, you need:
 
 ## Build the request
 
-To search for prompts, send a `GET` request to the following endpoint:
+Search your prompts by sending a `GET` request to this endpoint:
 
 ```text
 https://promptcrafter-production.up.railway.app/search
 ```
 
-The request includes an authorization header and a query parameter with your search term.
+The `GET` request includes an authorization header and a query parameter with your search term.
 
 ### Headers
 
-Add the following header to your request:
+This header is required:
 
 - `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
 
@@ -72,7 +72,7 @@ curl -X GET "$BASE_URL/search?q=product+marketing" \
 <details>
 <summary>Postman</summary>
 
-If you've imported the PromptCrafter Postman Collection, sending the request is simple. The collection automatically handles authentication for you.
+If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
 
 1. In the **Search** folder, select the **Search prompts** request.
 2. In the **Params** tab, find the key `q`. In the **VALUE** column next to it, enter your search term (e.g., `python`).
@@ -99,9 +99,9 @@ A successful request returns a `200 OK` status and a JSON array of prompt object
 ]
 ```
 
-**Understanding results ordering:** Prompts appear in order of relevance. The search algorithm considers matches in titles more relevant than matches in content or tags, so prompts with titles that match your query will appear higher in the results.
+> **Understanding results ordering:** Prompts appear in order of relevance. The search algorithm considers matches in titles more relevant than matches in content or tags, so prompts with titles that match your query appear higher in the results.
 
-If no prompts match your search term, the API returns a `200 OK` status with an empty array `[]`.
+If no prompts match your search term, the request returns a `200 OK` status with an empty array `[]`.
 
 ## What to do if the request doesn't work
 
