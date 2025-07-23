@@ -1,10 +1,10 @@
 # Tutorial: Log a generated output
 
-Log a generated output by sending a `POST /logs` request. Logs are the API's primary resource for evaluating prompt performance, linking a specific prompt (`promptId`) to a model's generated `output` along with contextual `notes` and a `score`. Systematically logging outputs enables you to:
+This guide walks through how to log the generated output of a prompt test. Logs are the API's primary resource for evaluating prompt performance. Each log records the details of a prompt test, including a link to the tested prompt (`promptId`), the AI model, the generated `output`, contextual `notes`, and a `score`. Systematically logging outputs enables you to do things like:
 
-- **Refine a customer support chatbot:** Log chatbot responses to common user queries, then score them for accuracy and helpfulness to identify which prompts need improvement.
-- **A/B test marketing copy:** Test two versions of a prompt that generates e-commerce product descriptions. Log the outputs from each, score them based on engagement metrics, and use the data to choose the better-performing prompt.
-- **Create a regression test suite:** After updating a critical prompt, run it against a set of test cases and log the outputs. Compare new logs to previous ones to ensure the prompt's performance hasn't degraded.
+*   **Refine a customer support chatbot:** Log chatbot responses to common user queries, then score them for accuracy and helpfulness to identify which prompts need improvement.
+*   **A/B test marketing copy:** Test two versions of a prompt that generates e-commerce product descriptions. Log the outputs from each, score them based on engagement metrics, and use the data to choose the better-performing prompt.
+*   **Create a regression test suite:** After updating a critical prompt, run it against a set of test cases and log the outputs. Compare new logs to previous ones to ensure the prompt's performance hasn't degraded.
 
 This tutorial takes about ten minutes to complete.
 
@@ -12,100 +12,350 @@ This tutorial takes about ten minutes to complete.
 
 To follow this tutorial, you need:
 
-*   **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart](../quickstart.md) first.
-*   **A saved prompt's ID:** You need the `_id` of a prompt you've already saved. If you don't have one, complete the [Save a prompt tutorial](create-prompt.md).
+*   **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, follow the authentication steps in the [Quickstart](../quickstart.md) to get one.
+*   **The `_id` of a saved prompt:** If you don't have any prompts saved, complete the [Save a prompt tutorial](create-prompt.md).
 *   **An HTTP client:** This tutorial provides examples for both cURL and Postman.
     *   If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along easily.
 
 ## Build the request
 
-To log a new output, send a `POST` request to the following endpoint:
+Log a generated output by sending a `POST` request to this endpoint:
 
 ```text
 https://promptcrafter-production.up.railway.app/logs
 ```
 
-The request includes two headers and a JSON-formatted request body.
+The `POST` request includes two headers and a JSON-formatted request body.
 
 ### Headers
 
-Add the following headers to your request:
+Both these headers are required:
 
-- `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
-- `Content-Type: application/json` tells the server to expect a JSON object in the request body.
+*   `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
+*   `Content-Type: application/json` tells the server to expect a JSON object in the request body.
 
 ### Request body
 
-The request body contains the data from your prompt test.
+The request body contains the data from your prompt test that you'll record in your new log, including the generated output.
 
-| Field       | Type    | Required | Description                                                                    |
-|-------------|---------|----------|--------------------------------------------------------------------------------|
-| `promptId`  | string  | Yes      | The unique `_id` of the prompt that generated this output.                       |
-| `output`    | string  | Yes      | The text returned by the AI model.                                             |
-| `modelUsed` | string  | Yes      | Name of the model that generated the output (e.g., `gpt-4o`, `Claude 3 Sonnet`). |
-| `notes`     | string  | No       | Optional comments or context for later review.                                 |
-| `score`     | integer | No       | Optional quality rating (e.g., on a scale of 0–10).                           |
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `promptId` | string | Yes | The unique `_id` of the prompt that generated this output. |
+| `output` | string | Yes | The text generated by the AI model. |
+| `modelUsed` | string | Yes | The name of the model that generated the output (e.g., `gpt-4o`). |
+| `notes` | string | No | Optional comments or context for later review. |
+| `score` | integer | No | Optional quality rating (e.g., on a scale of 0–10). |
 
-**Example request body:**
+## Send the request
 
-```json
+<!-- tabs:start -->
+
+#### **cURL**
+
+To make the cURL commands cleaner, set shell variables for the base URL, your token, the prompt ID, and the data payload.
+
+```bash
+# Set shell variables for convenience
+BASE_URL="https://promptcrafter-production.up.railway.app"
+TOKEN="your-jwt-goes-here" # Replace with your actual token
+PROMPT_ID="prompt104"      # Replace with the ID of your prompt
+
+# Define the JSON payload in a separate variable for readability
+JSON_PAYLOAD=$(cat <<-END
 {
-  "promptId": "prompt104",
+  "promptId": "$PROMPT_ID",
   "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
   "modelUsed": "Claude 3 Sonnet",
   "notes": "Clear, accessible explanation for students. Good tone.",
   "score": 8
 }
-```
+END
+)
 
-## Send the request
-
-<details>
-<summary>cURL</summary>
-
-To make the cURL commands cleaner, set shell variables for the base URL, your token, and the prompt ID. This avoids repeating them in every request.
-
-```bash
-BASE_URL="https://promptcrafter-production.up.railway.app"
-TOKEN="your-jwt-goes-here" # Replace with your actual token
-PROMPT_ID="prompt104" # Replace with the ID of your prompt
-```
-
-Now send the request:
-
-```bash
+# Send the request with the payload
 curl -X POST $BASE_URL/logs \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{
-    "promptId": "'"$PROMPT_ID"'",
-    "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
-    "modelUsed": "Claude 3 Sonnet",
-    "notes": "Clear, accessible explanation for students. Good tone.",
-    "score": 8
-  }'
+  -d "$JSON_PAYLOAD"
 ```
 
-After a successful response, you can save the log's `_id` to a variable for future use:
+#### **Postman**
 
-```bash
-LOG_ID="log104"  # Replace with the _id from your response
-```
-
-</details>
-
-<details>
-<summary>Postman</summary>
-
-If you have imported the PromptCrafter Postman Collection, sending the request is simple. The collection is pre-configured to handle authentication for you.
-
+If you've imported the PromptCrafter Postman Collection, sending the request is simple.
 1.  In the **Logs** folder, select the **Log a generated output** request.
 2.  In the **Body** tab, modify the pre-filled JSON with your test data, ensuring you replace the example `promptId` with the ID of a prompt you own.
 3.  Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
 
-</details>
+#### **Python**
 
-A successful request returns a `201 Created` status and the full log object, including its unique server-generated `_id`.
+<!-- tabs:start -->
+
+##### **SDK**
+
+```python
+# The PromptCrafter SDK is the recommended way to use the API in Python.
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
+
+# Replace with your actual JWT token and prompt ID
+token = "your-jwt-goes-here"
+prompt_id = "prompt104" 
+
+# Initialize the client with your token
+client = PromptCrafterClient(token=token)
+
+# Define the data for the new log in a dictionary for clarity
+log_data = {
+    "prompt_id": prompt_id,
+    "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+    "model_used": "Claude 3 Sonnet",
+    "notes": "Clear, accessible explanation for students. Good tone.",
+    "score": 8
+}
+
+try:
+    # Log the output by unpacking the dictionary into keyword arguments
+    new_log = client.create_log(**log_data)
+    print(f"Log created successfully with ID: {new_log['_id']}")
+except PromptCrafterAPIError as e:
+    print(f"Failed to create log: {e}")
+```
+
+##### **Requests**
+
+```python
+# You can also use the popular 'requests' library for raw HTTP calls.
+import requests
+import json
+
+# Replace with your actual JWT token and prompt ID
+token = "your-jwt-goes-here"
+prompt_id = "prompt104"
+
+# API endpoint for logging outputs
+url = "https://promptcrafter-production.up.railway.app/logs"
+
+# Request headers, including authorization
+headers = {
+    "Authorization": f"Bearer {token}",
+    "Content-Type": "application/json"
+}
+
+# The data for the new log
+payload = {
+    "promptId": prompt_id,
+    "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+    "modelUsed": "Claude 3 Sonnet",
+    "notes": "Clear, accessible explanation for students. Good tone.",
+    "score": 8
+}
+
+try:
+    # Send the POST request
+    response = requests.post(url, headers=headers, json=payload)
+    # Raise an exception for bad status codes (4xx or 5xx)
+    response.raise_for_status()
+
+    created_log = response.json()
+    print(f"Log created successfully with ID: {created_log['_id']}")
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+```
+
+<!-- tabs:end -->
+
+#### **JavaScript**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```javascript
+// The PromptCrafter SDK is recommended for JavaScript/Node.js.
+// In a real project, the import would be from an npm package:
+// import { PromptCrafterClient } from '@promptcrafter/sdk';
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function logOutputWithSDK() {
+    // Replace with your actual JWT token and prompt ID
+    const token = 'your-jwt-goes-here';
+    const promptId = 'prompt104';
+
+    const client = new PromptCrafterClient({ token });
+    
+    // Define the data for the new log in an object
+    const logData = {
+        promptId: promptId,
+        output: "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+        modelUsed: "Claude 3 Sonnet",
+        notes: "Clear, accessible explanation for students. Good tone.",
+        score: 8
+    };
+    
+    try {
+        const newLog = await client.createLog(logData);
+        console.log(`Log saved successfully with ID: ${newLog._id}`);
+    } catch (error) {
+        console.error("Failed to save log:", error.message);
+    }
+}
+
+logOutputWithSDK();
+```
+
+##### **Fetch**
+
+```javascript
+// You can also use the built-in Fetch API for raw HTTP calls.
+async function logOutput() {
+    // Replace with your actual JWT token and prompt ID
+    const token = "your-jwt-goes-here";
+    const promptId = "prompt104";
+
+    // API endpoint for logging outputs
+    const url = "https://promptcrafter-production.up.railway.app/logs";
+
+    // The data for the new log
+    const payload = {
+        promptId: promptId,
+        output: "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+        modelUsed: "Claude 3 Sonnet",
+        notes: "Clear, accessible explanation for students. Good tone.",
+        score: 8
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        console.log(`Log saved successfully with ID: ${data._id}`);
+    } catch (error) {
+        console.error("Failed to save log:", error.message);
+    }
+}
+
+logOutput();
+```
+
+<!-- tabs:end -->
+
+#### **Go**
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "github.com/your-org/promptcrafter" // Replace with your actual import path
+)
+
+func main() {
+    // Replace with your actual JWT token and prompt ID
+    token := "your-jwt-goes-here"
+    promptID := "prompt104"
+    client := promptcrafter.NewClient(token)
+    ctx := context.Background()
+
+    // The score needs to be a pointer to an int for optional fields
+    score := 8
+
+    // Define the request data in a struct
+    logData := &promptcrafter.LogCreateRequest{
+        PromptID:  promptID,
+        Output:    "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+        ModelUsed: "Claude 3 Sonnet",
+        Notes:     "Clear, accessible explanation for students. Good tone.",
+        Score:     &score,
+    }
+
+    newLog, err := client.CreateLog(ctx, logData)
+    if err != nil {
+        log.Fatalf("Error creating log: %v", err)
+    }
+
+    fmt.Printf("Log created successfully with ID: %s\n", newLog.ID)
+}
+```
+
+#### **Ruby**
+
+```ruby
+require 'promptcrafter'
+
+# Replace with your actual JWT token and prompt ID
+token = 'your-jwt-goes-here'
+prompt_id = 'prompt104'
+
+# Initialize the client with the token
+client = PromptCrafter::Client.new(access_token: token)
+
+# Define the data for the new log in a hash
+log_data = {
+  prompt_id: prompt_id,
+  output: 'The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.',
+  model_used: 'Claude 3 Sonnet',
+  notes: 'Clear, accessible explanation for students. Good tone.',
+  score: 8
+}
+
+begin
+  new_log = client.create_log(log_data)
+  puts "Log created successfully with ID: #{new_log['_id']}"
+rescue PromptCrafter::Error => e
+  puts "Failed to create log: #{e.message}"
+end
+```
+
+#### **Java**
+
+```java
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Log;
+import com.promptcrafter.PromptCrafterClient.LogCreate;
+
+public class CreateLogExample {
+    public static void main(String[] args) {
+        // Replace with your actual JWT token and prompt ID
+        String token = "your-jwt-goes-here";
+        String promptId = "prompt104";
+
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+
+        // Create a request object to hold the log data
+        LogCreate logToCreate = new LogCreate(
+            promptId,
+            "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+            "Claude 3 Sonnet",
+            "Clear, accessible explanation for students. Good tone.",
+            8 // Score
+        );
+
+        try {
+            Log createdLog = client.createLog(logToCreate);
+            System.out.println("Log created successfully with ID: " + createdLog._id);
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("Failed to create log: " + e.getMessage());
+        }
+    }
+}
+```
+
+<!-- tabs:end -->
 
 ## Response
 
@@ -115,7 +365,7 @@ If your request is successful, the server returns a `201 Created` status code an
 {
   "_id": "log104",
   "promptId": "prompt104",
-  "output": "The Industrial Revolution transformed how people lived and worked by introducing inventions like the steam engine and the spinning jenny. These technologies allowed factories to produce goods faster, making everyday items cheaper and more accessible for families throughout Europe and America.",
+  "output": "The Industrial Revolution transformed how people lived and worked...",
   "modelUsed": "Claude 3 Sonnet",
   "notes": "Clear, accessible explanation for students. Good tone.",
   "score": 8,
@@ -123,39 +373,263 @@ If your request is successful, the server returns a `201 Created` status code an
 }
 ```
 
-**Note:** The server adds the `_id` and `createdAt` fields. Do not include them in your request body.
-
 ## Verify the log
 
-To confirm your log was saved successfully, send a `GET` request to retrieve all logs for that prompt using the `promptId`.
+To confirm your log was saved successfully, send a `GET` request to retrieve all logs for that prompt using the `promptId`. Each code sample below is self-contained and can be run independently.
 
-<details>
-<summary>cURL</summary>
+<!-- tabs:start -->
 
-Use the variables you set earlier.
+#### **cURL**
 
 ```bash
+# Ensure these variables are set with your token and the prompt ID to verify
+BASE_URL="https://promptcrafter-production.up.railway.app"
+TOKEN="your-jwt-goes-here"
+PROMPT_ID="prompt104"
+
 curl -X GET "$BASE_URL/logs?promptId=$PROMPT_ID" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-</details>
+#### **Postman**
 
-<details>
-<summary>Postman</summary>
+Use the **Retrieve logs by prompt** request in the `Logs` folder. Make sure the `promptId` in the query parameters matches your prompt's `_id`, then click **Send**. The collection automatically uses the `{{token}}` variable set during login.
 
-Use the **Retrieve logs by prompt** request in the `Logs` folder. Ensure the `promptId` in the query parameters matches your prompt's `_id`, then click **Send**.
+#### **Python**
 
-</details>
+<!-- tabs:start -->
 
-Expect a `200 OK` status with a JSON array containing the log object you just created. This confirms your test result is stored and ready for analysis.
+##### **SDK**
+
+```python
+# This snippet is self-contained and can be run independently.
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
+
+# Replace with your token and the prompt ID you want to verify
+token = "your-jwt-goes-here"
+prompt_id = "prompt104" 
+
+# Initialize the client
+client = PromptCrafterClient(token=token)
+
+try:
+    # Use the client to retrieve all logs for the specified prompt
+    logs = client.get_logs_by_prompt(prompt_id=prompt_id)
+    print(f"Found {len(logs)} log(s) for prompt ID {prompt_id}:")
+    for log in logs:
+        print(f"  - Log ID: {log['_id']}, Score: {log.get('score', 'N/A')}")
+except PromptCrafterAPIError as e:
+    print(f"Failed to retrieve logs: {e}")
+```
+
+##### **Requests**
+
+```python
+# This snippet is self-contained and can be run independently.
+import requests
+
+# Replace with your token and the prompt ID you want to verify
+token = "your-jwt-goes-here"
+prompt_id = "prompt104"
+
+# API endpoint for retrieving logs
+url = "https://promptcrafter-production.up.railway.app/logs"
+
+# Request headers and query parameters
+headers = {"Authorization": f"Bearer {token}"}
+params = {"promptId": prompt_id}
+
+try:
+    # Send the GET request
+    response = requests.get(url, headers=headers, params=params)
+    response.raise_for_status() 
+
+    logs = response.json()
+    print(f"Found {len(logs)} log(s) for prompt ID {prompt_id}:")
+    for log in logs:
+        print(f"  - Log ID: {log['_id']}, Score: {log.get('score', 'N/A')}")
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+```
+
+<!-- tabs:end -->
+
+#### **JavaScript**
+
+<!-- tabs:start -->
+
+##### **SDK**
+
+```javascript
+// This snippet is self-contained and can be run independently.
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function getLogs() {
+    // Replace with your token and the prompt ID you want to verify
+    const token = 'your-jwt-goes-here';
+    const promptId = 'prompt104';
+    
+    // Initialize the client
+    const client = new PromptCrafterClient({ token });
+
+    try {
+        // Use the client to retrieve logs
+        const logs = await client.getLogsByPrompt(promptId);
+        console.log(`Found ${logs.length} log(s) for prompt ID ${promptId}:`);
+        logs.forEach(log => {
+            console.log(`  - Log ID: ${log._id}, Score: ${log.score || 'N/A'}`);
+        });
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+getLogs();
+```
+
+##### **Fetch**
+
+```javascript
+// This snippet is self-contained and can be run independently.
+async function getLogs() {
+    // Replace with your token and the prompt ID you want to verify
+    const token = "your-jwt-goes-here";
+    const promptId = "prompt104";
+
+    // Build the URL with query parameters
+    const url = new URL("https://promptcrafter-production.up.railway.app/logs");
+    url.searchParams.append('promptId', promptId);
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        console.log(`Found ${data.length} log(s) for prompt ID ${promptId}:`);
+        data.forEach(log => {
+            console.log(`  - Log ID: ${log._id}, Score: ${log.score || 'N/A'}`);
+        });
+    } catch (error) {
+        console.error("Failed to retrieve logs:", error.message);
+    }
+}
+
+getLogs();
+```
+
+<!-- tabs:end -->
+
+#### **Go**
+
+```go
+// This snippet is self-contained and can be run independently.
+package main
+
+import (
+  "context"
+  "fmt"
+  "log"
+  "github.com/your-org/promptcrafter" // Replace with your actual import path
+)
+
+func main() {
+  // Replace with your token and the prompt ID you want to verify
+  token := "your-jwt-goes-here"
+  promptID := "prompt104"
+  client := promptcrafter.NewClient(token)
+  ctx := context.Background()
+
+  logs, err := client.ListLogsByPrompt(ctx, promptID)
+  if err != nil {
+    log.Fatalf("Error retrieving logs: %v", err)
+  }
+
+  fmt.Printf("Found %d log(s) for prompt ID %s:\n", len(logs), promptID)
+  for _, lg := range logs {
+    score := "N/A"
+    if lg.Score != nil {
+      score = fmt.Sprintf("%d", *lg.Score)
+    }
+    fmt.Printf("  - Log ID: %s, Score: %s\n", lg.ID, score)
+  }
+}
+```
+
+#### **Ruby**
+
+```ruby
+# This snippet is self-contained and can be run independently.
+require 'promptcrafter'
+
+# Replace with your token and the prompt ID you want to verify
+token = 'your-jwt-goes-here'
+prompt_id = 'prompt104'
+
+# Initialize the client
+client = PromptCrafter::Client.new(access_token: token)
+
+begin
+  # Use the client to get logs by prompt ID
+  logs = client.get_logs_by_prompt(prompt_id: prompt_id)
+  puts "Found #{logs.length} log(s) for prompt ID #{prompt_id}:"
+  logs.each do |log|
+    puts "  - Log ID: #{log['_id']}, Score: #{log['score'] || 'N/A'}"
+  end
+rescue PromptCrafter::Error => e
+  puts "Failed to retrieve logs: #{e.message}"
+end
+```
+
+#### **Java**
+
+```java
+// This snippet is self-contained and can be run independently.
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Log;
+import java.util.List;
+
+public class GetLogsExample {
+    public static void main(String[] args) {
+        // Replace with your token and the prompt ID you want to verify
+        String token = "your-jwt-goes-here";
+        String promptId = "prompt104";
+
+        // Initialize the client
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+
+        try {
+            // Use the client to retrieve logs by prompt ID
+            List<Log> logs = client.getLogsByPrompt(promptId);
+            System.out.println("Found " + logs.size() + " log(s) for prompt ID " + promptId + ":");
+            for (Log log : logs) {
+                String score = (log.score != null) ? log.score.toString() : "N/A";
+                System.out.println("  - Log ID: " + log._id + ", Score: " + score);
+            }
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("Failed to retrieve logs: " + e.getMessage());
+        }
+    }
+}
+```
+
+<!-- tabs:end -->
+
+Expect a `200 OK` status with a JSON array containing the log object you just created. This confirms your test result saved correctly.
 
 ## What to do if the request doesn't work
 
 Here are issues you might encounter when logging outputs and how to resolve them.
 
 | Status | Example response | Cause | Solution |
-|--------|------------------|--------|----------|
+| :--- | :--- | :--- | :--- |
 | **400 Bad Request** | `{"error": "Required fields are missing or invalid"}` | Missing required fields (`promptId`, `output`, `modelUsed`) or invalid JSON syntax. | Verify all required fields are present and that the JSON is properly formatted. |
 | **401 Unauthorized** | `{"error": "Authentication token is missing"}` | The `Authorization` header is missing. | Include `Authorization: Bearer {your_token}` in your request headers with a valid token. |
 | **401 Unauthorized** | `{"error": "Authentication token is expired or invalid"}` | The bearer token is expired or malformed. | Log in again to obtain a new token and update your request. |
@@ -163,10 +637,10 @@ Here are issues you might encounter when logging outputs and how to resolve them
 | **415 Unsupported Media Type** | `{"error": "Content-Type must be application/json"}` | The `Content-Type` header is missing or incorrect. | Add `Content-Type: application/json` to your request headers. |
 | **500 Internal Server Error** | `{"error": "An unexpected server error occurred"}` | An error occurred on the server. | Retry the request after a short wait. If the error persists, contact support. |
 
-## Next Steps
+## Next steps
 
-Now that you can log prompt outputs, you`re ready to build a data-driven evaluation process.
+Now that you can log and score your outputs, you're ready to start refining your prompt library.
 
-- Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.  
-- Learn how to [Update a prompt](tutorials/update-prompt.md) based on the insights from your logged tests.  
-- For complete details on endpoints and para, see the [Log resource](reference/resources/log.md) and the [`POST /logs`](reference/endpoints/post-logs.md) endpoint documentation.
+*   Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.  
+*   Learn how to [Update a prompt](tutorials/update-prompt.md) based on the insights from your logged tests.  
+*   For complete details on endpoints and parameters, see the [Log resource](reference/resources/log.md) and the [`POST /logs`](reference/endpoints/post-logs.md) endpoint documentation.
