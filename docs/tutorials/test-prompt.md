@@ -63,7 +63,7 @@ The request body contains the data from your prompt test that you'll record in y
 <details>
 <summary>cURL</summary>
 
-To make the cURL commands cleaner, set shell variables for the base URL, your token, and the prompt ID. That way you don't have to repeat them in every request.
+To make the cURL commands cleaner, set shell variables for the base URL, your token, and the prompt ID. That way you don't have to retype them in every request.
 
 ```bash
 BASE_URL="https://promptcrafter-production.up.railway.app"
@@ -157,7 +157,7 @@ Here are issues you might encounter when logging outputs and how to resolve them
 
 ## Next steps
 
-Now that you can log prompt outputs:
+Now that you can log and score your outputs, you're ready to start refining your prompt library.
 
 - Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.  
 - Learn how to [Update a prompt](tutorials/update-prompt.md) based on the insights from your logged tests.  

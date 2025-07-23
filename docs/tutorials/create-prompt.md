@@ -1,6 +1,6 @@
 # Tutorial: Save a prompt
 
-Save a prompt by sending a `POST /prompts` request. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
+This guide walks through how to save a prompt to PromptCrafter API. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
 - **Automate content creation**: Design prompts for a marketing app that draft blog posts in your brand’s voice, then retrieve them by ID to generate articles in the same style every time without rewriting instructions.  
 - **Build a prompt evaluation suite**: Run systematic experiments to determine the best prompt for a job like sentiment analysis. Tag related prompts (e.g., `sentiment-v1` and `sentiment-v2`) to programmatically test them across AI models and measure which version produces the most accurate outputs.
 - **Collaborate with teams**: Group prompts by topic in a shared library (e.g., "marketing" or "research"), so your team can reuse and update them with version history, eliminating the chaos of prompts buried in emails, docs, or personal notebooks.
@@ -17,30 +17,30 @@ To follow this tutorial, you need:
 
 ## Build the request
 
-To save a new prompt, send a `POST` request to the following endpoint:
+Save your new prompt by sending a `POST` request to this endpoint:
 
 ```text
 https://promptcrafter-production.up.railway.app/prompts
 ```
 
-The request includes two headers and a JSON-formatted request body.
+The `POST` request includes two headers and a JSON-formatted request body.
 
 ### Headers
 
-Add the following headers to your request:
+Both these headers are required:
 
 - `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
 - `Content-Type: application/json` tells the server to expect a JSON object in the request body.
 
 ### Request body
 
-The request body contains the information that defines your prompt.
+The request body contains the data that makes up your new prompt.
 
 | Field    | Type             | Required | Description                                                            |
 |----------|------------------|----------|------------------------------------------------------------------------|
-| `title`  | string           | Yes      | Short label that helps you identify or sort the prompt.                |
+| `title`  | string           | Yes      | A short label that helps you identify or sort the prompt.                |
 | `content`| string           | Yes      | The text sent to the AI model.                                         |
-| `model`  | string           | Yes      | Name of the intended model (for example `gpt-4o`, `Claude 3 Sonnet`).  |
+| `model`  | string           | Yes      | The name of the intended AI model (e.g., `Claude 3 Sonnet`).  |
 | `tags`   | array&lt;string&gt;  | No       | Optional keywords for grouping by topic, task, project, or library.    |
 
 **Example request body:**
@@ -59,7 +59,7 @@ The request body contains the information that defines your prompt.
 <details>
 <summary>cURL</summary>
 
-To make the cURL commands cleaner, set shell variables for the base URL and your token. This avoids repeating them in every request.
+To make the cURL commands cleaner, set shell variables for the base URL and your token. That way you don't have to retype them in every request.
 
 ```bash
 BASE_URL="https://promptcrafter-production.up.railway.app"
@@ -143,7 +143,7 @@ Use the **Retrieve a prompt by ID** request in the `Prompts` folder. Update the 
 
 </details>
 
-Expect a `200 OK` status with a response matching the object from the `POST` request, confirming your prompt is stored and ready to use. If you get `404 Not Found`, check that the `_id` is correct.  
+Expect a `200 OK` status with a response matching the object from the `POST` request, confirming your prompt is saved and ready to use. If you get `404 Not Found`, check that the `_id` is correct.  
 
 ## What to do if the request doesn't work
 
@@ -158,10 +158,11 @@ Here are issues you might encounter when saving prompts and what to do about the
 | **404 Not Found** | `{"error": "Route not found"}` | Incorrect endpoint URL. | Verify the endpoint is `/prompts` with no trailing slash or typos. |
 | **500 Internal Server Error** | `{"error": "An unexpected server error occurred"}` | Server-side processing error. | Retry the request; contact support if the error persists. |
 
-## Next Steps
+## Next steps
 
-Now that you've saved your first prompt, you're ready to explore PromtCrafter further.
+Now that you've saved your first prompt, you're ready to explore the other features of PromptCrafter.
 
 - Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.
 - See the [Log a generated output tutorial](tutorials/test-prompt.md) to track prompt performance.
 - For complete details on parameters and endpoints, see the [Prompt resource](reference/resources/prompt.md) and the [`POST /prompts`](reference/endpoints/post-prompts.md) endpoint documentation.
+
