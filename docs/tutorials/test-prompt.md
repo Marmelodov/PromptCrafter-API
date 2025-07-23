@@ -93,7 +93,6 @@ If you've imported the PromptCrafter Postman Collection, sending the request is 
 ##### **SDK**
 
 ```python
-# The PromptCrafter SDK is the recommended way to use the API in Python.
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token and prompt ID
@@ -123,7 +122,6 @@ except PromptCrafterAPIError as e:
 ##### **Requests**
 
 ```python
-# You can also use the popular 'requests' library for raw HTTP calls.
 import requests
 import json
 
@@ -170,9 +168,6 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
-// The PromptCrafter SDK is recommended for JavaScript/Node.js.
-// In a real project, the import would be from an npm package:
-// import { PromptCrafterClient } from '@promptcrafter/sdk';
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function logOutputWithSDK() {
@@ -205,7 +200,6 @@ logOutputWithSDK();
 ##### **Fetch**
 
 ```javascript
-// You can also use the built-in Fetch API for raw HTTP calls.
 async function logOutput() {
     // Replace with your actual JWT token and prompt ID
     const token = "your-jwt-goes-here";

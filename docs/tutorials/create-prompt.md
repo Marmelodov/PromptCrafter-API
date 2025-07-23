@@ -1,6 +1,7 @@
 # Tutorial: Save a prompt
 
 This guide walks through how to save a prompt to PromptCrafter API. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
+
 - **Automate content creation**: Design prompts for a marketing app that draft blog posts in your brand’s voice, then retrieve them by ID to generate articles in the same style every time without rewriting instructions.  
 - **Build a prompt evaluation suite**: Run systematic experiments to determine the best prompt for a job like sentiment analysis. Tag related prompts (e.g., `sentiment-v1` and `sentiment-v2`) to programmatically test them across AI models and measure which version produces the most accurate outputs.
 - **Collaborate with teams**: Group prompts by topic in a shared library (e.g., "marketing" or "research"), so your team can reuse and update them with version history, eliminating the chaos of prompts buried in emails, docs, or personal notebooks.
@@ -60,79 +61,85 @@ The request body contains the data that makes up your new prompt.
 
 #### **cURL**
 
-```bash
-# Define shell variables for convenience
-base_url="https://promptcrafter-production.up.railway.app"
-token="your-jwt-goes-here" # Replace with your actual token
+To make the cURL commands cleaner, set shell variables for the base URL, your token, and the JSON payload.
 
-# Send the POST request to save the prompt
-curl -X POST $base_url/prompts \
-  -H "Authorization: Bearer $token" \
+```bash
+# Set shell variables for convenience
+BASE_URL="https://promptcrafter-production.up.railway.app"
+TOKEN="your-jwt-goes-here" # Replace with your actual token
+
+# Define the JSON payload in a separate variable for readability
+JSON_PAYLOAD=$(cat <<-END
+{
+  "title": "Positive Product Review Writer",
+  "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+  "model": "Grok-3 Beta",
+  "tags": ["review", "product", "writing"]
+}
+END
+)
+
+# Send the POST request with the payload
+curl -X POST "$BASE_URL/prompts" \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{
-    "title": "Positive Product Review Writer",
-    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
-    "model": "Grok-3 Beta",
-    "tags": ["review", "product", "writing"]
-  }'
+  -d "$JSON_PAYLOAD"
 ```
 
 #### **Postman**
 
 If you've imported the PromptCrafter Postman Collection, sending the request is simple.
 
-1. In the **Prompts** folder, select the **Save a prompt** request.
-2. In the **Body** tab, modify the pre-filled JSON with your prompt's details.
-3. Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
+1.  In the **Prompts** folder, select the **Save a prompt** request.
+2.  In the **Body** tab, modify the pre-filled JSON with your prompt's details.
+3.  Click **Send**. The collection automatically uses the `{{token}}` variable set during login, so you don't need to configure authorization headers manually.
 
 #### **Python**
 
 <!-- tabs:start -->
 
 ##### **SDK**
+
 ```python
-# The PromptCrafter SDK is the recommended way to use the API in Python.
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token
 token = "your-jwt-goes-here"
-
-# Initialize the client with your token
 client = PromptCrafterClient(token=token)
 
+# Data for the new prompt, defined in a dictionary for clarity
+prompt_data = {
+    "title": "Positive Product Review Writer",
+    "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+    "model": "Grok-3 Beta",
+    "tags": ["review", "product", "writing"]
+}
+
 try:
-    # Create the prompt using the SDK
-    new_prompt = client.create_prompt(
-        title="Positive Product Review Writer",
-        content="Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
-        model="Grok-3 Beta",
-        tags=["review", "product", "writing"]
-    )
-    # The new prompt's ID is needed to verify it was saved.
-    print(f"Prompt created successfully with ID: {new_prompt['_id']}")
+    # Pass the data to the create_prompt method using keyword arguments
+    new_prompt = client.create_prompt(**prompt_data)
+    print("Prompt created successfully:")
+    print(f"  ID: {new_prompt['_id']}")
+    print(f"  Title: {new_prompt['title']}")
 except PromptCrafterAPIError as e:
     print(f"Failed to create prompt: {e}")
 ```
 
 ##### **Requests**
+
 ```python
-# You can also use the popular 'requests' library for raw HTTP calls.
 import requests
-import json
 
 # Replace with your actual JWT token
 token = "your-jwt-goes-here"
-
-# API endpoint for saving prompts
 url = "https://promptcrafter-production.up.railway.app/prompts"
 
-# Request headers, including authorization
 headers = {
     "Authorization": f"Bearer {token}",
     "Content-Type": "application/json"
 }
 
-# The data for the new prompt
+# The JSON payload for the new prompt
 payload = {
     "title": "Positive Product Review Writer",
     "content": "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
@@ -141,13 +148,13 @@ payload = {
 }
 
 try:
-    # Send the POST request using the requests library
     response = requests.post(url, headers=headers, json=payload)
-    # Raise an exception for bad status codes (4xx or 5xx)
-    response.raise_for_status()
-
-    created_prompt = response.json()
-    print(f"Prompt created successfully with ID: {created_prompt['_id']}")
+    response.raise_for_status() # Raise an exception for bad status codes
+    
+    new_prompt = response.json()
+    print("Prompt created successfully:")
+    print(f"  ID: {new_prompt['_id']}")
+    print(f"  Title: {new_prompt['title']}")
 except requests.exceptions.RequestException as e:
     print(f"An error occurred: {e}")
 ```
@@ -159,44 +166,45 @@ except requests.exceptions.RequestException as e:
 <!-- tabs:start -->
 
 ##### **SDK**
-```javascript
-// The PromptCrafter SDK is the recommended way to use the API in JavaScript/Node.js.
-import PromptCrafterClient from './promptcrafter-client.js'; // Adjust path as needed
 
-async function savePromptWithSDK() {
+```javascript
+import PromptCrafterClient from './promptcrafter-client.js';
+
+async function createPrompt() {
     // Replace with your actual JWT token
     const token = 'your-jwt-goes-here';
-
     const client = new PromptCrafterClient({ token });
-    
+
+    // Data for the new prompt, defined in an object for clarity
+    const promptData = {
+        title: "Positive Product Review Writer",
+        content: "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+        model: "Grok-3 Beta",
+        tags: ["review", "product", "writing"]
+    };
+
     try {
-        const newPrompt = await client.createPrompt({
-            title: "Positive Product Review Writer",
-            content: "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
-            model: "Grok-3 Beta",
-            tags: ["review", "product", "writing"]
-        });
-        // The new prompt's ID is needed to verify it was saved.
-        console.log(`Prompt saved successfully with ID: ${newPrompt._id}`);
+        const newPrompt = await client.createPrompt(promptData);
+        console.log('Prompt created successfully:');
+        console.log(`  ID: ${newPrompt._id}`);
+        console.log(`  Title: ${newPrompt.title}`);
     } catch (error) {
-        console.error("Failed to save prompt:", error.message);
+        console.error('Failed to create prompt:', error.message);
     }
 }
 
-savePromptWithSDK();
+createPrompt();
 ```
 
 ##### **Fetch**
+
 ```javascript
-// You can also use the built-in Fetch API for raw HTTP calls.
-async function savePrompt() {
+async function createPrompt() {
     // Replace with your actual JWT token
     const token = "your-jwt-goes-here";
-
-    // API endpoint for saving prompts
     const url = "https://promptcrafter-production.up.railway.app/prompts";
 
-    // The data for the new prompt
+    // The JSON payload for the new prompt
     const payload = {
         title: "Positive Product Review Writer",
         content: "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
@@ -217,18 +225,18 @@ async function savePrompt() {
         const data = await response.json();
 
         if (!response.ok) {
-            // Use the server's error message if available
             throw new Error(data.error || `HTTP error! Status: ${response.status}`);
         }
 
-        console.log(`Prompt saved successfully with ID: ${data._id}`);
+        console.log("Prompt created successfully:");
+        console.log(`  ID: ${data._id}`);
+        console.log(`  Title: ${data.title}`);
     } catch (error) {
-        console.error("Failed to save prompt:", error.message);
+        console.error("Failed to create prompt:", error.message);
     }
 }
 
-// Call the function to execute the request
-savePrompt();
+createPrompt();
 ```
 
 <!-- tabs:end -->
@@ -242,6 +250,7 @@ import (
     "context"
     "fmt"
     "log"
+    "time"
     "github.com/your-org/promptcrafter" // Replace with your actual import path
 )
 
@@ -249,22 +258,25 @@ func main() {
     // Replace with your actual JWT token
     token := "your-jwt-goes-here"
     client := promptcrafter.NewClient(token)
-    ctx := context.Background()
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-    prompt, err := client.CreatePrompt(ctx, &promptcrafter.PromptCreateRequest{
+    // Define the data for the new prompt in a request struct
+    promptRequest := &promptcrafter.PromptCreateRequest{
         Title:   "Positive Product Review Writer",
         Content: "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
         Model:   "Grok-3 Beta",
         Tags:    []string{"review", "product", "writing"},
-    })
-
-    if err != nil {
-        log.Printf("Error creating prompt: %v", err)
-        return
     }
 
-    // The new prompt's ID is needed to verify it was saved.
-    fmt.Printf("Prompt created successfully with ID: %s\n", prompt.ID)
+    newPrompt, err := client.CreatePrompt(ctx, promptRequest)
+    if err != nil {
+        log.Fatalf("Error creating prompt: %v", err)
+    }
+
+    fmt.Printf("Prompt created successfully:\n")
+    fmt.Printf("  ID: %s\n", newPrompt.ID)
+    fmt.Printf("  Title: %s\n", newPrompt.Title)
 }
 ```
 
@@ -275,19 +287,21 @@ require 'promptcrafter'
 
 # Replace with your actual JWT token
 token = 'your-jwt-goes-here'
-
-# Initialize the client with the token
 client = PromptCrafter::Client.new(access_token: token)
 
+# Data for the new prompt, defined in a hash for clarity
+prompt_data = {
+  title: "Positive Product Review Writer",
+  content: "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
+  model: "Grok-3 Beta",
+  tags: ["review", "product", "writing"]
+}
+
 begin
-  new_prompt = client.create_prompt(
-    title: 'Positive Product Review Writer',
-    content: 'Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.',
-    model: 'Grok-3 Beta',
-    tags: ['review', 'product', 'writing']
-  )
-  # The new prompt's ID is needed to verify it was saved.
-  puts "Prompt created successfully with ID: #{new_prompt['_id']}"
+  new_prompt = client.create_prompt(**prompt_data)
+  puts "Prompt created successfully:"
+  puts "  ID: #{new_prompt['_id']}"
+  puts "  Title: #{new_prompt['title']}"
 rescue PromptCrafter::Error => e
   puts "Failed to create prompt: #{e.message}"
 end
@@ -299,7 +313,7 @@ end
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Prompt;
 import com.promptcrafter.PromptCrafterClient.PromptCreate;
-import java.util.Arrays;
+import java.util.List;
 
 public class CreatePromptExample {
     public static void main(String[] args) {
@@ -310,17 +324,19 @@ public class CreatePromptExample {
             .apiToken(token)
             .build();
 
+        // Data for the new prompt, encapsulated in a request object
         PromptCreate promptToCreate = new PromptCreate(
             "Positive Product Review Writer",
             "Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.",
             "Grok-3 Beta",
-            Arrays.asList("review", "product", "writing")
+            List.of("review", "product", "writing")
         );
 
         try {
-            Prompt createdPrompt = client.createPrompt(promptToCreate);
-            // The new prompt's ID is needed to verify it was saved.
-            System.out.println("Prompt created successfully with ID: " + createdPrompt._id);
+            Prompt newPrompt = client.createPrompt(promptToCreate);
+            System.out.println("Prompt created successfully:");
+            System.out.println("  ID: " + newPrompt._id);
+            System.out.println("  Title: " + newPrompt.title);
         } catch (PromptCrafterClient.PromptCrafterApiException e) {
             System.err.println("Failed to create prompt: " + e.getMessage());
         }
@@ -330,12 +346,9 @@ public class CreatePromptExample {
 
 <!-- tabs:end -->
 
-
-A successful request returns a `201 Created` status and the full prompt object, including its unique server-generated `_id`. Use this ID to retrieve, update, or test the prompt later.
-
 ## Response
 
-If your request is successful, the server returns a status code `201 Created` and a response body that looks like this:
+If your request is successful, the server returns a `201 Created` status and the full prompt object, including its unique server-generated `_id`. Use this ID to retrieve, update, or test the prompt later.
 
 ```json
 {
@@ -350,31 +363,29 @@ If your request is successful, the server returns a status code `201 Created` an
 }
 ```
 
-**Note:** the server adds the `_id`, `ownerId`, `createdAt`, and `updatedAt` fields. Don't include them in the request body.
+**Note:** The server adds the `_id`, `ownerId`, `createdAt`, and `updatedAt` fields. Do not include them in your request body.
 
 ## Verify the prompt
 
-To confirm your prompt saved successfully, send a GET request using the prompt `_id` from the response:
+To confirm your prompt was saved successfully, send a `GET` request using the prompt `_id` from the response. Each code sample below is self-contained and can be run independently.
 
 <!-- tabs:start -->
 
 #### **cURL**
 
 ```bash
-# Set shell variables from the previous step
-TOKEN="your-jwt-goes-here" # Replace with your actual token
-PROMPT_ID="prompt102"      # Replace with the _id from the POST response
-
+# Replace with your token and the ID from the previous response
 BASE_URL="https://promptcrafter-production.up.railway.app"
+TOKEN="your-jwt-goes-here"
+PROMPT_ID="your-new-prompt-id"
 
-# Send the GET request to retrieve the prompt by its ID
-curl -X GET $BASE_URL/prompts/$PROMPT_ID \
+curl -X GET "$BASE_URL/prompts/$PROMPT_ID" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 #### **Postman**
 
-Use the **Retrieve a prompt by ID** request in the `Prompts` folder. Update the `promptId` collection variable with your new `_id`, then click **Send**.
+Use the **Retrieve a prompt by ID** request in the `Prompts` folder. First, copy the `_id` from the response of the **Save a prompt** request. Then, in the Collection's **Variables** tab, paste the ID into the `CURRENT VALUE` for the `promptId` variable. Click **Send** to verify.
 
 #### **Python**
 
@@ -383,53 +394,44 @@ Use the **Retrieve a prompt by ID** request in the `Prompts` folder. Update the 
 ##### **SDK**
 
 ```python
-from promptcrafter import PromptCrafterClient, NotFoundError
+# This snippet is self-contained and can be run independently.
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
-# Replace with your actual JWT token and the ID of the prompt you created
+# Replace with your token and the ID of the prompt you just created
 token = "your-jwt-goes-here"
-prompt_id = "prompt102"
+prompt_id_to_verify = "your-new-prompt-id"
 
-# Initialize the client with your token
 client = PromptCrafterClient(token=token)
 
 try:
-    # Retrieve the prompt using the SDK
-    retrieved_prompt = client.get_prompt(prompt_id=prompt_id)
-    print(f"Successfully retrieved prompt: '{retrieved_prompt['title']}'")
-    # print(retrieved_prompt)
-
-except NotFoundError:
-    print(f"Error: Prompt with ID '{prompt_id}' not found.")
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
+    retrieved_prompt = client.get_prompt(prompt_id=prompt_id_to_verify)
+    print("Successfully retrieved prompt to verify it was saved:")
+    print(f"  - ID: {retrieved_prompt['_id']}")
+    print(f"  - Title: {retrieved_prompt['title']}")
+except PromptCrafterAPIError as e:
+    print(f"Failed to retrieve prompt: {e}")
 ```
 
 ##### **Requests**
 
 ```python
+# This snippet is self-contained and can be run independently.
 import requests
 
-# Replace with your actual JWT token and the ID of the prompt you created
+# Replace with your token and the ID from the POST response
 token = "your-jwt-goes-here"
-prompt_id = "prompt102"
+prompt_id_to_verify = "your-new-prompt-id"
 
-base_url = "https://promptcrafter-production.up.railway.app"
-url = f"{base_url}/prompts/{prompt_id}"
-
-headers = { "Authorization": f"Bearer {token}" }
+url = f"https://promptcrafter-production.up.railway.app/prompts/{prompt_id_to_verify}"
+headers = {"Authorization": f"Bearer {token}"}
 
 try:
     response = requests.get(url, headers=headers)
-    response.raise_for_status()  # Raise an exception for bad status codes
-
+    response.raise_for_status()
     retrieved_prompt = response.json()
-    print(f"Successfully retrieved prompt: '{retrieved_prompt['title']}'")
-
-except requests.exceptions.HTTPError as e:
-    if e.response.status_code == 404:
-        print(f"Error: Prompt with ID '{prompt_id}' not found.")
-    else:
-        print(f"An HTTP error occurred: {e}")
+    print("Successfully retrieved prompt:")
+    print(f"  - ID: {retrieved_prompt['_id']}")
+    print(f"  - Title: {retrieved_prompt['title']}")
 except requests.exceptions.RequestException as e:
     print(f"An error occurred: {e}")
 ```
@@ -443,41 +445,39 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
-import PromptCrafterClient from './promptcrafter-client.js'; // Adjust path as needed
+// This snippet is self-contained and can be run independently.
+import PromptCrafterClient from './promptcrafter-client.js';
 
-async function retrievePrompt() {
-    // Replace with your actual JWT token and the ID of the prompt you created
+async function verifyPromptCreation() {
+    // Replace with your token and the ID of the prompt you just created
     const token = 'your-jwt-goes-here';
-    const promptId = 'prompt102';
+    const promptIdToVerify = 'your-new-prompt-id';
 
     const client = new PromptCrafterClient({ token });
     
     try {
-        const prompt = await client.getPromptById(promptId);
-        console.log(`Successfully retrieved prompt: '${prompt.title}'`);
-        // console.log(prompt);
+        const retrievedPrompt = await client.getPromptById(promptIdToVerify);
+        console.log('Successfully retrieved prompt to verify it was saved:');
+        console.log(`  - ID: ${retrievedPrompt._id}`);
+        console.log(`  - Title: ${retrievedPrompt.title}`);
     } catch (error) {
-        if (error.status === 404) {
-            console.error(`Error: Prompt with ID '${promptId}' not found.`);
-        } else {
-            console.error("Failed to retrieve prompt:", error.message);
-        }
+        console.error("Failed to retrieve prompt:", error.message);
     }
 }
 
-retrievePrompt();
+verifyPromptCreation();
 ```
 
 ##### **Fetch**
 
 ```javascript
-async function retrievePromptWithFetch() {
-    // Replace with your actual JWT token and the ID of the prompt you created
+// This snippet is self-contained and can be run independently.
+async function verifyPromptCreation() {
+    // Replace with your token and the ID from the POST response
     const token = "your-jwt-goes-here";
-    const promptId = "prompt102";
+    const promptIdToVerify = "your-new-prompt-id";
 
-    const baseUrl = "https://promptcrafter-production.up.railway.app";
-    const url = `${baseUrl}/prompts/${promptId}`;
+    const url = `https://promptcrafter-production.up.railway.app/prompts/${promptIdToVerify}`;
 
     try {
         const response = await fetch(url, {
@@ -485,107 +485,108 @@ async function retrievePromptWithFetch() {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (response.status === 404) {
-            throw new Error(`Prompt with ID '${promptId}' not found.`);
-        }
+        const data = await response.json();
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({})); // Try to parse error, else empty object
-            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+            throw new Error(data.error || `HTTP error! Status: ${response.status}`);
         }
 
-        const prompt = await response.json();
-        console.log(`Successfully retrieved prompt: '${prompt.title}'`);
-
+        console.log('Successfully retrieved prompt:');
+        console.log(`  - ID: ${data._id}`);
+        console.log(`  - Title: ${data.title}`);
     } catch (error) {
         console.error("Failed to retrieve prompt:", error.message);
     }
 }
 
-retrievePromptWithFetch();
+verifyPromptCreation();
 ```
 
 <!-- tabs:end -->
 
-#### **Java**
-
-```java
-import com.promptcrafter.PromptCrafterClient;
-import com.promptcrafter.PromptCrafterClient.Prompt;
-
-public class RetrievePromptExample {
-    public static void main(String[] args) {
-        // Replace with your actual JWT token and the ID of the prompt you created
-        String token = "your-jwt-goes-here";
-        String promptId = "prompt102";
-
-        PromptCrafterClient client = PromptCrafterClient.builder()
-            .apiToken(token)
-            .build();
-
-        try {
-            Prompt retrievedPrompt = client.getPromptById(promptId);
-            System.out.println("Successfully retrieved prompt: '" + retrievedPrompt.title + "'");
-        } catch (PromptCrafterClient.PromptCrafterApiException e) {
-            if (e.getStatusCode() == 404) {
-                System.err.println("Error: Prompt with ID '" + promptId + "' not found.");
-            } else {
-                System.err.println("Failed to retrieve prompt: " + e.getMessage());
-            }
-        }
-    }
-}
-```
-
 #### **Go**
 
 ```go
+// This snippet is self-contained and can be run independently.
 package main
 
 import (
-  "context"
-  "fmt"
-  "log"
-  "github.com/your-org/promptcrafter" // Replace with your actual import path
+    "context"
+    "fmt"
+    "log"
+    "time"
+    "github.com/your-org/promptcrafter" // Replace with your actual import path
 )
 
 func main() {
-  // Replace with your actual JWT token and the ID of the prompt you created
-  token := "your-jwt-goes-here"
-  promptId := "prompt102"
-    
-  client := promptcrafter.NewClient(token)
-  ctx := context.Background()
+    // Replace with your token and the ID of the prompt you just created
+    token := "your-jwt-goes-here"
+    promptIdToVerify := "your-new-prompt-id"
 
-  prompt, err := client.GetPrompt(ctx, promptId)
-  if err != nil {
-    log.Printf("Error retrieving prompt: %v", err)
-    return
-  }
+    client := promptcrafter.NewClient(token)
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-  fmt.Printf("Successfully retrieved prompt: '%s'\n", prompt.Title)
+    retrievedPrompt, err := client.GetPrompt(ctx, promptIdToVerify)
+    if err != nil {
+        log.Fatalf("Error retrieving prompt to verify creation: %v", err)
+    }
+
+    fmt.Println("Successfully retrieved prompt to verify it was saved:")
+    fmt.Printf("  - ID: %s\n", retrievedPrompt.ID)
+    fmt.Printf("  - Title: %s\n", retrievedPrompt.Title)
 }
 ```
 
 #### **Ruby**
 
 ```ruby
+# This snippet is self-contained and can be run independently.
 require 'promptcrafter'
 
-# Replace with your actual JWT token and the ID of the prompt you created
+# Replace with your token and the ID of the prompt you just created
 token = 'your-jwt-goes-here'
-prompt_id = 'prompt102'
+prompt_id_to_verify = 'your-new-prompt-id'
 
-# Initialize the client with the token
 client = PromptCrafter::Client.new(access_token: token)
 
 begin
-  prompt = client.get_prompt(prompt_id)
-  puts "Successfully retrieved prompt: '#{prompt['title']}'"
-rescue PromptCrafter::NotFoundError => e
-  puts "Error: Prompt with ID '#{prompt_id}' not found."
+  retrieved_prompt = client.get_prompt(id: prompt_id_to_verify)
+  puts "Successfully retrieved prompt to verify it was saved:"
+  puts "  - ID: #{retrieved_prompt['_id']}"
+  puts "  - Title: #{retrieved_prompt['title']}"
 rescue PromptCrafter::Error => e
   puts "Failed to retrieve prompt: #{e.message}"
 end
+```
+
+#### **Java**
+
+```java
+// This snippet is self-contained and can be run independently.
+import com.promptcrafter.PromptCrafterClient;
+import com.promptcrafter.PromptCrafterClient.Prompt;
+
+public class VerifyPromptCreationExample {
+    public static void main(String[] args) {
+        // Replace with your token and the ID of the prompt you just created
+        String token = "your-jwt-goes-here";
+        String promptIdToVerify = "your-new-prompt-id";
+
+        PromptCrafterClient client = PromptCrafterClient.builder()
+            .apiToken(token)
+            .build();
+        
+        try {
+            Prompt retrievedPrompt = client.getPromptById(promptIdToVerify);
+            System.out.println("Successfully retrieved prompt to verify it was saved:");
+            System.out.println("  - ID: " + retrievedPrompt._id);
+            System.out.println("  - Title: " + retrievedPrompt.title);
+        } catch (PromptCrafterClient.PromptCrafterApiException e) {
+            System.err.println("Failed to retrieve prompt: " + e.getMessage());
+        }
+    }
+}
 ```
 
 <!-- tabs:end -->
@@ -605,12 +606,10 @@ Here are issues you might encounter when saving prompts and what to do about the
 | **404 Not Found** | `{"error": "Route not found"}` | Incorrect endpoint URL. | Verify the endpoint is `/prompts` with no trailing slash or typos. |
 | **500 Internal Server Error** | `{"error": "An unexpected server error occurred"}` | Server-side processing error. | Retry the request; contact support if the error persists. |
 
-## Next Steps
+## Next steps
 
 Now that you've saved your first prompt, you're ready to explore the other features of PromptCrafter.
 
 - Try the [Search prompts tutorial](tutorials/search-prompts.md) to find prompts by keyword.
-- See the [Log a generated output tutorial](tutorials/test-prompt.md) to track prompt performance.
+- See the [Log a generated output tutorial](tutorials/log-output.md) to track prompt performance.
 - For complete details on parameters and endpoints, see the [Prompt resource](reference/resources/prompt.md) and the [`POST /prompts`](reference/endpoints/post-prompts.md) endpoint documentation.
-
-
