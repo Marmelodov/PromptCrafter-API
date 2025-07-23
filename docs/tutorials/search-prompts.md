@@ -67,7 +67,7 @@ curl -G --data-urlencode "q=product marketing" "$BASE_URL/search" \
 
 #### **Postman**
 
-If you've imported the PromptCrafter Postman Collection, sending the request is simple. The collection automatically handles authentication for you.
+If you've imported the PromptCrafter Postman Collection, sending the request is simple.  
 
 1.  In the **Search** folder, select the **Search prompts** request.
 2.  In the **Params** tab, find the key `q`. In the **VALUE** column next to it, enter your search term (e.g., `python`).

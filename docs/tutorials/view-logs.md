@@ -358,6 +358,7 @@ async function getLogsByPrompt() {
     }
 }
 
+
 getLogsByPrompt();
 ```
 
@@ -516,6 +517,7 @@ If you request all logs, the response looks like this:
 ```
 
 If you filter by `promptId`, the array contains only logs matching that ID. If there are no logs for that prompt, the response is an empty array `[]`.
+
 
 ## What to do if the request doesn't work
 
