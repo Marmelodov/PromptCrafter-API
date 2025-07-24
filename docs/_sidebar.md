@@ -29,6 +29,12 @@
     - [Delete a log](reference/endpoints/delete-logs-id.md)
 - [**Postman Collection**](postman.md)
 - [**OpenAPI Specification**](openapi.md)
-- [**SDKs**](sdks.md)
+- **SDKs**
+    - [Python](sdks/python_sdk.md)
+    - [JavaScript](sdks/javascript_sdk.md)
+    - [Go](sdks/go_sdk.md)
+    - [Java](sdks/java_sdk.md)
+    - [Ruby](sdks/ruby_sdk.md)
+- [**Concepts**](concepts.md)
 - [**About**](about.md)
 - [**Contact**](contact.md)
