@@ -30,5 +30,6 @@
 - [**Postman Collection**](postman.md)
 - [**OpenAPI Specification**](openapi.md)
 - [**SDKs**](sdks.md)
+- [**Concepts**](concepts.md)
 - [**About**](about.md)
 - [**Contact**](contact.md)
