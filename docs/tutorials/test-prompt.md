@@ -1,10 +1,10 @@
 # Tutorial: Log a generated output
 
-This guide walks through how to log the generated output of a prompt test. Logs are the API's primary resource for evaluating prompt performance. Each log records the details of a prompt test, including a link to the tested prompt (`promptId`), the AI model, the generated `output`, contextual `notes`, and a `score`. Systematically logging outputs enables you to do things like:
+This guide walks through how to log the generated output of a prompt test. Logs are the API's primary resource for evaluating prompt performance. Each log records the details of a prompt test, including a link to the tested prompt (`promptId`), the AI model, the generated `output`, contextual `notes`, and a `score`. Systematically logging outputs enables you to:
 
-*   **Refine a customer support chatbot:** Log chatbot responses to common user queries, then score them for accuracy and helpfulness to identify which prompts need improvement.
-*   **A/B test marketing copy:** Test two versions of a prompt that generates e-commerce product descriptions. Log the outputs from each, score them based on engagement metrics, and use the data to choose the better-performing prompt.
-*   **Create a regression test suite:** After updating a critical prompt, run it against a set of test cases and log the outputs. Compare new logs to previous ones to ensure the prompt's performance hasn't degraded.
+* **Refine a customer support chatbot:** Log chatbot responses to common user queries, then score them for accuracy and helpfulness to identify which prompts need improvement.
+* **A/B test marketing copy:** Test two versions of a prompt that generates e-commerce product descriptions. Log the outputs from each, score them based on engagement metrics, and use the data to choose the better-performing prompt.
+* **Create a regression test suite:** After updating a critical prompt, run it against a set of test cases and log the outputs. Compare new logs to previous ones to ensure the prompt's performance hasn't degraded.
 
 This tutorial takes about ten minutes to complete.
 
@@ -12,11 +12,11 @@ This tutorial takes about ten minutes to complete.
 
 To follow this tutorial, you need:
 
-*   **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, follow the authentication steps in the [Quickstart](../quickstart.md) to get one.
-*   **The `_id` of a saved prompt:** If you don't have any prompts saved, complete the [Save a prompt tutorial](create-prompt.md).
-*   **An HTTP client:** This tutorial provides examples for both cURL and Postman.
-    *   If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
-
+* **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, follow the authentication steps in the [Quickstart](../quickstart.md) to get one.
+* **The `_id` of a saved prompt:** If you don't have any prompts saved, complete the [Save a prompt tutorial](create-prompt.md).
+* **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
+    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
+  
 ## Build the request
 
 Log a generated output by sending a `POST` request to this endpoint:
@@ -119,7 +119,7 @@ except PromptCrafterAPIError as e:
     print(f"Failed to create log: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 import requests
@@ -197,7 +197,7 @@ async function logOutputWithSDK() {
 logOutputWithSDK();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 async function logOutput() {
@@ -415,7 +415,7 @@ except PromptCrafterAPIError as e:
     print(f"Failed to retrieve logs: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 # This snippet is self-contained and can be run independently.
@@ -480,7 +480,7 @@ async function getLogs() {
 getLogs();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 // This snippet is self-contained and can be run independently.
