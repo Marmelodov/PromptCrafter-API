@@ -1,10 +1,10 @@
 # Tutorial: Update a prompt
 
-Update an existing prompt by sending a `PATCH /prompts/{promptId}` request. This method allows you to modify specific fields of a prompt—like its `title`, `content`, `model`, or `tags`—without rewriting the entire resource. Keeping your prompts current is essential for iterative development and library maintenance. You can:
+This tutorial walks you through how to update an existing prompt. This method allows you to modify specific fields of a prompt—its `title`, `content`, `model`, or `tags`—without rewriting the entire resource. Updating prompts as your needs change helps maintain a clean, effective prompt library.
 
-- **Refine prompt instructions:** After testing, you might find a small change to a prompt's `content` significantly improves output quality. You can update the text while leaving the title and tags unchanged.
-- **Upgrade to a new model:** When a more advanced AI model is released, update the `model` field on your best prompts to take advantage of the latest technology.
-- **Reorganize your library:** As projects evolve, change a prompt's `tags` to better reflect its current use case (e.g., changing a tag from `draft` to `production-ready`).
+- **Edit the prompt text to enhance clarity or accuracy:** Adjust the `content` field after testing to make instructions clearer or more effective.
+- **Switch to a new model:** Change the `model` field to use the latest AI model and get better performance.
+- **Reorganize your library:** Modify a prompt’s tags as its purpose evolves (e.g., from `draft` to `production-ready`).
 
 This tutorial takes about ten minutes to complete.
 
@@ -14,18 +14,18 @@ To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
 - **A saved prompt's ID:** You need the `_id` of a prompt you've already saved. If you don't have one, complete the [Save a prompt tutorial](create-prompt.md) first.
-- **An HTTP client:** This tutorial provides examples for both cURL and Postman.
+- **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
 ## Build the request
 
-To update a prompt, send a `PATCH` request to the following endpoint, replacing `{promptId}` with the ID of the prompt you want to modify:
+Update a prompt by sending a `PATCH` request to the following endpoint, replacing `{promptId}` with the ID of the prompt you want to modify:
 
 ```text
 https://promptcrafter-production.up.railway.app/prompts/{promptId}
 ```
 
-The request includes headers, a path parameter, and a JSON-formatted request body with only the fields you want to change.
+The `PATCH` request includes two headers, a path parameter, and a JSON-formatted request body containing the fields you want to change.
 
 ### Headers
 
@@ -36,7 +36,7 @@ Add the following headers to your request:
 
 ### Request body
 
-The request body should only contain the fields you want to update. All fields are optional. Any fields you omit remain unchanged.
+The request body contains only the fields you want to update. All fields are optional. Any fields you omit remain unchanged.
 
 | Field    | Type             | Required | Description                                                            |
 |----------|------------------|----------|------------------------------------------------------------------------|
@@ -120,7 +120,7 @@ except PromptCrafterAPIError as e:
     print(f"Failed to update prompt: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 import requests
@@ -340,7 +340,7 @@ public class UpdatePromptExample {
 
 ## Response
 
-A successful request returns a `200 OK` status and the full, updated prompt object. Notice that the `updatedAt` timestamp has changed to reflect when the modification occurred.
+A successful request returns a `200 OK` status and the full, updated prompt object. Notice that the `updatedAt` timestamp has changed to show when the update occurred.
 
 ```json
 {
@@ -404,7 +404,7 @@ except PromptCrafterAPIError as e:
     print(f"Failed to retrieve prompt: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 # This snippet is self-contained and can be run independently.
@@ -463,7 +463,7 @@ async function verifyUpdate() {
 verifyUpdate();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 // This snippet is self-contained and can be run independently.

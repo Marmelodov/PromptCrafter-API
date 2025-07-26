@@ -13,7 +13,7 @@ This tutorial takes about ten minutes to complete.
 To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
-- **An HTTP client:** This tutorial provides examples for both cURL and Postman.
+- **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
 ## Build the request
@@ -68,7 +68,7 @@ To make the cURL commands cleaner, set shell variables for the base URL, your to
 BASE_URL="https://promptcrafter-production.up.railway.app"
 TOKEN="your-jwt-goes-here" # Replace with your actual token
 
-# Define the JSON payload in a separate variable for readability
+# Define the JSON payload using a 'heredoc' (<<-END) for readability.
 JSON_PAYLOAD=$(cat <<-END
 {
   "title": "Positive Product Review Writer",
@@ -101,6 +101,7 @@ If you've imported the PromptCrafter Postman Collection, sending the request is 
 ##### **SDK**
 
 ```python
+# The snippet uses the PromptCrafter Python SDK
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token
@@ -125,9 +126,10 @@ except PromptCrafterAPIError as e:
     print(f"Failed to create prompt: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
+# This snippet uses Python's requests library
 import requests
 
 # Replace with your actual JWT token
@@ -168,6 +170,7 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
+// This snippet uses the PromptCrafter JavaScript SDK
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function createPrompt() {
@@ -196,9 +199,10 @@ async function createPrompt() {
 createPrompt();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
+// This snippet uses JavaScript's fetch API
 async function createPrompt() {
     // Replace with your actual JWT token
     const token = "your-jwt-goes-here";
@@ -244,6 +248,7 @@ createPrompt();
 #### **Go**
 
 ```go
+// This snippet uses the PromptCrafter Go SDK
 package main
 
 import (
@@ -283,6 +288,7 @@ func main() {
 #### **Ruby**
 
 ```ruby
+# This snippet uses the PromptCrafter Ruby SDK
 require 'promptcrafter'
 
 # Replace with your actual JWT token
@@ -310,6 +316,7 @@ end
 #### **Java**
 
 ```java
+// This snippet uses the PromptCrafter Java SDK
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Prompt;
 import com.promptcrafter.PromptCrafterClient.PromptCreate;
@@ -363,7 +370,7 @@ If your request is successful, the server returns a `201 Created` status and the
 }
 ```
 
-**Note:** The server adds the `_id`, `ownerId`, `createdAt`, and `updatedAt` fields. Do not include them in your request body.
+**Note:** The server adds the `_id`, `ownerId`, `createdAt`, and `updatedAt` fields. Do not include these fields in your request body.
 
 ## Verify the prompt
 
@@ -412,7 +419,7 @@ except PromptCrafterAPIError as e:
     print(f"Failed to retrieve prompt: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 # This snippet is self-contained and can be run independently.
@@ -468,7 +475,7 @@ async function verifyPromptCreation() {
 verifyPromptCreation();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 // This snippet is self-contained and can be run independently.

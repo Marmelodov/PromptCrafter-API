@@ -14,7 +14,7 @@ To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
 - **At least one saved log:** You need to have logged at least one output. If you haven't, complete the [Log a generated output tutorial](log-output.md) first.
-- **An HTTP client:** This tutorial provides examples for both cURL and Postman.
+- **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
 ## Build the request
@@ -85,7 +85,7 @@ except PromptCrafterAPIError as e:
     print(f"An API error occurred: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 import requests
@@ -138,7 +138,7 @@ async function getAllLogs() {
 getAllLogs();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 async function getAllLogs() {
@@ -305,7 +305,7 @@ except PromptCrafterAPIError as e:
     print(f"An API error occurred: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 import requests

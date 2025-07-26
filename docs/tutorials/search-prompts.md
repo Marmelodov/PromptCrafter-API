@@ -2,9 +2,9 @@
 
 This guide shows you how to search your prompt library. Use `GET /search` to performs a case-insensitive search across the `title`, `content`, and `tags` of all prompts you own, making it easy to find the exact instructions you need. Systematically searching your library allows you to:
 
-- **Find and reuse existing work:** A teammate needs to draft an apology email. They can search for `customer apology email` to find and adapt a high-quality prompt someone else has already perfected.
-- **Discover prompts for new tasks:** You're building a new feature that summarizes articles. Search your team's library for `summary` or `tldr` to find relevant prompts to use as a starting point.
-- **Manage prompt versions:** Your team uses version tags like `v1` and `v2`. Search for prompts tagged with `v1` to quickly identify older versions that may need to be updated or archived as part of your maintenance process.
+- **Find prompts to reuse without changes:** For recurring needs like writing apology emails, search for terms like `customer apology email` to retrieve polished prompts already optimized for that task.  
+- **Find prompts to adapt for different tasks:** When working on something new—like building a feature to summarize articles—search for related prompts with keywords like `summary` or `tldr` to use as starting points.  
+- **Manage prompt versions:** Filter by tags like `v1` to identify outdated prompts that need updates or deprecation.
 
 This tutorial takes about five minutes to complete.
 
@@ -14,8 +14,8 @@ To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
 - **Saved prompts:** You should have at least one saved prompt in your library. If you need to create one, complete the [Save a prompt tutorial](create-prompt.md).
-- **An HTTP client:** This tutorial provides examples for both cURL and Postman.
-    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along easily.
+- **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
+    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
 ## Build the request
 
@@ -97,7 +97,7 @@ except PromptCrafterAPIError as e:
     print(f"An API error occurred: {e}")
 ```
 
-##### **Requests**
+##### **`requests`**
 
 ```python
 import requests
@@ -154,7 +154,7 @@ async function searchPrompts() {
 searchPrompts();
 ```
 
-##### **Fetch**
+##### **`fetch`**
 
 ```javascript
 async function searchPrompts() {
@@ -301,7 +301,7 @@ A successful request returns a `200 OK` status and a JSON array of prompt object
 ]
 ```
 
-> **Understanding results ordering:** Prompts appear in order of relevance. The search algorithm considers matches in titles more relevant than matches in content or tags, so prompts with titles that match your query appear higher in the results.
+> **Understanding results ordering:** Prompts appear in order of relevance. The search algorithm considers matches in the `title` field more relevant than matches in `content` or `tags`, so prompts with titles that match your query appear higher in the results.
 
 If no prompts match your search term, the request returns a `200 OK` status with an empty array `[]`.
 
@@ -318,7 +318,7 @@ Here are issues you might encounter when searching for prompts and how to resolv
 
 ## Next steps
 
-Now that you can find prompts in your library, you are ready to use them to build and test solutions.
+Now that you can find prompts in your library, you can start applying them to real tasks.
 
 - Try the [Log a generated output tutorial](tutorials/log-output.md) to test a prompt you found.
 - Learn how to [update a prompt](tutorials/update-prompt.md) with new content or tags.
