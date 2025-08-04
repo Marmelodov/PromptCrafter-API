@@ -1,6 +1,6 @@
 # Tutorial: Save a prompt
 
-This guide walks through how to save a prompt to PromptCrafter API. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
+Save a prompt to your library by sending a `POST /prompts` request. Prompts are the API's core resource, storing reusable instructions for generative AI models like GPT-4o and Claude. Saving prompts allows you to build an organized, searchable prompt library with which you can:
 
 - **Automate content creation**: Design prompts for a marketing app that draft blog posts in your brand’s voice, then retrieve them by ID to generate articles in the same style every time without rewriting instructions.  
 - **Build a prompt evaluation suite**: Run systematic experiments to determine the best prompt for a job like sentiment analysis. Tag related prompts (e.g., `sentiment-v1` and `sentiment-v2`) to programmatically test them across AI models and measure which version produces the most accurate outputs.
@@ -374,7 +374,7 @@ If your request is successful, the server returns a `201 Created` status and the
 
 ## Verify the prompt
 
-To confirm your prompt was saved successfully, send a `GET` request using the prompt `_id` from the response. Each code sample below is self-contained and can be run independently.
+To confirm your prompt saved successfully, send a `GET` request using the prompt `_id` from the response. Each code sample below is self-contained and can be run independently.
 
 <!-- tabs:start -->
 

@@ -1,6 +1,6 @@
 # Tutorial: Log a generated output
 
-This guide walks through how to log the generated output of a prompt test. Logs are the API's primary resource for evaluating prompt performance. Each log records the details of a prompt test, including a link to the tested prompt (`promptId`), the AI model, the generated `output`, contextual `notes`, and a `score`. Systematically logging outputs enables you to:
+Log the output of a prompt test by sending a `POST /logs` request. Logs are the API's primary resource for evaluating prompt performance. Each log records the details of a prompt test, including a link to the tested prompt (`promptId`), the AI model, the generated `output`, contextual `notes`, and a `score`. Systematically logging outputs enables you to:
 
 * **Refine a customer support chatbot:** Log chatbot responses to common user queries, then score them for accuracy and helpfulness to identify which prompts need improvement.
 * **A/B test marketing copy:** Test two versions of a prompt that generates e-commerce product descriptions. Log the outputs from each, score them based on engagement metrics, and use the data to choose the better-performing prompt.

@@ -1,10 +1,10 @@
 # Tutorial: Update a prompt
 
-This tutorial walks you through how to update an existing prompt. This method allows you to modify specific fields of a prompt—its `title`, `content`, `model`, or `tags`—without rewriting the entire resource. Updating prompts as your needs change helps maintain a clean, effective prompt library.
+Update an existing prompt by sending a `PATCH /prompts/{promptId}` request. This method allows you to modify specific fields of a prompt—like its `title`, `content`, `model`, or `tags`—without rewriting the entire resource. Updating prompts as your needs change helps maintain a clean, effective prompt library.
 
-- **Edit the prompt text to enhance clarity or accuracy:** Adjust the `content` field after testing to make instructions clearer or more effective.
-- **Switch to a new model:** Change the `model` field to use the latest AI model and get better performance.
-- **Reorganize your library:** Modify a prompt’s tags as its purpose evolves (e.g., from `draft` to `production-ready`).
+- **Refine prompt instructions:** Adjust the `content` field after testing to improve the model's output.
+- **Upgrade the model:** Switch the `model` field to take advantage of the latest AI technology.
+- **Reorganize your library:** Change a prompt’s `tags` to reflect its current use case (e.g., from `draft` to `production-ready`).
 
 This tutorial takes about ten minutes to complete.
 
@@ -13,7 +13,7 @@ This tutorial takes about ten minutes to complete.
 To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
-- **A saved prompt's ID:** You need the `_id` of a prompt you've already saved. If you don't have one, complete the [Save a prompt tutorial](create-prompt.md) first.
+- **The `_id` of a saved prompt:** If you don't have a prompt saved, complete the [Save a prompt tutorial](create-prompt.md) first.
 - **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
@@ -29,7 +29,7 @@ The `PATCH` request includes two headers, a path parameter, and a JSON-formatted
 
 ### Headers
 
-Add the following headers to your request:
+Both of these headers are required:
 
 - `Authorization: Bearer {your_token}` authenticates you as the user. Replace `{your_token}` with the bearer token you received after logging in.
 - `Content-Type: application/json` tells the server to expect a JSON object in the request body.
@@ -41,7 +41,7 @@ The request body contains only the fields you want to update. All fields are opt
 | Field    | Type             | Required | Description                                                            |
 |----------|------------------|----------|------------------------------------------------------------------------|
 | `title`  | string           | No       | A new label to help identify or sort the prompt.                       |
-| `content`| string           | No       | The revised text to be sent to the AI model.                           |
+| `content`| string           | No       | The revised text sent to the AI model.                           |
 | `model`  | string           | No       | The name of a different model (e.g., `gpt-4o`, `Claude 3 Sonnet`).     |
 | `tags`   | array&lt;string&gt;  | No       | A new set of keywords for organization.  |
 
@@ -85,10 +85,10 @@ curl -X PATCH "$BASE_URL/prompts/$PROMPT_ID" \
 
 If you've imported the PromptCrafter Postman Collection, sending the request is simple.
 
-1.  In the **Prompts** folder, select the **Update a prompt** request.
-2.  In the path variables for the request, replace `{{promptId}}` with the `_id` of the prompt you want to update.
-3.  In the **Body** tab of the request, edit the JSON to include only the fields you wish to change.
-4.  Click **Send**. The collection automatically uses the `{{token}}` variable set during login.
+1. In the **Prompts** folder, select the **Update a prompt** request.
+2. In the path variables for the request, replace `{{promptId}}` with the `_id` of the prompt you want to update.
+3. In the **Body** tab of the request, edit the JSON to include only the fields you wish to change.
+4. Click **Send**. The collection automatically uses the `{{token}}` variable set during login.
 
 #### **Python**
 

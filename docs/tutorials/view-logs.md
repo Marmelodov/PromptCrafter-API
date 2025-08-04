@@ -1,6 +1,6 @@
 # Tutorial: View logs
 
-This guide shows you how to retrieve and view the logged results of prompt tests. Each log records a model's `output`, linking it to the `promptId` that produced it. Reviewing logs allows you to analyze and compare results across tests, identify performance patterns, and systematically improve your prompts. You can:
+View test logs by sending a `GET /logs` request. Each log records a model's `output`, linking it to the `promptId` that produced it. Reviewing logs allows you to analyze and compare results across tests, identify performance patterns, and systematically improve your prompts. You can:
 
 - **Analyze chatbot performance:** Retrieve logs for a specific `promptId` used by a chatbot to see a complete history of its responses to users, then analyze the scores and notes to find areas for improvement.
 - **Compare A/B test results:** Fetch logs for two different prompt versions (e.g., `prompt-A` and `prompt-B`) to compare their average scores and determine which is more effective.

@@ -1,6 +1,6 @@
 # Tutorial: Search for prompts
 
-This guide shows you how to search your prompt library. Use `GET /search` to performs a case-insensitive search across the `title`, `content`, and `tags` of all prompts you own, making it easy to find the exact instructions you need. Systematically searching your library allows you to:
+Search your prompt library by sending a `GET /search?q=` request. Perform a case-insensitive search across the `title`, `content`, and `tags` of all prompts you own, making it easy to find the exact instructions you need. Systematically searching your library allows you to:
 
 - **Find prompts to reuse without changes:** For recurring needs like writing apology emails, search for terms like `customer apology email` to retrieve polished prompts already optimized for that task.  
 - **Find prompts to adapt for different tasks:** When working on something new—like building a feature to summarize articles—search for related prompts with keywords like `summary` or `tldr` to use as starting points.  

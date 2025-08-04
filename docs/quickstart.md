@@ -4,8 +4,8 @@ This guide shows you how to create an account, authenticate, and save and retrie
 
 Make sure you have one of the following tools:
 
-*   [cURL](https://curl.se/docs/install.html)
-*   [Postman](https://www.postman.com/downloads/)
+* [cURL](https://curl.se/docs/install.html)
+* [Postman](https://www.postman.com/downloads/)
 
 If you're using Postman, [import the PromptCrafter API Collection](postman.md). It includes all the API requests described in this guide, so you can replace their pre-filled values with your own and click **Send**.
 
@@ -74,7 +74,7 @@ curl -X POST $BASE_URL/auth/login \
   }'
 ```
 
-After logging in, save your token to a shell variable. This prevents you from having to copy and paste it for every subsequent request.
+After logging in, save your token to a shell variable. This prevents you from having to copy and paste it in every subsequent request.
 
 ```bash
 TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -104,9 +104,9 @@ This token is your authentication credential for all protected endpoints. (If yo
 
 ## 3. Save your first prompt
 
-Now comes the core value of PromptCrafter: storing and organizing your prompts. This step demonstrates how you'll build your prompt library over time. Each saved prompt includes not just the prompt text (what you actually feed into the AI model), but metadata like the target `model`, descriptive `tags` for grouping, and timestamps. These make it easy to find and manage prompts as your collection grows.
+Now comes the core value of PromptCrafter: storing and organizing your prompts. This step demonstrates how to build your prompt library over time. Each saved prompt includes not just the prompt text (what you actually feed into the AI model), but metadata like the intended `model`, descriptive `tags` for grouping, and timestamps. These make it easy to find and manage prompts as your collection grows.
 
-**Why this structure matters:** This metadata is how you build an organized, searchable library instead of a chaotic folder of text files. This becomes invaluable when you're working on multiple projects or need to find that one prompt you wrote months ago. With `tags`, for example, you can:
+**Why the metadata matters:** The metadata is what enables you to build an organized, searchable library of prompts instead of a chaotic folder full of text files. Having your prompts organized in one place becomes invaluable when you're working on multiple projects or need to find that one prompt you wrote months ago that worked perfectly. With `tags`, for example, you can:
 - **Group by project:** Tag prompts for a particular marketing campaign with `campaign-q3-launch`.
 - **Group by task:** Tag prompts that generate Python code with `python-code-gen`.
 - **Group by purpose:** Tag prompts for summarizing customer feedback with `customer-feedback-summary`.
