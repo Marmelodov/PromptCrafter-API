@@ -1,29 +1,59 @@
-# API reference
+# API Reference
 
-The reference pages below describe the resources and operations in PromptCrafter API. All API requests use the `https://promptcrafter-production.up.railway.app` base URL and require your bearer token in the `Authorization: Bearer` header. See the [Quickstart](../quickstart.md) for help obtaining your bearer token.
+Use this API reference to find the data models, required parameters, and request/response schemas for every resource and endpoint in the PromptCrafter API.
 
-## Resource definitions
+All API requests use the `https://promptcrafter-production.up.railway.app` base URL and require a bearer token. See the [Quickstart](../quickstart.md) for help with authentication.
 
-- [Prompt](reference/resources/prompt.md)  
-- [Log](reference/resources/log.md)
+## Prompts
 
-## Prompt operations
+The `prompt` resource is the core of the API, storing a set of reusable instructions for a generative AI model.
 
-- [Retrieve all prompts](reference/endpoints/get-prompts.md): `GET /prompts`  
-- [Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
-- [Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
-- [Update a prompt](reference/endpoints/patch-prompts-id.md): `PATCH /prompts/:id`  
-- [Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`  
-- [Search prompts](reference/endpoints/get-search.md): `GET /search?q=`  
+* **[Prompt resource](reference/resources/prompt.md)**: View the attributes, data types, and description of the prompt object.
 
-## Log operations
+#### Operations
 
-- [Retrieve all logs](reference/endpoints/get-logs.md): `GET /logs`  
-- [Log a generated output](reference/endpoints/post-logs.md): `POST /logs`  
-- [Retrieve logs for a specific prompt](reference/endpoints/get-logs-by-prompt.md): `GET /logs?promptId=`  
-- [Delete a log](reference/endpoints/delete-logs-id.md): `DELETE /logs/:id`  
+* `GET /prompts`: [**Retrieve all prompts**](reference/endpoints/get-prompts.md)  
+    Retrieves a list of all prompts owned by the authenticated user.
+* `POST /prompts`: [**Save a prompt**](reference/endpoints/post-prompts.md)  
+    Creates a new prompt in the user's library.
+* `GET /prompts/{id}`: [**Retrieve a prompt by ID**](reference/endpoints/get-prompts-id.md)  
+    Fetches a single prompt using its unique identifier.
+* `PATCH /prompts/{id}`: [**Update a prompt**](reference/endpoints/patch-prompts-id.md)  
+    Modifies one or more fields of an existing prompt.
+* `DELETE /prompts/{id}`: [**Delete a prompt**](reference/endpoints/delete-prompts-id.md)  
+    Permanently removes a prompt and its associated logs from the database.
+
+## Logs
+
+The `log` resource records the results of a prompt test, including the generated output and user-provided notes and performance score.
+
+* **[Log resource](reference/resources/log.md)**: View the attributes, data types, and description of the log object.
+
+#### Operations
+
+* `GET /logs`: [**Retrieve logs**](reference/endpoints/get-logs.md)  
+    Fetches a list of logs, optionally filtered by the parent `promptId`.
+* `POST /logs`: [**Log a generated output**](reference/endpoints/post-logs.md)  
+    Creates a new log to record the output and score of a prompt test.
+* `DELETE /logs/{id}`: [**Delete a log**](reference/endpoints/delete-logs-id.md)  
+    Permanently removes a single log from the database.
+
+## Search
+
+The search endpoint provides a dedicated method for finding prompts within your library.
+
+#### Operations
+
+* `GET /search`: [**Search prompts**](reference/endpoints/get-search.md)  
+    Performs a case-insensitive search across the `title`, `content`, and `tags` of all prompts.
 
 ## Authentication
 
-- [Sign up](reference/endpoints/post-auth-signup.md): `POST /auth/signup`  
-- [Log in](reference/endpoints/post-auth-login.md): `POST /auth/login`  
+These endpoints create new user accounts and authenticate existing users, returning the JWT bearer token required for all subsequent API calls.
+
+#### Operations
+
+* `POST /auth/signup`: [**Sign up**](reference/endpoints/post-auth-signup.md)  
+    Creates a new user account.
+* `POST /auth/login`: [**Log in**](reference/endpoints/post-auth-login.md)  
+    Authenticates a user and returns a JWT bearer token for all subsequent requests.
