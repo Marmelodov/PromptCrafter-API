@@ -73,13 +73,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/auth/signup",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/auth/signup",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"auth",
@@ -255,13 +251,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/auth/login",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/auth/login",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"auth",
@@ -338,6 +330,28 @@
 			"item": [
 				{
 					"name": "Save a prompt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check for a successful creation and parse the response\r",
+									"if (pm.response.code === 201) {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Automatically save the new prompt's ID to a collection variable\r",
+									"    if (jsonData && jsonData._id) {\r",
+									"        pm.collectionVariables.set(\"promptId\", jsonData._id);\r",
+									"        console.log(\"Saved new promptId to variables: \" + jsonData._id);\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -373,7 +387,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									},
 									{
 										"key": "Content-Type",
@@ -391,13 +405,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/prompts",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/prompts",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"prompts"
@@ -546,21 +556,17 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									}
 								],
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"prompts",
-										""
+										"{{promptId}}"
 									]
 								}
 							},
@@ -758,7 +764,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									},
 									{
 										"key": "Content-Type",
@@ -776,17 +782,13 @@
 									}
 								},
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"prompts",
-										""
+										"{{promptId}}"
 									]
 								}
 							},
@@ -1228,21 +1230,17 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									}
 								],
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/prompts/",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"prompts",
-										""
+										"{{promptId}}"
 									]
 								}
 							},
@@ -1445,7 +1443,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									},
 									{
 										"key": "Content-Type",
@@ -1463,13 +1461,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/logs",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/logs",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"logs"
@@ -1663,17 +1657,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									}
 								],
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/logs",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/logs",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"logs"
@@ -1803,17 +1793,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer "
+										"value": "Bearer {{token}}"
 									}
 								],
 								"url": {
-									"raw": "https://promptcrafter-production.up.railway.app/logs?promptId=",
-									"protocol": "https",
+									"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
 									"host": [
-										"promptcrafter-production",
-										"up",
-										"railway",
-										"app"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"logs"
@@ -1821,7 +1807,7 @@
 									"query": [
 										{
 											"key": "promptId",
-											"value": ""
+											"value": "{{promptId}}"
 										}
 									]
 								}
