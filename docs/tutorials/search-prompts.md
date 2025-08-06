@@ -13,7 +13,7 @@ This tutorial takes about five minutes to complete.
 To follow this tutorial, you need:
 
 - **Your JWT token:** All requests require a Bearer token for authentication. If you don't have one, complete the authentication steps in the [Quickstart guide](../quickstart.md) first.
-- **Saved prompts:** You should have at least one saved prompt in your library. If you need to create one, complete the [Save a prompt tutorial](create-prompt.md).
+- **Saved prompts:** You need at least one prompt saved in your library. If you haven't yet saved a prompt, complete the [Save a prompt tutorial](create-prompt.md).
 - **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
     - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
 
