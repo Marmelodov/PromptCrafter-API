@@ -29,6 +29,4 @@
     - [Delete a log](reference/endpoints/delete-logs-id.md)
 - [**Postman Collection**](postman.md)
 - [**OpenAPI Specification**](openapi.md)
-- [**SDKs**](sdks.md)
 - [**About**](about.md)
-- [**Contact**](contact.md)

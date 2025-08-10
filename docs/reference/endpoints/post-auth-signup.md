@@ -18,9 +18,9 @@ None
 
 ## Request headers
 
-| Header name     | Required | Description                       |
+| Header name     | Required | Content                       |
 |-----------------|----------|-----------------------------------|
-| `Content-Type`  | Yes      | Must be set to `application/json` |
+| `Content-Type`  | Yes      | `application/json` |
 
 ## Request body
 

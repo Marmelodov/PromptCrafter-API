@@ -68,6 +68,7 @@ In the **Logs** folder of the Postman Collection, select the **Retrieve all logs
 ##### **SDK**
 
 ```python
+# This snippet uses the PromptCrafter Python SDK
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token
@@ -88,6 +89,7 @@ except PromptCrafterAPIError as e:
 ##### **`requests`**
 
 ```python
+# This snippet uses Python's requests library
 import requests
 
 # Replace with your actual JWT token
@@ -116,6 +118,7 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
+// This snippet uses the PromptCrafter JavaScript SDK
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function getAllLogs() {
@@ -141,6 +144,7 @@ getAllLogs();
 ##### **`fetch`**
 
 ```javascript
+// This snippet uses JavaScript's fetch API
 async function getAllLogs() {
     // Replace with your actual JWT token
     const token = "your-jwt-goes-here";
@@ -172,6 +176,7 @@ getAllLogs();
 #### **Go**
 
 ```go
+// This snippet uses the PromptCrafter Go SDK
 package main
 
 import (
@@ -204,6 +209,7 @@ func main() {
 #### **Ruby**
 
 ```ruby
+# This snippet uses the PromptCrafter Ruby SDK
 require 'promptcrafter'
 
 # Replace with your actual JWT token
@@ -225,6 +231,7 @@ end
 #### **Java**
 
 ```java
+// This snippet uses the PromptCrafter Java SDK
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Log;
 import java.util.List;
@@ -288,6 +295,7 @@ curl -X GET "$BASE_URL/logs?promptId=$PROMPT_ID" \
 ##### **SDK**
 
 ```python
+# This snippet uses the PromptCrafter Python SDK
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token and a prompt ID from your account
@@ -308,6 +316,7 @@ except PromptCrafterAPIError as e:
 ##### **`requests`**
 
 ```python
+# This snippet uses Python's requests library
 import requests
 
 # Replace with your token and the prompt ID to filter by
@@ -338,6 +347,7 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
+// This snippet uses the PromptCrafter JavaScript SDK
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function getLogsByPrompt() {
@@ -365,6 +375,7 @@ getLogsByPrompt();
 ##### **Fetch**
 
 ```javascript
+// This snippet uses JavaScript's fetch API
 async function getLogsByPrompt() {
     // Replace with your token and the prompt ID to filter by
     const token = "your-jwt-goes-here";
@@ -398,6 +409,7 @@ getLogsByPrompt();
 #### **Go**
 
 ```go
+// This snippet uses PromptCrafter's Go SDK
 package main
 
 import (
@@ -436,6 +448,7 @@ func main() {
 #### **Ruby**
 
 ```ruby
+# This snippet uses the PromptCrafter Ruby SDK
 require 'promptcrafter'
 
 # Replace with your token and a real prompt ID from your account
@@ -457,6 +470,7 @@ end
 #### **Java**
 
 ```java
+// This snippet uses the PromptCrafter Java SDK
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Log;
 import java.util.List;
@@ -517,7 +531,6 @@ If you request all logs, the response looks like this:
 ```
 
 If you filter by `promptId`, the array contains only logs matching that ID. If there are no logs for that prompt, the response is an empty array `[]`.
-
 
 ## What to do if the request doesn't work
 

@@ -15,7 +15,7 @@ To follow this tutorial, you need:
 * **Your JWT token:** All requests require a Bearer token for authentication. If you don't have a token, follow the authentication steps in the [Quickstart](../quickstart.md) to get one.
 * **The `_id` of a saved prompt:** If you don't have any prompts saved, complete the [Save a prompt tutorial](create-prompt.md).
 * **An HTTP client:** This tutorial includes examples for cURL, Postman, the PromptCrafter SDKs (Python, JavaScript, Go, Ruby, and Java), and raw HTTP using Python’s `requests` library and JavaScript’s `fetch` API.
-    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.
+    - If you're using Postman, import the [PromptCrafter Postman Collection](postman.md) to follow along.  
   
 ## Build the request
 
@@ -93,6 +93,7 @@ If you've imported the PromptCrafter Postman Collection, sending the request is 
 ##### **SDK**
 
 ```python
+# This snippet uses the PromptCrafter Python SDK
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token and prompt ID
@@ -122,6 +123,7 @@ except PromptCrafterAPIError as e:
 ##### **`requests`**
 
 ```python
+# This snippet uses Python's requests library
 import requests
 import json
 
@@ -168,6 +170,7 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
+// This snippet uses the PromptCrafter JavaScript SDK
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function logOutputWithSDK() {
@@ -200,6 +203,7 @@ logOutputWithSDK();
 ##### **`fetch`**
 
 ```javascript
+//this snippet uses the JavaScript fetch API
 async function logOutput() {
     // Replace with your actual JWT token and prompt ID
     const token = "your-jwt-goes-here";
@@ -246,6 +250,7 @@ logOutput();
 #### **Go**
 
 ```go
+// This snippet uses the PromptCrafter Go SDK
 package main
 
 import (
@@ -286,6 +291,7 @@ func main() {
 #### **Ruby**
 
 ```ruby
+# This snippet uses the PromptCrafter Ruby SDK
 require 'promptcrafter'
 
 # Replace with your actual JWT token and prompt ID
@@ -315,6 +321,7 @@ end
 #### **Java**
 
 ```java
+// This snippet uses the PromptCrafter Java SDK
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Log;
 import com.promptcrafter.PromptCrafterClient.LogCreate;

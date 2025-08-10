@@ -15,5 +15,5 @@ The specification includes detailed schemas, request/response examples, authenti
 
 ## Download
 
-- [Download OpenAPI Specification (YAML)](assets/PromptCrafter_openapi.yaml)
+- <a href="downloads/openapi.yaml" download>Download OpenAPI Specification</a>
 - [View on GitHub](https://github.com/Marmelodov/PromptCrafter-API/blob/main/openapi/openapi.yaml)

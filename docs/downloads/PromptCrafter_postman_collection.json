@@ -1,0 +1,2453 @@
+{
+	"info": {
+		"_postman_id": "9cd6dd62-cc29-4535-b83b-1a4d035940f1",
+		"name": "PromptCrafter API",
+		"description": "### Overview\n\nPromptCrafter API is a backend service for easily storing, organizing, and evaluating generative AI prompts. Whether you’re a developer, a prompt engineer, or someone who enjoys experimenting with gen AI, PromptCrafter makes it easy to build a prompt library, track changes and performance, and connect your prompts to your favorite tools.\n\nWith this API, you can:\n\n- **Save and Manage Prompts:** Store, update, and organize your prompts with titles, content, model specifications, and tags.\n    \n- **Log and Score Outputs:** Keep a detailed record of prompt outputs from different models, add notes, and score their performance for systematic testing.\n    \n- **Search Your Library:** Quickly find the exact prompts you need with full-text search across titles, content, and tags.\n    \n\nThis Postman Collection is a complete, interactive reference for all PromptCrafter API endpoints. It's part of the full PromptCrafter API developer portal, which you can explore here:\n\n- [Live API documentation](https://marmelodov.github.io/PromptCrafter-API/)\n    \n- [GitHub repository](https://github.com/Marmelodov/PromptCrafter-API)\n    \n\nThe full project also includes a complete OpenAPI 3.0 specification and fully documented SDKs for Python, JavaScript, Go, Java, and Ruby. The core API documentation Markdown files served as the source of truth for this Collection and all other portfolio artifacts.\n\n### Authentication\n\nAll protected endpoints in the PromptCrafter API require a JWT Bearer token. This collection is configured to handle authentication for you automatically.\n\n**Step-by-Step Guide:**\n\n1. **Get Your Authentication Token:**\n    \n    - **For new users**, open the `Auth` folder and select the **Sign up** request. Fill in your details in the request body and send the `POST /auth/signup` request.\n        \n    - **For existing users**, use the **Log in** request (`POST /auth/login`).\n        \n2. **Automatic Token Handling:**  \n    Upon a successful login, a test script automatically captures the JWT token from the response. It saves this token to a collection variable named `{{token}}`. This variable is automatically included in the authorization header of every subsequent request, so you don't need to manually copy and paste the token.\n    \n\n### Basic Workflow: Create and Retrieve Your First Prompt\n\nThis workflow will guide you through the fundamental cycle of creating a prompt and then retrieving it.\n\n1. **Sign Up (****`POST /auth/signup`****)**\n    \n    - First, ensure you have a valid token by running the **Sign up** request as described in the **Authentication** section. This creates your account and automatically sets your `{{token}}` for the next steps.\n        \n2. **Save a Prompt (****`POST /prompts`****)**\n    \n    - Navigate to the `Prompts` folder and select the **Save a prompt** request.\n        \n    - The request body is pre-filled with an example. You can modify the `title`, `content`, `model`, and `tags` as needed.\n        \n    - Click **Send**. Upon success, the API returns a JSON object for the newly created prompt. Locate the `_id` field in the response body; this is the unique identifier for your prompt.\n        \n3. **Retrieve a Prompt by ID (****`GET /prompts/{promptId}`****)**\n    \n    - Now, let's retrieve the prompt you just created. First, copy the `_id` value from the JSON response of the previous step.\n        \n    - Navigate to the Postman Collection's **Variables** tab. Paste the copied ID into the `CURRENT VALUE` column for the `promptId` variable.\n        \n    - Finally, run the **Retrieve prompt by ID** request. It will use the `{{promptId}}` variable to fetch the specific prompt you created.\n        \n\nYou've now successfully created and retrieved your first prompt. You can explore other endpoints to update, delete, or search for prompts and logs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40422911"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Store returned token as {{token}} for later requests",
+									"if (pm.response.code === 201) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set(\"token\", json.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Creates your permanent user account for PromptCrafter API. After creating your account, proceed to the **Log in** endpoint to authenticate and start a new session.\n\n**Authentication:** None required.\n\n**Request Body:**\n\n``` json\n{\n  \"name\": \"John Doe\",     (string, required)\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n\n ```\n\n**Response:**\n\n``` json\n{\n  \"message\": \"User account created successfully.\"\n}\n\n ```\n\n**Status Codes:**\n\n- 201 Created: Account created successfully.\n    \n- 400 Bad Request: Required fields are missing or invalid.\n    \n- 409 Conflict: Email already in use.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
+					},
+					"response": [
+						{
+							"name": "Error: Email Already in Use (409)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signup"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Email already in use.\"\n}"
+						},
+						{
+							"name": "Error: Missing Required Fields (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"password\": \"password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signup"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Required fields are missing or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid Password (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"5\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signup"
+									]
+								}
+							},
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The password does not meet the security requirements.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Log in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Store returned token as {{token}} for later requests",
+									"if (pm.response.code === 200) {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set(\"token\", json.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticates an existing user and returns a new JWT. Use this endpoint to begin a new session or refresh an expired token. The Postman Collection automatically saves the new `token` for you.\n\n**Authentication:** None required.\n\n**Request Body:**\n\n``` json\n{\n  \"email\": \"john@example.com\", (string, required)\n  \"password\": \"password123\"    (string, required)\n}\n\n ```\n\n**Response:**\n\n``` json\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n\n ```\n\n**Status Codes:**\n\n- 200 OK: Authentication successful.\n    \n- 400 Bad Request: Required fields are missing or invalid.\n    \n- 401 Unauthorized: Incorrect email or password.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
+					},
+					"response": [
+						{
+							"name": "Error: Incorrect Credentials (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Incorrect email or password.\"\n}"
+						},
+						{
+							"name": "Error: Missing Required Fields (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Required fields are missing or invalid.\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Endpoints for creating and authenticating a user. Use these requests to either register a new account or log in to an existing one to obtain the JWT Bearer token required to access all other API resources."
+		},
+		{
+			"name": "Prompts",
+			"item": [
+				{
+					"name": "Save a prompt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check for a successful creation and parse the response\r",
+									"if (pm.response.code === 201) {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Automatically save the new prompt's ID to a collection variable\r",
+									"    if (jsonData && jsonData._id) {\r",
+									"        pm.collectionVariables.set(\"promptId\", jsonData._id);\r",
+									"        console.log(\"Saved new promptId to variables: \" + jsonData._id);\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/prompts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prompts"
+							]
+						},
+						"description": "Adds a new prompt to your library, storing the prompt's `title`, `content` (i.e. the prompt text), target `model`, and organizational `tags`. A successful request returns the full prompt object, including its unique `_id`. Be sure to save this `_id`, as it's required to retrieve, update, or delete the prompt later.\n\n**Authentication:** Bearer token required.  \nHeader: `Authorization: Bearer {{token}}`\n\n**Request Body:**\n\n``` json\n{\n  \"title\": \"Positive Product Review Writer\", (string, required)\n  \"content\": \"Imagine you are a satisfied customer...\", (string, required)\n  \"model\": \"Grok-3 Beta\", (string, required)\n  \"tags\": [\"review\", \"product\", \"writing\"] (array<string>, optional)\n}\n\n ```\n\n**Response example:**\n\n``` json\n{\n  \"_id\": \"prompt102\",\n  \"ownerId\": \"user5\",\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"],\n  \"createdAt\": \"2024-06-20T13:01:00Z\",\n  \"updatedAt\": \"2024-06-20T13:01:00Z\"\n}\n\n ```\n\n**Status Codes:**\n\n- 201 Created: Prompt created successfully.\n    \n- 400 Bad Request: Required fields are missing or invalid.\n    \n- 401 Unauthorized: Authentication token is missing, expired, or invalid.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
+					},
+					"response": [
+						{
+							"name": "Error: Missing Required Fields (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Positive Product Review Writer\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Required fields are missing or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Positive Product Review Writer\",\n  \"content\": \"Imagine you are a satisfied customer. Write a friendly, detailed review for a new electric bicycle, mentioning at least three features you enjoyed and describing how it improved your daily commute.\",\n  \"model\": \"Grok-3 Beta\",\n  \"tags\": [\"review\", \"product\", \"writing\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve a prompt by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/prompts/{{promptId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prompts",
+								"{{promptId}}"
+							]
+						},
+						"description": "Retrieves a single prompt using its unique identifier. This allows you to verify a prompt's contents or retrieve it for use in your application or tools. You can only retrieve prompts you own; attempting to access a prompt owned by another user returns a `403 Forbidden` error.\n\n**Path parameter:**\n\n- `promptId` (string, required): Unique identifier of the prompt\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n\n``` json\n{\n  \"_id\": \"prompt104\",\n  \"ownerId\": \"user7\",\n  \"title\": \"Historical Explanation for Students\",\n  \"content\": \"Explain the significance of the Industrial Revolution to high school students using clear, accessible language. Include at least two key inventions and describe how these changes affected daily life in Europe and America.\",\n  \"model\": \"Claude 3 Sonnet\",\n  \"tags\": [\"history\", \"education\", \"explanation\"],\n  \"createdAt\": \"2024-06-20T13:03:00Z\",\n  \"updatedAt\": \"2024-06-20T13:03:00Z\"\n}\n\n ```\n\n**Status Codes:**\n\n- 200 Success: Prompt returned successfully.\n    \n- 400 Bad Request: Malformed request or prompt ID format.\n    \n- 401 Unauthorized: Token missing, expired, or invalid.\n    \n- 403 Forbidden: Prompt does not belong to the authenticated user.\n    \n- 404 Not Found: No prompt found with the specified ID.\n    \n- 500 Internal Server Error: An unexpected server error occurred."
+					},
+					"response": [
+						{
+							"name": "Error: Prompt Not Found (404)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"No prompt found with the specified ID.\"\n}"
+						},
+						{
+							"name": "Error: Access Forbidden (403)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"You do not have permission to access this resource.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid ID Format (400)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/invalid_prompt_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"invalid_prompt_id"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The request is malformed or the prompt ID format is invalid.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update a prompt",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/prompts/{{promptId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prompts",
+								"{{promptId}}"
+							]
+						},
+						"description": "Modifies an existing prompt's attributes, such as its model or tags. This endpoint uses a PATCH method, meaning in the request body you only need to provide the fields you wish to change; all other fields will remain untouched. You can only update prompts you own; attempting to modify a prompt owned by another user returns a `403 Forbidden` error.\n\n**Path parameter:**\n\n- `promptId` (string, required): Unique identifier of the prompt\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Request body:** (all fields optional)\n\n``` json\n{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}\n\n ```\n\n**Response example:**\n\n``` json\n{\n  \"_id\": \"prompt103\",\n  \"ownerId\": \"user6\",\n  \"title\": \"Email Apology Draft\",\n  \"content\": \"Draft a professional but empathetic apology email to a client whose order was delayed. Clearly acknowledge the issue, accept responsibility, and offer a practical solution or compensation to rebuild trust and customer satisfaction.\",\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"],\n  \"createdAt\": \"2024-06-20T13:02:00Z\",\n  \"updatedAt\": \"2025-06-20T11:07:00Z\"\n}\n\n ```\n\n**Status Codes:**\n\n- 200 Success: Prompt updated successfully.\n    \n- 400 Bad Request: Invalid data or prompt ID format.\n    \n- 401 Unauthorized: Token missing, expired, or invalid.\n    \n- 403 Forbidden: Prompt does not belong to user.\n    \n- 404 Not Found: No prompt with given ID.\n    \n- 500 Internal Server Error: Unexpected server error."
+					},
+					"response": [
+						{
+							"name": "Error: Prompt Not Found (404)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"No prompt found with the specified ID.\"\n}"
+						},
+						{
+							"name": "Error: Access Forbidden (403)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Prompt does not belong to the authenticated user.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid Input Data (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"a\"\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Submitted data is invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid ID Format (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"model\": \"GPT-4 Turbo\",\n  \"tags\": [\"email\", \"apology\", \"customer\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/invalid_prompt_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"invalid_prompt_id"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The prompt ID format is invalid.\"\n}"
+						},
+						{
+							"name": "Success: Update Title Only (200)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Full-Day Time Management Workshop Plan\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/prompt482",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"prompt482"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"prompt482\",\n    \"ownerId\": \"user67\",\n    \"title\": \"Full-Day Time Management Workshop Plan\",\n    \"content\": \"Create a detailed agenda for a one-day online workshop on time management skills...\",\n    \"model\": \"GPT-4o\",\n    \"tags\": [\n        \"agenda\",\n        \"workshop\",\n        \"productivity\"\n    ],\n    \"createdAt\": \"2025-06-20T13:20:12.000Z\",\n    \"updatedAt\": \"2025-07-15T20:38:00.000Z\"\n}"
+						},
+						{
+							"name": "Success: Update Content Only (200)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content\": \"Generate a comprehensive, minute-by-minute agenda for a professional one-day virtual workshop focused on advanced time management techniques for remote teams. Include interactive elements and break times.\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/prompt482",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"prompt482"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"prompt482\",\n    \"ownerId\": \"user67\",\n    \"title\": \"Workshop Agenda Creator\",\n    \"content\": \"Generate a comprehensive, minute-by-minute agenda for a professional one-day virtual workshop focused on advanced time management techniques for remote teams. Include interactive elements and break times.\",\n    \"model\": \"GPT-4o\",\n    \"tags\": [\n        \"agenda\",\n        \"workshop\",\n        \"productivity\"\n    ],\n    \"createdAt\": \"2025-06-20T13:20:12.000Z\",\n    \"updatedAt\": \"2025-07-15T20:39:15.000Z\"\n}"
+						},
+						{
+							"name": "Success: Update Title and Tags (200)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Time Management Workshop Agenda for Remote Workers\",\n  \"tags\": [\"agenda\", \"time-management\", \"remote-work\", \"training\"]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prompts/prompt482",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"prompt482"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"prompt482\",\n    \"ownerId\": \"user67\",\n    \"title\": \"Time Management Workshop Agenda for Remote Workers\",\n    \"content\": \"Create a detailed agenda for a one-day online workshop on time management skills...\",\n    \"model\": \"GPT-4o\",\n    \"tags\": [\n        \"agenda\",\n        \"time-management\",\n        \"remote-work\",\n        \"training\"\n    ],\n    \"createdAt\": \"2025-06-20T13:20:12.000Z\",\n    \"updatedAt\": \"2025-07-15T20:40:30.000Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete a prompt",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/prompts/{{promptId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prompts",
+								"{{promptId}}"
+							]
+						},
+						"description": "Permanently deletes one of your prompts using its unique ID. Be careful: this can't be undone. You can only delete prompts that you own; attempting to delete a prompt owned by another user returns a `403 Forbidden` error. A successful deletion returns a `204 No Content` status code.\n\n**Path parameter:**\n\n- `promptId` (string, required): Unique identifier of the prompt\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response:** No body. Success status code 204.\n\n**Status Codes:**\n\n- 204 No Content: Prompt deleted successfully.\n    \n- 400 Bad Request: Malformed request or prompt ID format.\n    \n- 401 Unauthorized: Token missing, expired, or invalid.\n    \n- 403 Forbidden: Prompt does not belong to the user.\n    \n- 404 Not Found: No prompt with given ID.\n    \n- 500 Internal Server Error: Unexpected server error."
+					},
+					"response": [
+						{
+							"name": "Error: Prompt Not Found (404)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"No prompt found with the specified ID.\"\n}"
+						},
+						{
+							"name": "Error: Access Forbidden (403)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Prompt does not belong to the authenticated user.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/{{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"{{promptId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid ID Format (400)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/prompts/invalid_prompt_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prompts",
+										"invalid_prompt_id"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The prompt ID format is invalid.\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Contains all endpoints for managing your personal library of prompts. Use these functions to create, retrieve, update, and delete individual prompts."
+		},
+		{
+			"name": "Logs",
+			"item": [
+				{
+					"name": "Log a generated output",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/logs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logs"
+							]
+						},
+						"description": "Records the output of a prompt test, allowing you to track the prompt's performance systematically. Link a log to a specific prompt using its `promptId`, and include the generated `output`, the `modelUsed`, and optional `notes` and `score`. Use this endpoint to save the result of every prompt test, allowing you to measure and compare the effectiveness of your prompts.  \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Request body:**\n\n``` json\n{\n  \"promptId\": \"prompt101\",        (string, required)\n  \"output\": \"The business report...\", (string, required)\n  \"notes\": \"Summary is clear...\",     (string, optional)\n  \"modelUsed\": \"GPT-4o\",             (string, required)\n  \"score\": 9                         (integer, optional)\n}\n\n ```\n\n**Response example:**\n\n``` json\n{\n  \"_id\": \"log101\",\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales...\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9,\n  \"createdAt\": \"2024-06-20T13:10:00Z\"\n}\n\n ```\n\n**Status Codes:**\n\n- 201 Created: Log created successfully.\n    \n- 400 Bad Request: Missing or invalid field.\n    \n- 401 Unauthorized: Token missing or invalid.\n    \n- 404 Not Found: Prompt ID does not exist or not accessible.\n    \n- 500 Internal Server Error: Server error."
+					},
+					"response": [
+						{
+							"name": "Error: Prompt Not Found (404)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Prompt ID does not exist or is not accessible.\"\n}"
+						},
+						{
+							"name": "Error: Missing Required Fields (400",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"promptId\": \"prompt101\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Required fields are missing or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"promptId\": \"prompt101\",\n  \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales. Recommendations include expanding digital marketing and improving supply chain efficiency. No significant risks were found, but leadership should monitor supplier stability. Immediate action is suggested to secure long-term supplier contracts.\",\n  \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n  \"modelUsed\": \"GPT-4o\",\n  \"score\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve all logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/logs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logs"
+							]
+						},
+						"description": "Returns all logs associated with your user account. Use this endpoint when you need a comprehensive overview of all your test activities for reporting or analysis.\n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n\n``` json\n[\n  {\n    \"_id\": \"log3\",\n    \"promptId\": \"prompt3\",\n    \"output\": \"Ready to Upgrade? Discover the Future of Tech.\",\n    \"notes\": \"Engaging and clear subject line.\",\n    \"modelUsed\": \"Claude\",\n    \"score\": 7,\n    \"createdAt\": \"2024-03-03T13:00:00Z\"\n  }\n]\n\n ```\n\n**Status Codes:**\n\n- 200 OK: Logs returned successfully.\n    \n- 400 Bad Request: Invalid query parameter.\n    \n- 401 Unauthorized: Token missing or invalid.\n    \n- 403 Forbidden: You do not own this prompt (if using promptId)."
+					},
+					"response": [
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication required.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									]
+								}
+							},
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is invalid or has expired.\"\n}"
+						},
+						{
+							"name": "Error: Invalid Parameter (400)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs?limit=50",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "50"
+										}
+									]
+								}
+							},
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The request is malformed or contains invalid parameters.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve logs by prompt",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logs"
+							],
+							"query": [
+								{
+									"key": "promptId",
+									"value": "{{promptId}}"
+								}
+							]
+						},
+						"description": "Returns a filtered array of all logs for a specified prompt using its `promptId` as a query parameter. This endpoint allows you to compare how different models or small prompt changes affect outputs for a specific task over time.\n\n**Query parameter:**\n\n- `promptId` (string, required): The unique ID of the prompt.\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n\n``` json\n[\n  {\n    \"_id\": \"log106\",\n    \"promptId\": \"prompt101\",\n    \"output\": \"The business report finds that revenue increased 12% last quarter, driven by strong online sales...\",\n    \"notes\": \"Summary is clear and actionable. Matches requirements.\",\n    \"modelUsed\": \"GPT-4o\",\n    \"score\": 9,\n    \"createdAt\": \"2024-06-20T13:10:00Z\"\n  }\n]\n\n ```\n\n**Status Codes:**\n\n- 200 Success: Logs returned successfully.\n    \n- 400 Bad Request: promptId missing or malformed.\n    \n- 401 Unauthorized: Token missing or invalid.\n    \n- 403 Forbidden: Not authorized for this prompt.\n    \n- 404 Not Found: No logs for given promptId.\n    \n- 500 Server error."
+					},
+					"response": [
+						{
+							"name": "Error: Prompt Not Found or No Logs (404)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									],
+									"query": [
+										{
+											"key": "promptId",
+											"value": "{{promptId}}"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"No logs found for the specified prompt ID.\"\n}"
+						},
+						{
+							"name": "Error: Access Forbidden (403)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									],
+									"query": [
+										{
+											"key": "promptId",
+											"value": "{{promptId}}"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"User is not authorized to view logs for this prompt.\"\n}"
+						},
+						{
+							"name": "Error: Token Missing or Invalid (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs?promptId={{promptId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									],
+									"query": [
+										{
+											"key": "promptId",
+											"value": "{{promptId}}"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token missing or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Missing or Malformed ID (400)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs?promptId=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs"
+									],
+									"query": [
+										{
+											"key": "promptId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"`promptId` missing or malformed\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete a log",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/logs/{{logId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logs",
+								"{{logId}}"
+							]
+						},
+						"description": "Permanently deletes a log using its unique `logId`. This action cannot be undone. You can only delete logs associated with prompts you own; otherwise, the API returns a `403 Forbidden` error.\n\n**Path parameter:**\n\n- `logId` (string, required): Unique identifier of the log\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response:** No body. Success status code 204.\n\n**Status Codes:**\n\n- 204 No Content: Log deleted successfully.\n    \n- 400 Bad Request: Malformed request or log ID format.\n    \n- 401 Unauthorized: Token missing, expired, or invalid.\n    \n- 403 Forbidden: Log does not belong to the user.\n    \n- 404 Not Found: No log with given ID.\n    \n- 500 Internal Server Error: Unexpected error."
+					},
+					"response": [
+						{
+							"name": "Error: Log Not Found (404)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs/{{logId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs",
+										"{{logId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"No log found with the specified ID.\"\n}"
+						},
+						{
+							"name": "Error: Access Forbidden (403)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs/{{logId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs",
+										"{{logId}}"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Log does not belong to the authenticated user.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs/{{logId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs",
+										"{{logId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs/{{logId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs",
+										"{{logId}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Error: Invalid ID Format (400)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/logs/invalid_log_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"logs",
+										"invalid_log_id"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"The request is malformed or the log ID format is invalid.\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Use these endpoints to track and evaluate the performance of your prompts. You can log the output generated by a prompt, score its effectiveness, and add notes. This detailed test history enables you to compare results and improve your prompts over time."
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search prompts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/search?q={{searchQuery}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "{{searchQuery}}"
+								}
+							]
+						},
+						"description": "Performs a case-insensitive, full-text search across the `title`, `content`, and `tags` of all prompts in your library. Use this endpoint to quickly find relevant prompts when you don't have the specific ID or want to discover all prompts related to a particular topic.\n\n**Query parameter:**\n\n- `q` (string, required): Words or phrases to search for. Matches against prompt title, content, and tags (case-insensitive).\n    \n\n**Authentication:** Bearer token required: `Authorization: Bearer {{token}}`\n\n**Response example:**\n\n``` json\n[\n  {\n    \"_id\": \"prompt3\",\n    \"ownerId\": \"user3\",\n    \"title\": \"Newsletter subject lines\",\n    \"content\": \"Generate subject lines for a tech product launch email.\",\n    \"model\": \"Claude 4.0 Sonnet\",\n    \"tags\": [\"email\", \"marketing\", \"tech\"],\n    \"createdAt\": \"2025-02-03T10:00:00Z\",\n    \"updatedAt\": \"2025-02-03T10:00:00Z\"\n  }\n]\n\n ```\n\n**Status Codes:**\n\n- 200 Success: Search returned results.\n    \n- 400 Bad Request: Missing or malformed query string.\n    \n- 401 Unauthorized: Token missing, expired, or invalid.\n    \n- 500 Internal Server Error: Unexpected error."
+					},
+					"response": [
+						{
+							"name": "Error: Missing Query (400)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Missing or malformed query string.\"\n}"
+						},
+						{
+							"name": "Error: Authentication Token Missing (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q={{searchQuery}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "{{searchQuery}}"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is missing.\"\n}"
+						},
+						{
+							"name": "Error: Token Invalid or Expired (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q={{searchQuery}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "{{searchQuery}}"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Authentication token is expired or invalid.\"\n}"
+						},
+						{
+							"name": "Success: Search by Title (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q=Workshop",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "Workshop"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"prompt482\",\n        \"ownerId\": \"user67\",\n        \"title\": \"Workshop Agenda Creator\",\n        \"content\": \"Create a detailed agenda for a one-day online workshop on time management skills. Include session titles, durations, and short descriptions for each segment. Ensure the agenda is appropriate for working professionals who want practical, actionable strategies.\",\n        \"model\": \"GPT-4o\",\n        \"tags\": [\n            \"agenda\",\n            \"workshop\",\n            \"productivity\"\n        ],\n        \"createdAt\": \"2025-06-20T13:20:12.000Z\",\n        \"updatedAt\": \"2025-06-20T13:20:12.000Z\"\n    }\n]"
+						},
+						{
+							"name": "Success: Search by Content (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q=photosynthesis",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "photosynthesis"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"prompt112\",\n        \"ownerId\": \"user525\",\n        \"title\": \"Explain Scientific Concept Simply\",\n        \"content\": \"Explain the process of photosynthesis in simple terms suitable for a ten-year-old. Use short sentences, real-world examples, and avoid technical jargon. Make sure your explanation would be clear to an elementary school student.\",\n        \"model\": \"Claude 3 Opus\",\n        \"tags\": [\n            \"science\",\n            \"education\",\n            \"explanation\"\n        ],\n        \"createdAt\": \"2025-06-20T13:21:12.000Z\",\n        \"updatedAt\": \"2025-06-20T13:21:12.000Z\"\n    }\n]"
+						},
+						{
+							"name": "Success: Search by Tag (200)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/search?q=python",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "python"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"prompt314\",\n        \"ownerId\": \"user980\",\n        \"title\": \"Python Function Generator\",\n        \"content\": \"Write a Python function that takes a list of dictionaries representing users (each with 'id', 'name', and 'email' keys) and returns a list of emails for all users whose name starts with 'A'. Include appropriate docstrings and handle edge cases.\",\n        \"model\": \"GPT-4.1\",\n        \"tags\": [\n            \"python\",\n            \"code-generation\",\n            \"developer\",\n            \"automation\"\n        ],\n        \"createdAt\": \"2025-06-20T13:22:12.000Z\",\n        \"updatedAt\": \"2025-06-20T13:22:12.000Z\"\n    }\n]"
+						}
+					]
+				}
+			],
+			"description": "A dedicated endpoint for finding items within your library. It performs a full-text search across the `title`, `content`, and `tags` of all your prompts, enabling you quickly to find what you need without a specific ID."
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://promptcrafter-production.up.railway.app"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "promptId",
+			"value": ""
+		},
+		{
+			"key": "logId",
+			"value": ""
+		},
+		{
+			"key": "searchQuery",
+			"value": ""
+		}
+	]
+}
