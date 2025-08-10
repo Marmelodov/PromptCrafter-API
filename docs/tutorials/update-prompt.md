@@ -97,6 +97,7 @@ If you've imported the PromptCrafter Postman Collection, sending the request is 
 ##### **SDK**
 
 ```python
+# This snippet uses the PromptCrafter Python SDK
 from promptcrafter import PromptCrafterClient, PromptCrafterAPIError
 
 # Replace with your actual JWT token and prompt ID
@@ -123,6 +124,7 @@ except PromptCrafterAPIError as e:
 ##### **`requests`**
 
 ```python
+# This snippet uses Python's requests library
 import requests
 
 # Replace with your actual JWT token and prompt ID
@@ -163,6 +165,7 @@ except requests.exceptions.RequestException as e:
 ##### **SDK**
 
 ```javascript
+// This snippet uses the PromptCrafter JavaScript SDK
 import PromptCrafterClient from './promptcrafter-client.js';
 
 async function updatePrompt() {
@@ -193,6 +196,7 @@ updatePrompt();
 ##### **Fetch**
 
 ```javascript
+// This snippet uses JavaScript's fetch API
 async function updatePrompt() {
     // Replace with your actual JWT token and prompt ID
     const token = "your-jwt-goes-here";
@@ -237,6 +241,7 @@ updatePrompt();
 #### **Go**
 
 ```go
+// This snippet uses the PromptCrafter Go SDK
 package main
 
 import (
@@ -278,6 +283,7 @@ func main() {
 #### **Ruby**
 
 ```ruby
+# This snippet uses the PromptCrafter Ruby SDK
 require 'promptcrafter'
 
 # Replace with your actual JWT token and prompt ID
@@ -304,6 +310,7 @@ end
 #### **Java**
 
 ```java
+// This snippet uses the PromptCrafter Java SDK
 import com.promptcrafter.PromptCrafterClient;
 import com.promptcrafter.PromptCrafterClient.Prompt;
 import com.promptcrafter.PromptCrafterClient.PromptUpdate;

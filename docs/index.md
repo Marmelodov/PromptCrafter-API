@@ -1,14 +1,14 @@
 # PromptCrafter API
 
-PromptCrafter API is a backend service for easily storing, organizing, and evaluating generative AI prompts. Whether you’re a developer, a prompt engineer, or someone who enjoys experimenting with gen AI, PromptCrafter makes it easy to build a prompt library, track changes and performance, and connect your prompts to your apps and tools.
+## Store prompts, log results, and review performance
 
-### What You Can Do with PromptCrafter
+**PromptCrafter API is a REST API for managing generative AI prompts.** Built for developers, prompt engineers, and researchers, it enables you to maintain a structured prompt library, log and score outputs, and evaluate performance across models.
 
-* **Save and manage prompts:** Store, update, and organize prompts with titles, content, model specifications, and tags.
-* **Log and score outputs:** Keep detailed records of prompt outputs generated from different models, add notes, and score their performance for systematic testing.
-* **Search your library:** Quickly find the prompts you need with full-text search across titles, content, and tags.
+- **Save and manage prompts:** Store, update, and organize prompts with titles, content, model specifications, and tags.  
+- **Log and score outputs:** Record outputs from different models, add notes, and rate their performance for systematic testing.  
+- **Search your library:** Instantly find prompts with full-text search across titles, content, and tags.
 
-### Getting Started
+### What's Your Next Step?
 
 | I want to... | Next step |
 | :--- | :--- |
@@ -16,5 +16,31 @@ PromptCrafter API is a backend service for easily storing, organizing, and evalu
 | **Learn by example** | Walk through common tasks in the [**Tutorials**](tutorials/index.md). |
 | **Review technical details** | Check the [**API Reference**](reference/index.md) for endpoints, parameters, and schemas. |
 | **Use the API in my code** | Integrate with SDKs for [**Python, JS, Go, Java, and Ruby**](sdks.md). |
-| **Test endpoints interactively**| Import the [**Postman Collection**](postman.md) or view the [**OpenAPI Specification**](openapi.md).|
+| **Test endpoints interactively** | Import the [**Postman Collection**](postman.md) or view the [**OpenAPI Specification**](openapi.md). |
 | **Give feedback** | This is a portfolio project. Suggestions are welcome at the [**GitHub repository**](https://github.com/Marmelodov/PromptCrafter-API). |
+
+---
+
+## Who Is PromptCrafter For?
+
+- **Developers** building or integrating generative AI tools and apps.  
+- **Prompt engineers** iterating on and optimizing prompts.  
+- **Researchers** tracking prompt performance across different AI models.  
+- Anyone who needs an easy way to organize and retrieve reusable prompts.
+
+## Key Features
+
+- **Prompt library management:** Store, update, and organize prompts with titles, content, tags, and associated models.  
+- **Output logging and scoring:** Log outputs, add notes, score effectiveness, and compare models and revisions.  
+- **Search:** Full-text search across prompt titles, content, and tags.  
+- **Authentication:** Secure access and resource ownership via JWT authentication.
+
+## Documentation and Tooling
+
+- **API Reference:** Endpoints, parameters, error handling, and usage examples.  
+- **Resource schemas:** Full definitions for prompt and log objects.  
+- **Step-by-step tutorials:** Guides for signing in, creating prompts, logging outputs, and searching your library.  
+- **Postman Collection:** Interactive endpoint exploration with example requests and responses.  
+- **OpenAPI Specification:** Machine-readable schema for code generation and integration.  
+- **SDK Documentation:** Examples for Python, JavaScript, Go, Java, and Ruby.  
+- **Realistic examples:** Production-quality request and response payloads.

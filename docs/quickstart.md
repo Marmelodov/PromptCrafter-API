@@ -4,27 +4,27 @@ This guide shows you how to sign up, log in, and save and retrieve your first pr
 
 ## What you accomplish
 
-Here are the aims of the four steps in this guide and what you'll have acheived after each.
+The four steps of this guide take about **5 minutes**.
 
 | Step               | Purpose                                  | Outcome                                   |
 |--------------------|------------------------------------------|-------------------------------------------|
 | 1. Create your account         | Create your private API account          | You have a user account and can log in    |
 | 2. Log in to get your token          | Get your authentication token (JWT)      | You have a bearer token for API requests  |
-| 3. Save your first prompt   | Create your first prompt in the library  | You receive a unique prompt ID            |
+| 3. Save your first prompt   | Save your first prompt to your library  | You receive a unique prompt ID            |
 | 4. Retrieve your prompt | Fetch the prompt to confirm it saved | You've verified the prompt saved    |
 
 ## Prerequisites
 
-This guide takes about **five minutes** to complete. To follow the step-by-step instructions, you need an HTTP client. Choose one of the following:
+Use one of these HTTP clients:
 
 * **cURL.**
-* **Postman.** Import the [PromptCrafter API Collection](postman.md). It contains pre-built requests for every step in this guide, so you can simply replace the pre-filled values with your own and press **Send**.
+* **Postman.** Import the [PromptCrafter Postman Collection](postman.md). It contains pre-built requests for every step in this guide, so you can simply replace the pre-filled values with your own and press **Send**.
 
-Alternatively, if you prefer to work in code, you can skip the cURL and Postman steps and go directly to the [Complete SDK examples](#complete-sdk-examples) for full, runnable scripts in Python, JavaScript, Go, Ruby, and Java.
+If you prefer to work in code, skip the cURL and Postman steps and check out the end-to-end [SDK quickstart scripts](#end-to-end-sdk-scripts) for Python, JavaScript, Go, Ruby, and Java.
 
-## 1. Create your account
+## Step 1. Create your account
 
-This step establishes your identity in the system, creating a private workspace. It ensures that every prompt you save is tied to your account, so only you can access your library.
+This step establishes your identify and private workspace in the system. Every prompt you save in PromptCrafter is tied to your account so only you can access it.
 
 **Endpoint**: `POST /auth/signup`
 
@@ -32,13 +32,13 @@ This step establishes your identity in the system, creating a private workspace.
 
 #### **cURL**
 
-To make the cURL commands cleaner, first set a shell variable for the base URL.
+To keep the cURL commands tidy, first set a shell variable for the base URL.
 
 ```bash
 BASE_URL="https://promptcrafter-production.up.railway.app"
 ```
 
-Now, create your account. Replace the `name`, `email`, and `password` values with your own credentials.
+Now, create your account. Replace the `name`, `email`, and `password` values with your own.
 
 ```bash
 curl -X POST $BASE_URL/auth/signup \
@@ -52,18 +52,19 @@ curl -X POST $BASE_URL/auth/signup \
 
 #### **Postman**
 
-Use the **Sign up** request in the `Auth` folder of the PromptCrafter API Collection:
+In the Postman Collection, use the **Sign up** request in the `Auth` folder of the PromptCrafter API Collection:
 
-1. Replace the example `name`, `email`, and `password` values in the request body with your own.
-2. Click **Send** to create your account.
+1. Click the **Body** tab to see the request's content.
+2. In the JSON object, replace the placeholder values `name`, `email`, and `password` with your own.
+3. Click **Send**.
 
 <!-- tabs:end -->
 
-A `201 Created` response with the message `"User account created successfully."` confirms your account is ready. (If you receive a `409 Conflict` error, the email address is already in use.)
+A `201 Created` response with the message `"User account created successfully"` confirms your account is ready. (If you receive a `409 Conflict` error, the email address is already in use.)
 
-## 2. Log in to get your token
+## Step 2. Log in to get your token
 
-Authentication in PromptCrafter requires a JWT (JSON Web Token), which acts as your temporary key to access protected resources. After signing up, log in to receive your token, which you must include in the `Authorization` header of every subsequent request using the `Bearer` scheme, like this: `Authorization: Bearer {your_token}`.
+Authentication in PromptCrafter requires a JWT (JSON Web Token), which is your key to access protected resources. After logging in and receiving your token, include it in the `Authorization` header of every subsequent request using the `Bearer` scheme, like this: `Authorization: Bearer {your_token}`.
 
 **Endpoint**: `POST /auth/login`
 
@@ -71,7 +72,7 @@ Authentication in PromptCrafter requires a JWT (JSON Web Token), which acts as y
 
 #### **cURL**
 
-Replace the `email` and `password` values with the credentials you used to sign up.
+Replace the `email` and `password` values with the credentials you created in **Step 1**.
 
 ```bash
 curl -X POST $BASE_URL/auth/login \
@@ -99,23 +100,28 @@ TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 #### **Postman**
 
-Use the **Log in** request in the `Auth` folder of the Postman Collection. In the request body, replace the pre-filled `email` and `password` values with your own credentials.
+In the Postman Collection, expand the `Auth` folder and select the **Log in** request.
 
-> **Note:**
-> The Postman Collection handles authentication for you. After you log in, a test script saves the token to a collection variable (`{{token}}`). This variable is then automatically included in the authorization header of every other request.
+1. Click the **Body** tab.
+2. Replace the `email` and `password` values with the credentials you created in **Step 1**.
+3. Click **Send**. A test script in the collection automatically saves the returned authentication token to a collection variable (`{{token}}`), which handles authentication for all subsequent requests.
 
 <!-- tabs:end -->
 
-## 3. Save your first prompt
+## Step 3. Save your first prompt
 
-Now comes the core value of PromptCrafter: storing and organizing your prompts. This step demonstrates how to build your prompt library over time. Each saved prompt includes not just the prompt text (what you feed into the AI model), but metadata like the intended `model`, descriptive `tags`, and timestamps.  
+Now comes the core value of PromptCrafter: storing and organizing your prompts. This step demonstrates the operation you'll use to build your prompt library over time. Each saved prompt includes the prompt text (what you feed into the AI model) and metadata like the intended `model`, descriptive `tags`, and timestamps.  
 
-**Why the metadata matters:** The metadata is what enables you to build an organized, searchable library of prompts instead of a messy folder full of text files. Having your prompts organized in one place becomes invaluable when you're working on multiple projects or need to find that one prompt you wrote months ago that worked perfectly. With `tags`, for example, you can:
+<details>
+  <summary><em>Why does the metadata matter?</em></summary>
 
-* **Group by project:** Tag prompts for a particular marketing campaign with `campaign-q3-launch`.
-* **Group by task:** Tag prompts that generate Python code with `python-code-gen`.
-* **Group by purpose:** Tag prompts for summarizing customer feedback with `customer-feedback-summary`.
+> The metadata is what enables you to build an organized, searchable library of prompts instead of a messy folder full of text files. Having your prompts organized in one place becomes invaluable when you're working on multiple projects or need to find that one perfect prompt you wrote months ago. With `tags`, for example, you can:
+>
+> * **Group by project:** Tag prompts for a particular marketing campaign with `campaign-q3-launch`.
+> * **Group by task:** Tag prompts that generate Python code with `python-code-gen`.
+> * **Group by purpose:** Tag prompts for summarizing customer feedback with `customer-feedback-summary`.
 
+</details>
 
 **Endpoint**: `POST /prompts`
 
@@ -139,9 +145,10 @@ curl -X POST $BASE_URL/prompts \
 
 #### **Postman**
 
-Use the **Save a prompt** request in the `Prompts` folder. The request body is pre-filled, and your authorization token is already included as a variable. Just click **Send**.
+In the Postman Collection, expand the `Prompts` folder and select the **Save a prompt** request.
 
-> **Note:** A test script in the Postman Collection automatically saves the new prompt's `_id` to a collection variable (`{{promptId}}`). This saves you from having to manually copy and paste the '_id' for the next step.
+1. Click the **Body** tab. The fields are pre-filled with an example prompt. You can either send the request as is or modify the `title`, `content`, `model`, and `tags` values to whatever you'd like.
+2. Click **Send**. The collection automatically saves the new prompt's `_id` from the response to a variable (`{{promptId}}`). This saves you from having to manually copy and paste the `_id` for the next step.
 
 <!-- tabs:end -->
 
@@ -164,16 +171,21 @@ A successful request returns the full prompt object, which looks like this:
 }
 ```
 
-**Important:** Copy the server-generated `_id` from the response. You need it for the next step to verify that your prompt saved correctly.
+**Important:** If you're using cURL, copy the server-generated `_id` from the response. You need it for the next step to verify that your prompt saved correctly.
 
-## 4. Retrieve your prompt
+## Step 4. Retrieve your prompt
 
 This final step confirms your prompt saved correctly by retrieving it with its unique ID. This operation is the method you use to integrate your saved prompts into tools and application.
 
-**How to use this in the real world:** Retrieving a prompt by its ID is the key to building tools like:
+<details>
+  <summary><em>Where do you use this operation in the real world?</em></summary>
 
-- A **content generation app** where clicking a "Summarize Article" button triggers a `GET /prompts/{summary-prompt-id}` request to fetch the appropriate prompt.
-- A **prompt evaluation suite** that programmatically loops through a list of prompt IDs to test and compare the outputs from each one.
+> Retrieving a prompt by its ID is the key to building tools like:
+>
+> - A **content generation app** where clicking a "Summarize Article" button triggers a `GET /prompts/{summary-prompt-id}` request to fetch the appropriate prompt.
+> - A **prompt evaluation suite** that programmatically loops through a list of prompt IDs to test and compare the outputs from each one.
+
+</details><p></p>
 
 **Endpoint**: `GET /prompts/{id}`
 
@@ -197,15 +209,21 @@ curl -X GET $BASE_URL/prompts/$PROMPT_ID \
 
 #### **Postman**
 
-The **Retrieve a prompt by ID** request is already configured to use the `{{promptId}}` variable that was automatically saved in the previous step. **Just click Send** to fetch your prompt.
+In the Postman Collection, expand the `Prompts` folder and select the **Retrieve a prompt by ID** request.
+
+1. Notice that the request URL already includes the `{{promptId}}` variable that was automatically saved in the previous step.
+2. You don't need to modify anything. Simply click **Send** to fetch the prompt you just created and verify it saved correctly.
 
 <!-- tabs:end -->
 
 The response should return the same prompt object you created in **Step 3**, confirming that it's safely stored.
 
-## What to do if a request doesn't work
+### What if a request doesn't work?
 
-If you run into an error, use this table to diagnose and fix the problem. The most common issues involve an incorrect token or ID, so check those first.
+<details>
+  <summary><strong>Click to troubleshoot</strong></summary>
+
+Use this table to diagnose and fix errors you might encounter. The most common issues involve an incorrect token or ID, so check those first.
 
 | Status                 | Example response                                       | Cause                                                                                                                               | Solution                                                                                                                                                              |
 | ---------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -215,11 +233,15 @@ If you run into an error, use this table to diagnose and fix the problem. The mo
 | **404 Not Found**      | `{"error": "No prompt found with the specified ID."}`    | **During Step 4:** The `PROMPT_ID` variable was not set, or the `_id` from Step 3 was copied incorrectly.                             | Copy the exact `_id` string from the response you received in Step 3 and ensure the `PROMPT_ID` variable is set correctly before sending the `GET` request.            |
 | **400 Bad Request**    | Varies; may include `{"error": "Submitted data is invalid."}` | **During Step 3:** The JSON in your cURL command is malformed. | Carefully check the JSON in the `-d` block of your cURL command for syntax errors and typos.                                     |
 
-## Complete SDK examples
+</details>
 
-The following examples provide complete, runnable scripts for each of the PromptCrafter SDKs. Each script performs the full workflow: signing up, logging in, creating a prompt, and retrieving it. Just replace the placeholder credentials with your own.
+### End-to-end SDK scripts
 
 <!-- tabs:start -->
+
+#### **Overview**
+
+These complete, runnable scripts for the five PromptCrafter SDKs perform all four steps of the Quickstart: sign up, log in, save a prompt, and retrieve it. Simply replace the placeholder credentials in the code  with your own, and execute.
 
 #### **Python**
 
@@ -227,7 +249,7 @@ Save this script as `quickstart.py` and run it from your terminal.
 
 ```python
 # quickstart.py
-from python_sdk import PromptCrafterClient, PromptCrafterAPIError, ConflictError
+from promptcrafter import PromptCrafterClient, PromptCrafterAPIError, ConflictError
 
 def main():
     """Runs the complete PromptCrafter API quickstart workflow."""
@@ -623,16 +645,15 @@ public class Quickstart {
 
 <!-- tabs:end -->
 
-## What you've learned
+## You have now...
    
-You've mastered the PromptCrafter API fundamentals:  
   ✔️ Created your account and obtained authentication  
   ✔️ Saved a reusable prompt with metadata  
   ✔️ Retrieved your prompt by ID
 
-   
-**Ready to dive deeper?** Here's what to explore next:
+## Ready to dive deeper?
 
+Here's what to explore next:
 * **[Log generated outputs](tutorials/test-prompt.md):** Learn to test and score the outputs of your prompts.
 * **[Search your library](tutorials/search-prompts.md):** Discover how to find prompts by keyword, tags, or content as your collection grows.
 * **[Explore the full API Reference](reference/index.md):** Detailed documentation for all endpoints.

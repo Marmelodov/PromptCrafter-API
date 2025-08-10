@@ -18,9 +18,9 @@ None
 
 ## Request headers
 
-| Header name     | Required | Description                       |
-|-----------------|----------|-----------------------------------|
-| `Content-Type`  | Yes      | Must be set to `application/json` |
+| Header name     | Required | Value                               |
+|-----------------|----------|--------------------------------------------|
+| `Authorization` | Yes      | `Authorization: Bearer {your_token}` |
 
 ## Request body
 

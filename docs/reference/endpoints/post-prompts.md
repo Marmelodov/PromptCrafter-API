@@ -18,10 +18,10 @@ None
 
 ## Request headers
 
-| Header name     | Required | Description                                |
+| Header name     | Required | Value                               |
 |-----------------|----------|--------------------------------------------|
-| `Authorization` | Yes      | Bearer token used to authenticate the user |
-| `Content-Type`  | Yes      | Must be set to `application/json`          |
+| `Authorization` | Yes      | `Authorization: Bearer {your_token}` |
+| `Content-Type`  | Yes      | `application/json`          |
 
 ## Request body
 

@@ -18,9 +18,9 @@ None
 
 ## Request headers
 
-| Header name     | Required | Description                                |
-| --------------- | -------- | ------------------------------------------ |
-| `Authorization` | Yes      | Bearer token used to authenticate the user |
+| Header name     | Required | Value                               |
+|-----------------|----------|--------------------------------------------|
+| `Authorization` | Yes      | `Authorization: Bearer {your_token}` |
 
 ## Request body
 
@@ -70,7 +70,7 @@ curl -H "Authorization: Bearer {your_token}" https://promptcrafter-production.up
 
 ## Related
 
-[Save a prompt](post-prompts.md): `POST /prompts`  
-[Retrieve a prompt by ID](get-prompts-id.md): `GET /prompts/:id`  
-[Update a prompt](patch-prompts-id.md): `PATCH /prompts/:id`  
-[Delete a prompt](delete-prompts-id.md): `DELETE /prompts/:id`
+[Save a prompt](reference/endpoints/post-prompts.md): `POST /prompts`  
+[Retrieve a prompt by ID](reference/endpoints/get-prompts-id.md): `GET /prompts/:id`  
+[Update a prompt](reference/endpoints/patch-prompts-id.md): `PATCH /prompts/:id`  
+[Delete a prompt](reference/endpoints/delete-prompts-id.md): `DELETE /prompts/:id`

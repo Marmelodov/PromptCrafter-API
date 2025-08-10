@@ -20,9 +20,9 @@ https://promptcrafter-production.up.railway.app/prompts/:id
 
 ## Request headers
 
-| Header name     | Required | Description                                |
+| Header name     | Required | Value                                |
 |-----------------|----------|--------------------------------------------|
-| `Authorization` | Yes      | Bearer token used to authenticate the user |
+| `Authorization` | Yes      | `Authorization: Bearer {your_token}` |
 
 ## Request body
 

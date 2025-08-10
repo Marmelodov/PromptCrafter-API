@@ -15,5 +15,5 @@ No further setup is required. Variables like `baseUrl` and `token` are already i
 
 ## Download
 
-- [Download Postman Collection (JSON)](assets/PromptCrafter_postman_collection.json)
+- <a href="downloads/PromptCrafter_postman_collection.json" download>Download Postman Collection</a>
 - [View on GitHub](https://github.com/Marmelodov/PromptCrafter-API/blob/main/postman/PromptCrafter_postman_collection.json)
