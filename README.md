@@ -11,7 +11,6 @@
   - [Documentation](#documentation)
   - [Postman Collection](#postman-collection)
   - [OpenAPI Specification](#openapi-specification)
-  - [SDKs](#sdks)
   - [How to use this repository](#how-to-use-this-repository)
   - [Project status](#project-status)
   - [Background and credits](#background-and-credits)
@@ -69,18 +68,6 @@ The OpenAPI (Swagger) file provides a machine-readable description of the API to
     - Validate and test against schema.
 
 <img src="./Screenshot%202025-07-15%20205113.png" alt="alt text" width="76%">
-
-## SDKs
-
-Documentation for generated SDKs are provided in the following languages:
-
-- **Python** (`/sdk/python/`)
-- **JavaScript** (`/sdk/javascript/`)
-- **Go** (`/sdk/go/`)
-- **Ruby** (`/sdk/ruby/`)
-- **Java** (`/sdk/java/`)
-
-Documentation for each SDK accounts for the idiom and particular challenges of the language.
 
 ## How to use this repository
 
