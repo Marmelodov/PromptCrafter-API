@@ -67,8 +67,6 @@ The OpenAPI (Swagger) file provides a machine-readable description of the API to
     - Integrate with documentation tools.
     - Validate and test against schema.
 
-<img src="./Screenshot%202025-07-15%20205113.png" alt="alt text" width="76%">
-
 ## How to use this repository
 
 Although the live API server is not currently available, you can:
